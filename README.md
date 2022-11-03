@@ -3,6 +3,10 @@
 ## Getting started
 You just imported the project and you want to run it on your machine?
 
+Be sure to have PHP 8+ and execute : 
+
+`symfony check:requirements`
+
 Do this:
 - `cd src/`
 - `composer install`
