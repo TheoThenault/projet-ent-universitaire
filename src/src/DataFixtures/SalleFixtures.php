@@ -8,9 +8,11 @@ use Doctrine\Persistence\ObjectManager;
 
 use App\Entity\Salle;
 
-class SalleFixtures extends Fixture
-{
-    public function load(ObjectManager $manager): void
+class SalleFixtures{
+
+    public array $list_salles = array();
+
+    public function charger(ObjectManager $manager): void
     {
         $batiment = array(
             "a",
@@ -24,6 +26,7 @@ class SalleFixtures extends Fixture
             "30",
             "40",
             '50',
+            '100',
         );
 
         $equipement = array(
@@ -33,24 +36,17 @@ class SalleFixtures extends Fixture
             "physique",
         );
 
-        $nom = array(
-            "1",
-            "2",
-            "info",
-            "1.2",
-            "Salut tout le monde c'est la salle"
-        );
-
-        $salles = array();
-        for($i = 0; $i < 20; $i++){
-            $salle[$i] = new Salle();
-            $salle[$i]->setBatiment($batiment[rand(0,count($batiment) - 1)])
+        for($i = 0; $i < 40; $i++){
+            $this->list_salles[$i] = new Salle();
+            $b = $batiment[rand(0,count($batiment) - 1)];
+            $n = $b . " " . $i;
+            $this->list_salles[$i]
+                ->setBatiment($b)
                 ->setCapacite($capacite[rand(0,count($capacite) - 1)])
                 ->setEquipement($equipement[rand(0,count($equipement) - 1)])
-                ->setNom($nom[rand(0,count($nom) - 1)]);
-            $manager->persist($salle[$i]);
+                ->setNom($n);
+            $manager->persist($this->list_salles[$i]);
         }
-
 
         $manager->flush();
     }
