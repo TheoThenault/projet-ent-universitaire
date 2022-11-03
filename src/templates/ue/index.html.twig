@@ -6,15 +6,35 @@
 
     <h2>Filtres:</h2>
     <nav>
-        <p>tout une tas de filtres</p>
+        <form>
+            <label for="specialite">Spécialité: </label>
+            <select id="specialite">
+                <option value="math">Math</option>
+                <option value="web">Web</option>
+                <option value="anglais">Anglais</option>
+                <option value="web_avance">Web Avancé</option>
+                <option value="droit">droit</option>
+                <option value="poo">POO</option>
+            </select>
+            <button type="submit">Filtrer</button>
+        </form>
     </nav>
-    {% if form_remplie is defined %}
+    {% if liste_ues is defined %}
         <h2>Résultat:</h2>
-        <ul>
-            <li>rien</li>
-        </ul>
+        <table style="border: 1px solid black;">
+                <tr>
+                    <th>Nom</th>
+                    <th>Volume horaire</th>
+                </tr>
+            {% for ue in liste_ues %}
+                <tr>
+                    <td style="border: 1px solid black;">{{ ue.nom }}</td>
+                    <td style="border: 1px solid black;">{{ ue.volumeHoraire }}</td>
+                </tr>
+            {% endfor %}
+        </table>
     {% else %}
-
+        <h2>Aucun résultat !</h2>
     {% endif %}
 
 {% endblock %}
