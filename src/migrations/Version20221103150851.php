@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20221103111807 extends AbstractMigration
+final class Version20221103150851 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -27,6 +27,7 @@ final class Version20221103111807 extends AbstractMigration
         $this->addSql('CREATE UNIQUE INDEX UNIQ_FCEC9EFDDEAB1A3 ON personne (etudiant_id)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_FCEC9EFE455FCC0 ON personne (enseignant_id)');
         $this->addSql('CREATE TABLE statut_enseignant (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, nom VARCHAR(255) NOT NULL, nb_heure_min INTEGER NOT NULL, nb_heure_max INTEGER NOT NULL)');
+        $this->addSql('CREATE TABLE ue (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, nom VARCHAR(255) NOT NULL, volume_horaire INTEGER DEFAULT NULL)');
     }
 
     public function down(Schema $schema): void
@@ -36,5 +37,6 @@ final class Version20221103111807 extends AbstractMigration
         $this->addSql('DROP TABLE etudiant');
         $this->addSql('DROP TABLE personne');
         $this->addSql('DROP TABLE statut_enseignant');
+        $this->addSql('DROP TABLE ue');
     }
 }

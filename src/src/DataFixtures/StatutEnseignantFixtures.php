@@ -3,12 +3,14 @@
 namespace App\DataFixtures;
 
 use App\Entity\StatutEnseignant;
-use Doctrine\Bundle\FixturesBundle\Fixture;
+
 use Doctrine\Persistence\ObjectManager;
 
-class StatutEnseignantFixtures extends Fixture
+class StatutEnseignantFixtures
 {
-    public function load(ObjectManager $manager): void
+    public array $list_statuts_enseignant = array();
+
+    public function charger(ObjectManager $manager): void
     {
         $statut_heures = array(
             array("certifié et agrégé", 384),
@@ -17,14 +19,14 @@ class StatutEnseignantFixtures extends Fixture
             array("doctorant enseignant", 64),
         );
 
-        $statutsEnseignant = array();
+
         for($i = 0; $i<count($statut_heures); $i++) {
-            $statutsEnseignant[$i] = new StatutEnseignant();
-            $statutsEnseignant[$i]
+            $this->list_statuts_enseignant[$i] = new StatutEnseignant();
+            $this->list_statuts_enseignant[$i]
                 ->setNom($statut_heures[$i][0])
                 ->setNbHeureMin($statut_heures[$i][1])
                 ->setNbHeureMax($statut_heures[$i][1]*2);
-            $manager->persist($statutsEnseignant[$i]);
+            $manager->persist($this->list_statuts_enseignant[$i]);
         }
 
         $manager->flush();

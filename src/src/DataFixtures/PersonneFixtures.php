@@ -8,9 +8,12 @@ use Doctrine\Persistence\ObjectManager;
 
 class PersonneFixtures
 {
+    public array $list_personnes = array();
 
-    public function load(ObjectManager $manager): void
+    public function charger(ObjectManager $manager): void
     {
+        $email="univ-poitiers.fr";
+
         $nom_prenom = array(
             array("Adèle", "Hiriome"),
             array("Ahmed", "Epan"),
@@ -28,16 +31,14 @@ class PersonneFixtures
             array("Gary", "Guette"),
             array("Natacha", "Rivari"),
         );
-        $email="univ-poitiers.fr";
-        $personnes = array();
 
         for ($i = 0; $i <count($nom_prenom); $i++){
-            $personnes[$i] = new Personne();
-            $personnes[$i]
+            $this->list_personnes[$i] = new Personne();
+            $this->list_personnes[$i]
                 ->setEmail($nom_prenom[$i][0].".".$nom_prenom[$i][1]."@".$email)
                 ->setPrenom($nom_prenom[$i][0])
                 ->setNom($nom_prenom[$i][1]);
-            $manager->persist($personnes[$i]);
+            $manager->persist($this->list_personnes[$i]);
         }
 
         $manager->flush();
