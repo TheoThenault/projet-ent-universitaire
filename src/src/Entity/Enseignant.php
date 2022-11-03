@@ -16,6 +16,9 @@ class Enseignant
     #[ORM\OneToOne(mappedBy: 'enseignant', cascade: ['persist', 'remove'])]
     private ?Personne $personne = null;
 
+    #[ORM\ManyToOne(inversedBy: 'enseignants')]
+    private ?StatutEnseignant $StatutEnseignant = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -39,6 +42,18 @@ class Enseignant
         }
 
         $this->personne = $personne;
+
+        return $this;
+    }
+
+    public function getStatutEnseignant(): ?StatutEnseignant
+    {
+        return $this->StatutEnseignant;
+    }
+
+    public function setStatutEnseignant(?StatutEnseignant $StatutEnseignant): self
+    {
+        $this->StatutEnseignant = $StatutEnseignant;
 
         return $this;
     }

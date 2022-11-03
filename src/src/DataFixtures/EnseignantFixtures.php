@@ -4,25 +4,27 @@ namespace App\DataFixtures;
 
 use App\Entity\Enseignant;
 use App\Entity\Personne;
-use Doctrine\Bundle\FixturesBundle\Fixture;
+use App\Entity\StatutEnseignant;
+
 use Doctrine\Persistence\ObjectManager;
 
-class EnseignantFixtures extends Fixture
+class EnseignantFixtures
 {
-    public function load(ObjectManager $manager): void
+    public function charger(ObjectManager $manager): void
     {
-        $personne = new Personne();
-        $personne
-            ->setEmail('gaelle.skapin@univ.fr')
-            ->setNom('Skapin')
-            ->setPrenom('Gaelle');
-        $manager->persist($personne);
+        $nb_enseignant = 6;
 
-        $enseignant = new Enseignant();
-        $enseignant
-            ->setPersonne($personne);
+        $personnes = $manager->getRepository(Personne::class)->findAll();
+        $statutsEnseignant = $manager->getRepository(StatutEnseignant::class)->findAll();
 
-        $manager->persist($enseignant);
+        $enseignants = array();
+        for ($i=0; $i<$nb_enseignant; $i++){
+            $enseignants[$i] = new Enseignant();
+            $enseignants[$i]
+                ->setPersonne($personnes[$i])
+                ->setStatutEnseignant(array_rand($statutsEnseignant, 1));
+            $manager->persist($enseignants[$i]);
+        }
 
         $manager->flush();
     }
