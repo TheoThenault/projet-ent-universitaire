@@ -15,8 +15,8 @@ class EnseignantFilterType extends AbstractType
         $builder
             ->add('nom',ChoiceType::class, [
                 'choices'  => [
-                    'Croissant' => 1,
-                    'Décroissant' => 2,
+                    'Croissant' => "croissant",
+                    'Décroissant' => "decroissant",
                 ],
             ]);
         ;

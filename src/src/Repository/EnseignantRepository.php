@@ -39,6 +39,26 @@ class EnseignantRepository extends ServiceEntityRepository
         }
     }
 
+    public function sortByNameAsc(): mixed
+    {
+        $qb = $this->createQueryBuilder('enseignant')
+            ->leftJoin('enseignant.personne', 'personne')
+            ->addSelect('personne')
+            ->orderBy("personne.nom", "ASC")
+        ;
+        return $qb->getQuery()->getResult();
+    }
+
+    public function sortByNameDesc(): mixed
+    {
+        $qb = $this->createQueryBuilder('enseignant')
+            ->leftJoin('enseignant.personne', 'personne')
+            ->addSelect('personne')
+            ->orderBy("personne.nom", "DESC")
+        ;
+        return $qb->getQuery()->getResult();
+    }
+
 //    /**
 //     * @return Enseignant[] Returns an array of Enseignant objects
 //     */
