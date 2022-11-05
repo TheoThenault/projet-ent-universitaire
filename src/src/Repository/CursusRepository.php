@@ -39,6 +39,34 @@ class CursusRepository extends ServiceEntityRepository
         }
     }
 
+    public function findAllOrdered(): array
+    {
+        $queryBuilder = $this->createQueryBuilder('c');
+        $queryBuilder->orderBy('c.niveau');
+
+        return $queryBuilder->getQuery()->getArrayResult();
+    }
+
+    public function findAllNiveaux(): array
+    {
+        $queryBuilder = $this->createQueryBuilder('c');
+        $queryBuilder->select('c.niveau');
+        $queryBuilder->groupBy('c.niveau');
+        $queryResult = $queryBuilder->getQuery()->getArrayResult();
+
+        // enregistrer le tableau, en mettant les valeurs dans les cléfs
+        // pour etre utiliser par symfony
+        $result = array();
+        $result['Tous niveaux'] = 'Tous';   // ajout manuel d'un choix universel
+        for($i = 0; $i < count($queryResult); $i++) {
+            $niv = $queryResult[$i]['niveau'];
+            $result[$niv] = $niv;
+        }
+
+        return $result;
+    }
+
+
 //    /**
 //     * @return Cursus[] Returns an array of Cursus objects
 //     */

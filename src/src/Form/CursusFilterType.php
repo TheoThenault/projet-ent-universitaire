@@ -12,7 +12,10 @@ class CursusFilterType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('Niveau', ChoiceType::class)
+            ->add('Niveau', ChoiceType::class, [
+                'label' => 'Niveau d\'études: ',
+                'choices' => $options['niveaux']
+            ])
         ;
     }
 
@@ -20,6 +23,9 @@ class CursusFilterType extends AbstractType
     {
         $resolver->setDefaults([
             // Configure your form options here
+            'niveaux' => []
         ]);
+
+        //$resolver->setAllowedTypes('niveaux', 'array');
     }
 }

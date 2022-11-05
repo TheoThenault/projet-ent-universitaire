@@ -8,12 +8,13 @@
     <nav>
         {{ form(cursusFormulaire) }}
     </nav>
-    {% if liste_cursus is defined %}
+    {# on n'affiche cette parite que si la liste est défini est pas vide #}
+    {% if liste_cursus is defined and liste_cursus is not empty %}
         <h2>Résultat:</h2>
         <table style="border: 1px solid black;">
             <tr>
+                <th>Niveau</th>
                 <th>Nom</th>
-                <th>Volume horaire</th>
             </tr>
             {% for cursus in liste_cursus %}
                 <tr>
