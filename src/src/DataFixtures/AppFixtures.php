@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use App\DataFixtures\SalleFixtures;
 
 use App\DataFixtures\PersonneFixtures;
 use App\DataFixtures\EnseignantFixtures;
@@ -14,6 +15,9 @@ class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
+        $salleFixture = new SalleFixtures();
+        $salleFixture->charger($manager);
+
         $personnes_fixture = new PersonneFixtures();
         $personnes_fixture->charger($manager);
 
@@ -27,12 +31,12 @@ class AppFixtures extends Fixture
             $statuts_enseignant_fixture->list_statuts_enseignant
         );
 
+
         $cursus_fixture = new CursusFixtures();
         $cursus_fixture->charger($manager);
 
         $ues = new UEFixtures();
         $ues->charger($manager);
-
 
         $manager->flush();
     }
