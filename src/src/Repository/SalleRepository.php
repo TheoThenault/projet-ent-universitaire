@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Salle;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
 
@@ -41,7 +42,7 @@ class SalleRepository extends ServiceEntityRepository
         }
     }
 
-    public function myFindWithPaging($currentPage, $nbPerPage, $filtre, $ordre): Paginator{
+    /*public function myFindWithPaging($currentPage, $nbPerPage, $filtre, $ordre): Paginator{
         $query = $this->createQueryBuilder('s')
             ->addOrderBy('s'.".".$filtre, $ordre)
             ->getQuery()
@@ -58,9 +59,23 @@ class SalleRepository extends ServiceEntityRepository
             ->setMaxResults($nbPerPage);
 
         return new Paginator($query);
+    }*/
+
+    public function myFindWithPaging($currentPage, $nbPerPage, $filtre, $ordre): mixed{
+        $query = $this->createQueryBuilder('s')
+            ->addOrderBy('s'.".".$filtre, $ordre)
+            ->getQuery();
+
+        return $query->getResult();
     }
 
+    public function myFindAllWithPaging($currentPage, $nbPerPage): mixed
+    {
+        $query = $this->createQueryBuilder('s')
+            ->getQuery();
 
+        return $query->getResult();
+    }
 
 
 //    /**
