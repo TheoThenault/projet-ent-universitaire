@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Enseignant;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * @extends ServiceEntityRepository<Enseignant>
@@ -37,6 +38,52 @@ class EnseignantRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    /**
+     * @param QueryBuilder $qb
+     * @param string $orderBy
+     * @param string $asc_or_desc
+     * @param string $table
+     * @param string|null $table_to_join (option)
+     * @return void
+     */
+    public function sortAscOrDesc(
+        QueryBuilder $qb, string $orderBy, string $asc_or_desc, string $table, string $table_to_join = null): void
+    {
+        $asc_or_desc = strtoupper($asc_or_desc);
+        if ($table != null) {
+            $qb
+                ->leftJoin($table.".".$table_to_join, $table_to_join)
+                ->addSelect($table_to_join)
+                ->orderBy($table_to_join.".".$orderBy, $asc_or_desc);
+        } else {
+            $qb->orderBy($table.".".$orderBy, $asc_or_desc);
+        }
+    }
+
+    public function sortByNameAscOrDesc($asc_or_desc): mixed
+    {
+        $table = "enseignant";
+        $qb = $this->createQueryBuilder($table);
+        $this->sortAscOrDesc($qb,"nom",$asc_or_desc, $table,"personne");
+        return $qb->getQuery()->getResult();
+    }
+
+    public function sortByPrenomAscOrDesc($asc_or_desc): mixed
+    {
+        $table = "enseignant";
+        $qb = $this->createQueryBuilder($table);
+        $this->sortAscOrDesc($qb,"prenom",$asc_or_desc, $table,"personne");
+        return $qb->getQuery()->getResult();
+    }
+
+    public function sortByEMailAscOrDesc($asc_or_desc): mixed
+    {
+        $table = "enseignant";
+        $qb = $this->createQueryBuilder($table);
+        $this->sortAscOrDesc($qb,"email",$asc_or_desc, $table,"personne");
+        return $qb->getQuery()->getResult();
     }
 
 //    /**

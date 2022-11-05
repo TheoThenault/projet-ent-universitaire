@@ -4,16 +4,44 @@
 
 {% block body %}
 <style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    table{
+        border-collapse: collapse;
+        border:1px solid #cccccc;
+        font-family: sans-serif;
+    }
+    thead{
+        background-color: #333;
+        color: #fff;
+    }
+    td, th{
+        padding: 5px 10px;
+        border:1px solid #cccccc;
+    }
 </style>
 
 <div class="example-wrapper">
     <h1>liste d'enseignant </h1>
-    <ul>
-        {% for enseignant in enseignants %}
-        <li>{{ enseignant.personne.prenom }} {{ enseignant.personne.nom }}</li>
-        {% endfor %}
-    </ul>
+    <table>
+        <thead>
+            <tr>
+                {{ form_start(enseignantFilterForm) }}
+                <th>Email {{ form_row(enseignantFilterForm.email_asc_or_desc) }}</th>
+                <th>Nom {{ form_row(enseignantFilterForm.nom_asc_or_desc) }}</th>
+                <th>Prénom {{ form_row(enseignantFilterForm.prenom_asc_or_desc) }}</th>
+                <th>Statut {{ form_row(enseignantFilterForm.statut_enseignant) }}</th>
+                {{ form_end(enseignantFilterForm) }}
+            </tr>
+        </thead>
+        <tbody>
+            {% for enseignant in enseignants %}
+            <tr>
+                <td>{{ enseignant.personne.email }}</td>
+                <td>{{ enseignant.personne.nom }}</td>
+                <td>{{ enseignant.personne.prenom }}</td>
+                <td>{{ enseignant.StatutEnseignant.nom }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </div>
 {% endblock %}
