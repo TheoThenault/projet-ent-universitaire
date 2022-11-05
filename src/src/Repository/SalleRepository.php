@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Salle;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
 
@@ -41,6 +42,16 @@ class SalleRepository extends ServiceEntityRepository
         }
     }
 
+    /*public function myFindWithPaging($currentPage, $nbPerPage, $filtre, $ordre): Paginator{
+        $query = $this->createQueryBuilder('s')
+            ->addOrderBy('s'.".".$filtre, $ordre)
+            ->getQuery()
+            ->setFirstResult(($currentPage - 1) * $nbPerPage)
+            ->setMaxResults($nbPerPage);
+        return new Paginator($query);
+    }
+
+
     public function myFindAllWithPaging($currentPage, $nbPerPage): Paginator{
         $query = $this->createQueryBuilder('s')
             ->getQuery()
@@ -48,44 +59,23 @@ class SalleRepository extends ServiceEntityRepository
             ->setMaxResults($nbPerPage);
 
         return new Paginator($query);
-    }
+    }*/
 
-    public function myFindAllByNameWithPaging($currentPage, $nbPerPage): Paginator{
+    public function myFindWithPaging($currentPage, $nbPerPage, $filtre, $ordre): mixed{
         $query = $this->createQueryBuilder('s')
-            ->addOrderBy('s.nom', 'ASC')
-            ->getQuery()
-            ->setFirstResult(($currentPage - 1) * $nbPerPage)
-            ->setMaxResults($nbPerPage);
-        return new Paginator($query);
+            ->addOrderBy('s'.".".$filtre, $ordre)
+            ->getQuery();
+
+        return $query->getResult();
     }
 
-    public function myFindAllByBatimentWithPaging($currentPage, $nbPerPage): Paginator{
+    public function myFindAllWithPaging($currentPage, $nbPerPage): mixed
+    {
         $query = $this->createQueryBuilder('s')
-            ->addOrderBy('s.batiment', 'ASC')
-            ->getQuery()
-            ->setFirstResult(($currentPage - 1) * $nbPerPage)
-            ->setMaxResults($nbPerPage);
-        return new Paginator($query);
-    }
+            ->getQuery();
 
-    public function myFindAllByEquipementWithPaging($currentPage, $nbPerPage): Paginator{
-        $query = $this->createQueryBuilder('s')
-            ->addOrderBy('s.equipement', 'ASC')
-            ->getQuery()
-            ->setFirstResult(($currentPage - 1) * $nbPerPage)
-            ->setMaxResults($nbPerPage);
-        return new Paginator($query);
+        return $query->getResult();
     }
-
-    public function myFindAllByCapaciteWithPaging($currentPage, $nbPerPage): Paginator{
-        $query = $this->createQueryBuilder('s')
-            ->addOrderBy('s.capacite', 'ASC')
-            ->getQuery()
-            ->setFirstResult(($currentPage - 1) * $nbPerPage)
-            ->setMaxResults($nbPerPage);
-        return new Paginator($query);
-    }
-
 
 
 //    /**
