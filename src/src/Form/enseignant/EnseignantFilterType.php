@@ -2,8 +2,12 @@
 
 namespace App\Form\enseignant;
 
+use App\Entity\StatutEnseignant;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -33,6 +37,16 @@ class EnseignantFilterType extends AbstractType
                     'Croissant' => "asc",
                     'Décroissant' => "desc",
                 ],
+            ])
+            ->add('statut_enseignant',EntityType::class, [
+                'class' => StatutEnseignant::class,
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('statut')
+                        ->orderBy('statut.nom', 'ASC');
+                },
+                'multiple' => false,
+                'expanded' => false,
+                'choice_label' => 'nom'
             ]);
 
         ;
