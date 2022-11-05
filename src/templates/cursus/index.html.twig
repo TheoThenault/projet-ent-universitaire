@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Cursus{% endblock %}
+
+{% block body %}
+
+    <h2>Filtres:</h2>
+    <nav>
+        {{ form(cursusFormulaire) }}
+    </nav>
+    {# on n'affiche cette parite que si la liste est défini est pas vide #}
+    {% if liste_cursus is defined and liste_cursus is not empty %}
+        <h2>Résultat:</h2>
+        <table style="border: 1px solid black;">
+            <tr>
+                <th>Niveau</th>
+                <th>Nom</th>
+            </tr>
+            {% for cursus in liste_cursus %}
+                <tr>
+                    <td style="border: 1px solid black;">{{ cursus.niveau }}</td>
+                    <td style="border: 1px solid black;">{{ cursus.nom }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <h2>Aucun résultat !</h2>
+    {% endif %}
+
+{% endblock %}

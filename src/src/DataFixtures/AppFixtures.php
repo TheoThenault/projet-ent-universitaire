@@ -31,6 +31,10 @@ class AppFixtures extends Fixture
             $statuts_enseignant_fixture->list_statuts_enseignant
         );
 
+
+        $cursus_fixture = new CursusFixtures();
+        $cursus_fixture->charger($manager);
+
         $ues = new UEFixtures();
         $ues->charger($manager);
 
