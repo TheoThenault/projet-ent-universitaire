@@ -41,6 +41,16 @@ class SalleRepository extends ServiceEntityRepository
         }
     }
 
+    public function myFindWithPaging($currentPage, $nbPerPage, $filtre, $ordre): Paginator{
+        $query = $this->createQueryBuilder('s')
+            ->addOrderBy('s'.".".$filtre, $ordre)
+            ->getQuery()
+            ->setFirstResult(($currentPage - 1) * $nbPerPage)
+            ->setMaxResults($nbPerPage);
+        return new Paginator($query);
+    }
+
+
     public function myFindAllWithPaging($currentPage, $nbPerPage): Paginator{
         $query = $this->createQueryBuilder('s')
             ->getQuery()
@@ -50,41 +60,6 @@ class SalleRepository extends ServiceEntityRepository
         return new Paginator($query);
     }
 
-    public function myFindAllByNameWithPaging($currentPage, $nbPerPage): Paginator{
-        $query = $this->createQueryBuilder('s')
-            ->addOrderBy('s.nom', 'ASC')
-            ->getQuery()
-            ->setFirstResult(($currentPage - 1) * $nbPerPage)
-            ->setMaxResults($nbPerPage);
-        return new Paginator($query);
-    }
-
-    public function myFindAllByBatimentWithPaging($currentPage, $nbPerPage): Paginator{
-        $query = $this->createQueryBuilder('s')
-            ->addOrderBy('s.batiment', 'ASC')
-            ->getQuery()
-            ->setFirstResult(($currentPage - 1) * $nbPerPage)
-            ->setMaxResults($nbPerPage);
-        return new Paginator($query);
-    }
-
-    public function myFindAllByEquipementWithPaging($currentPage, $nbPerPage): Paginator{
-        $query = $this->createQueryBuilder('s')
-            ->addOrderBy('s.equipement', 'ASC')
-            ->getQuery()
-            ->setFirstResult(($currentPage - 1) * $nbPerPage)
-            ->setMaxResults($nbPerPage);
-        return new Paginator($query);
-    }
-
-    public function myFindAllByCapaciteWithPaging($currentPage, $nbPerPage): Paginator{
-        $query = $this->createQueryBuilder('s')
-            ->addOrderBy('s.capacite', 'ASC')
-            ->getQuery()
-            ->setFirstResult(($currentPage - 1) * $nbPerPage)
-            ->setMaxResults($nbPerPage);
-        return new Paginator($query);
-    }
 
 
 
