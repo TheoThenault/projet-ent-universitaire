@@ -13,12 +13,28 @@ class EnseignantFilterType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('nom',ChoiceType::class, [
+            ->add('email_asc_or_desc',ChoiceType::class, [
                 'choices'  => [
-                    'Croissant' => "croissant",
-                    'Décroissant' => "decroissant",
+                    '' => "null",
+                    'Croissant' => "asc",
+                    'Décroissant' => "desc",
+                ],
+            ])
+            ->add('nom_asc_or_desc',ChoiceType::class, [
+                'choices'  => [
+                    '' => "null",
+                    'Croissant' => "asc",
+                    'Décroissant' => "desc",
+                ],
+            ])
+            ->add('prenom_asc_or_desc',ChoiceType::class, [
+                'choices'  => [
+                    '' => "null",
+                    'Croissant' => "asc",
+                    'Décroissant' => "desc",
                 ],
             ]);
+
         ;
     }
 

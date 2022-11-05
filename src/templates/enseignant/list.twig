@@ -21,14 +21,15 @@
 
 <div class="example-wrapper">
     <h1>liste d'enseignant </h1>
-    {{ form(enseignantFilterForm) }}
     <table>
         <thead>
             <tr>
-                <th>Email</th>
-                <th>Nom</th>
-                <th>Prénom</th>
+                {{ form_start(enseignantFilterForm) }}
+                <th>Email {{ form_row(enseignantFilterForm.email_asc_or_desc) }}</th>
+                <th>Nom {{ form_row(enseignantFilterForm.nom_asc_or_desc) }}</th>
+                <th>Prénom {{ form_row(enseignantFilterForm.prenom_asc_or_desc) }}</th>
                 <th>Statut</th>
+                {{ form_end(enseignantFilterForm) }}
             </tr>
         </thead>
         <tbody>

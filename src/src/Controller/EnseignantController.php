@@ -25,11 +25,40 @@ class EnseignantController extends AbstractController
         $form->handleRequest($request);
 
 
-
-
         if ($form->isSubmitted() && $form->isValid()) {
+            $responses = $form->getData();
+            dump($responses);
+            switch($responses["email_asc_or_desc"]) {
+                case "asc":
+                    $enseignants = $entityManager->getRepository(Enseignant::class)->sortByEmailAscOrDesc("ASC");
+                    break;
+                case "desc":
+                    $enseignants = $entityManager->getRepository(Enseignant::class)->sortByEmailAscOrDesc("DESC");
+                    break;
+                default:
+                    break;
+            }
+            switch($responses["nom_asc_or_desc"]) {
+                case "asc":
+                    $enseignants = $entityManager->getRepository(Enseignant::class)->sortByNameAscOrDesc("ASC");
+                    break;
+                case "desc":
+                    $enseignants = $entityManager->getRepository(Enseignant::class)->sortByNameAscOrDesc("DESC");
+                    break;
+                default:
+                    break;
+            }
+            switch($responses["prenom_asc_or_desc"]) {
+                case "asc":
+                    $enseignants = $entityManager->getRepository(Enseignant::class)->sortByNameAscOrDesc("ASC");
+                    break;
+                case "desc":
+                    $enseignants = $entityManager->getRepository(Enseignant::class)->sortByNameAscOrDesc("DESC");
+                    break;
+                default:
+                    break;
+            }
 
-            $enseignants = $entityManager->getRepository(Enseignant::class)->sortByNameAsc();
             return $this->render('enseignant/list.twig', [
                 'enseignants' => $enseignants,
                 'enseignantFilterForm' => $form->createView(),
