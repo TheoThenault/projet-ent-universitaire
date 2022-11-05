@@ -1,0 +1,22 @@
+<header class="site-header sticky-top p-3">
+    <div class="container">
+        <nav class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <a class="navbar-brand" href="#">
+                <img src="{{ asset('images/logo_univ_poitiers.png') }}" alt="logo univ poitiers" height="40">
+            </a>
+
+            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                <li><a href="#" class="nav-link px-2">Home</a></li>
+                <li><a href="{{ path('ue_index') }}" class="nav-link px-2">Ue</a></li>
+                <li><a href="{{ path('salle_list') }}" class="nav-link px-2">Salles</a></li>
+                <li><a href="{{ path('cursus_index') }}" class="nav-link px-2">Cursus</a></li>
+                <li><a href="{{ path('enseignant_list') }}" class="nav-link px-2">Enseignants</a></li>
+            </ul>
+
+            <div class="text-end">
+                <button type="button" class="btn btn-outline-light me-2">Login</button>
+                <button type="button" class="btn btn-danger">Sign-up</button>
+            </div>
+        </nav>
+    </div>
+</header>

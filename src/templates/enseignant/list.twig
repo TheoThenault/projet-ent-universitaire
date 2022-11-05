@@ -3,45 +3,42 @@
 {% block title %}Hello EnseignantController!{% endblock %}
 
 {% block body %}
-<style>
-    table{
-        border-collapse: collapse;
-        border:1px solid #cccccc;
-        font-family: sans-serif;
-    }
-    thead{
-        background-color: #333;
-        color: #fff;
-    }
-    td, th{
-        padding: 5px 10px;
-        border:1px solid #cccccc;
-    }
-</style>
-
 <div class="example-wrapper">
     <h1>liste d'enseignant </h1>
-    <table>
-        <thead>
-            <tr>
-                {{ form_start(enseignantFilterForm) }}
-                <th>Email {{ form_row(enseignantFilterForm.email_asc_or_desc) }}</th>
-                <th>Nom {{ form_row(enseignantFilterForm.nom_asc_or_desc) }}</th>
-                <th>Prénom {{ form_row(enseignantFilterForm.prenom_asc_or_desc) }}</th>
-                <th>Statut {{ form_row(enseignantFilterForm.statut_enseignant) }}</th>
-                {{ form_end(enseignantFilterForm) }}
-            </tr>
-        </thead>
-        <tbody>
-            {% for enseignant in enseignants %}
-            <tr>
-                <td>{{ enseignant.personne.email }}</td>
-                <td>{{ enseignant.personne.nom }}</td>
-                <td>{{ enseignant.personne.prenom }}</td>
-                <td>{{ enseignant.StatutEnseignant.nom }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
+    <div class="shadow rounded border border-danger">
+        <table class="table table-hover table-striped" >
+            <thead class="table-light">
+                <tr>
+                    {{ form_start(enseignantFilterForm) }}
+                    <th>
+                        Email
+                        {{ form_widget(enseignantFilterForm.email_asc_or_desc, { 'attr': {'class': 'form-select form-select-sm'} }) }}
+                    </th>
+                    <th>
+                        Nom
+                        {{ form_widget(enseignantFilterForm.nom_asc_or_desc, { 'attr': {'class': 'form-select form-select-sm'} }) }}
+                    </th>
+                    <th>
+                        Prénom
+                        {{ form_widget(enseignantFilterForm.prenom_asc_or_desc, { 'attr': {'class': 'form-select form-select-sm'} }) }}
+                    </th>
+                    <th>
+                        Statut
+                        {{ form_widget(enseignantFilterForm.statut_enseignant, { 'attr': {'class': 'form-select form-select-sm'} }) }}
+                    </th>
+                    {{ form_end(enseignantFilterForm) }}
+                </tr>
+            </thead>
+            <tbody class="table-group-divider">
+                {% for enseignant in enseignants %}
+                <tr>
+                    <td>{{ enseignant.personne.email }}</td>
+                    <td>{{ enseignant.personne.nom }}</td>
+                    <td>{{ enseignant.personne.prenom }}</td>
+                    <td>{{ enseignant.StatutEnseignant.nom }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}
