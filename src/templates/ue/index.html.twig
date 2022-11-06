@@ -15,12 +15,16 @@
                     <th>Nom</th>
                     <th>Volume horaire</th>
                     <th>Spécialité</th>
+                    <th>Cursus</th>
+                    <th>Formation</th>
                 </tr>
             {% for ue in liste_ues %}
                 <tr>
                     <td>{{ ue.nom }}</td>
                     <td>{{ ue.volumeHoraire }}</td>
                     <td>{{ ue.specialite.nom }}</td>
+                    <td>{{ ue.formations[0].cursus.nom }}</td>
+                    <td>{{ ue.formations[0].nom }}</td>
                 </tr>
             {% endfor %}
         </table>

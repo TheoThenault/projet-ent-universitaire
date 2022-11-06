@@ -16,6 +16,14 @@ class UEFilterType extends AbstractType
                 'label' => 'Spécialité: ',
                 'choices' => $options['specialite']
             ])
+            ->add('Cursus', ChoiceType::class, [
+                'label' => 'Cursus: ',
+                'choices' => $options['cursus']
+            ])
+            ->add('Formation', ChoiceType::class, [
+                'label' => 'Formation: ',
+                'choices' => $options['formation']
+            ])
         ;
     }
 
@@ -23,7 +31,9 @@ class UEFilterType extends AbstractType
     {
         $resolver->setDefaults([
             // Configure your form options here
-            'specialite' => []
+            'specialite' => [],
+            'cursus' => [],
+            'formation' => []
         ]);
     }
 }

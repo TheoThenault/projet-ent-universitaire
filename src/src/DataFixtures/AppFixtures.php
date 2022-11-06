@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\DataFixtures\FormationFixtures;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use App\DataFixtures\SalleFixtures;
@@ -10,7 +11,6 @@ use App\DataFixtures\PersonneFixtures;
 use App\DataFixtures\EnseignantFixtures;
 use App\DataFixtures\StatutEnseignantFixtures;
 use App\DataFixtures\UEFixtures;
-use App\DataFixtures\FormationFixtures;
 use App\DataFixtures\SpecialiteFixtures;
 use Symfony\Component\Form\Form;
 
@@ -40,14 +40,14 @@ class AppFixtures extends Fixture
         $cursus_fixture = new CursusFixtures();
         $cursus_fixture->charger($manager);
 
+        $formation_fixture = new FormationFixtures();
         for($i = 0; $i < count($cursus_fixture->list_cursus); $i++)
         {
-            $formation_fixture = new FormationFixtures();
             $formation_fixture->charger($manager, $cursus_fixture->list_cursus[$i]);
         }
 
         $ues = new UEFixtures();
-        $ues->charger($manager, $specialite_fixtures->list_specialites);
+        $ues->charger($manager, $specialite_fixtures->list_specialites, $formation_fixture->list_formations);
 
         $manager->flush();
     }

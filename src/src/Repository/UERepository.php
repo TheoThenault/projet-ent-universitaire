@@ -39,7 +39,7 @@ class UERepository extends ServiceEntityRepository
         }
     }
 
-    public function findAllSpecialiteOrdered(): array
+    public function findAllSpecialite(): array
     {
         $queryBuilder = $this->createQueryBuilder('u');
         $queryBuilder->leftJoin('u.specialite', 's');
@@ -57,16 +57,49 @@ class UERepository extends ServiceEntityRepository
         return $result;
     }
 
-    public function findAllBySpecialite($specialite): array
+
+    public function findAllByChoices($specialite, $cursus, $formation): array
     {
         $queryBuilder = $this->createQueryBuilder('u');
         $queryBuilder->addSelect('u');
         $queryBuilder->leftJoin('u.specialite', 's');
         $queryBuilder->addSelect('s');
-        $queryBuilder->andWhere('s.nom = :spe');
-        $queryBuilder->setParameter('spe', $specialite);
+        $queryBuilder->leftJoin('u.formations', 'f');
+        $queryBuilder->addSelect('f');
+        $queryBuilder->leftJoin('f.cursus', 'c');
+        $queryBuilder->addSelect('c');
+        if($specialite != 'Tous')
+        {
+            $queryBuilder->andWhere('s.nom = :spe');
+            $queryBuilder->setParameter('spe', $specialite);
+        }
+        if($cursus != 'Tous')
+        {
+            $queryBuilder->andWhere('c.nom = :cur');
+            $queryBuilder->setParameter('cur', $cursus);
+        }
+        if($formation != 'Tous')
+        {
+            $queryBuilder->andWhere('f.nom = :for');
+            $queryBuilder->setParameter('for', $formation);
+        }
         $queryBuilder->orderBy('u.nom');
         return $queryBuilder->getQuery()->getArrayResult();;
+    }
+
+    public function findAllOrdered(): array
+    {
+        $queryBuilder = $this->createQueryBuilder('u');
+        $queryBuilder->addSelect('u');
+        $queryBuilder->leftJoin('u.specialite', 's');
+        $queryBuilder->addSelect('s');
+        $queryBuilder->leftJoin('u.formations', 'f');
+        $queryBuilder->addSelect('f');
+        $queryBuilder->leftJoin('f.cursus', 'c');
+        $queryBuilder->addSelect('c');
+        $queryBuilder->orderBy('c.nom');
+
+        return $queryBuilder->getQuery()->getArrayResult();
     }
 
 //    /**

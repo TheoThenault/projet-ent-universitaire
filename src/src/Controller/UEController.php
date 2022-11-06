@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Cursus;
+use App\Entity\Formation;
 use App\Form\UEFilterType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,29 +20,30 @@ class UEController extends AbstractController
     public function index(Request $request, EntityManagerInterface $entityManagerInterface): Response
     {
         // récupérer liste des spécialités pour le formulaire
-        $liste_specialites = $entityManagerInterface->getRepository(UE::class)->findAllSpecialiteOrdered();
+        $liste_spe = $entityManagerInterface->getRepository(UE::class)->findAllSpecialite();
+        $liste_cur = $entityManagerInterface->getRepository(Cursus::class)->findAllNom();
+        $liste_for = $entityManagerInterface->getRepository(Formation::class)->findAllNameOrdered();
         $form = $this->createForm(UEFilterType::class, null, [
-            'specialite' => $liste_specialites,
+            'specialite' => $liste_spe,
+            'cursus' => $liste_cur,
+            'formation' => $liste_for,
         ]);
+
         $form->add('Filtrer', SubmitType::class);
         $form->handleRequest($request);
 
         $liste_ues = array();
 
-        // TODO: modifier la condition lorsque les formulaires seront fait
         if($form->isSubmitted() && $form->isValid())
         {
             // le formulaire à été remplit
             $specialite_choisis = $form->get('Specialite')->getData();
-            if($specialite_choisis == 'Tous')
-            {
-                $liste_ues = $entityManagerInterface->getRepository(UE::class)->findAll();
-            }else{
-                $liste_ues = $entityManagerInterface->getRepository(UE::class)->findAllBySpecialite($specialite_choisis);
-            }
+            $cursus_choisis = $form->get('Cursus')->getData();
+            $formation_choisis = $form->get('Formation')->getData();
+            $liste_ues = $entityManagerInterface->getRepository(UE::class)->findAllByChoices($specialite_choisis, $cursus_choisis, $formation_choisis);
         }else{
             // aucun formulaire n'est remplit
-            $liste_ues = $entityManagerInterface->getRepository(UE::class)->findAll();
+            $liste_ues = $entityManagerInterface->getRepository(UE::class)->findAllOrdered();
         }
 
         dump($liste_ues);
