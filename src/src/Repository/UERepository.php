@@ -39,6 +39,36 @@ class UERepository extends ServiceEntityRepository
         }
     }
 
+    public function findAllSpecialiteOrdered(): array
+    {
+        $queryBuilder = $this->createQueryBuilder('u');
+        $queryBuilder->leftJoin('u.specialite', 's');
+        $queryBuilder->addSelect('s.nom');
+        $queryBuilder->groupBy('s.nom');
+        $queryBuilder->orderBy('s.nom');
+        $queryResult = $queryBuilder->getQuery()->getArrayResult();
+
+        $result = array();
+        $result['Toutes spécialités'] = 'Tous';   // ajout manuel d'un choix universel
+        for($i = 0; $i < count($queryResult); $i++) {
+            $nom = $queryResult[$i]['nom'];
+            $result[$nom] = $nom;
+        }
+        return $result;
+    }
+
+    public function findAllBySpecialite($specialite): array
+    {
+        $queryBuilder = $this->createQueryBuilder('u');
+        $queryBuilder->addSelect('u');
+        $queryBuilder->leftJoin('u.specialite', 's');
+        $queryBuilder->addSelect('s');
+        $queryBuilder->andWhere('s.nom = :spe');
+        $queryBuilder->setParameter('spe', $specialite);
+        $queryBuilder->orderBy('u.nom');
+        return $queryBuilder->getQuery()->getArrayResult();;
+    }
+
 //    /**
 //     * @return UE[] Returns an array of UE objects
 //     */
