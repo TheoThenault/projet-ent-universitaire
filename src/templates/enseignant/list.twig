@@ -12,7 +12,7 @@
                     {{ form_start(enseignantFilterForm, { 'attr': {'id': 'theForm'} }) }}
                     {{ form_row(enseignantFilterForm.sort_asc_or_desc, { 'attr': {'class': 'form-select form-select-sm'} }) }}
                     <th id="email">
-                        Email <span id="sort_mail">⇑</span>
+                        Email <span id="sort_mail_arrow">⇑</span>
 {#                        {{ form_widget(enseignantFilterForm.email_asc_or_desc, { 'attr': {'class': 'form-select form-select-sm'} }) }}#}
                     </th>
                     <th>
@@ -45,22 +45,29 @@
 {% endblock %}
 {% block javascripts %}
 <script>
-    let down_or_up = document.getElementById("sort_mail")
+    let sort_mail_arrow = document.getElementById("sort_mail_arrow")
+    if(localStorage.getItem("up_or_down") == null){
+        sort_mail_arrow.innerHTML = "⇕"
+    }
+    sort_mail_arrow.innerHTML = localStorage.getItem("up_or_down")
+
     email = document.getElementById("email")
     email.addEventListener("click", sort)
     form = document.getElementById("theForm")
     function sort(){
         let sort_asc_or_desc = document.getElementById("enseignant_filter_sort_asc_or_desc")
-        if(down_or_up.textContent === "⇑"){
-            down_or_up.innerHTML = "⇓"
+        if(sort_mail_arrow.textContent === "⇑"){
+            localStorage.setItem("up_or_down", "⇓")
+            sort_mail_arrow.innerHTML = localStorage.getItem("up_or_down")
             sort_asc_or_desc.selectedIndex = 1
             form.submit();
         } else {
-            down_or_up.innerHTML = "⇑"
+            localStorage.setItem("up_or_down", "⇑")
+            sort_mail_arrow.innerHTML = localStorage.getItem("up_or_down")
             sort_asc_or_desc.selectedIndex = 0
             form.submit();
         }
-        console.log(down_or_up.textContent)
+        console.log(sort_mail_arrow.textContent)
     }
 </script>
 {% endblock %}
