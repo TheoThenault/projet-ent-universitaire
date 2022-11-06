@@ -26,13 +26,13 @@ class CursusFixtures
 
         $cursus = new Cursus();
         $cursus->setNiveau("Licence");
-        $cursus->setNom("littéraire");
+        $cursus->setNom("Littéraire");
         $manager->persist($cursus);
         $this->list_cursus[] = $cursus;
 
         $cursus = new Cursus();
         $cursus->setNiveau("Master");
-        $cursus->setNom("littéraire");
+        $cursus->setNom("Littéraire");
         $manager->persist($cursus);
         $this->list_cursus[] = $cursus;
 

@@ -10,6 +10,8 @@ use App\DataFixtures\PersonneFixtures;
 use App\DataFixtures\EnseignantFixtures;
 use App\DataFixtures\StatutEnseignantFixtures;
 use App\DataFixtures\UEFixtures;
+use App\DataFixtures\FormationFixtures;
+use Symfony\Component\Form\Form;
 
 class AppFixtures extends Fixture
 {
@@ -34,6 +36,12 @@ class AppFixtures extends Fixture
 
         $cursus_fixture = new CursusFixtures();
         $cursus_fixture->charger($manager);
+
+        for($i = 0; $i < count($cursus_fixture->list_cursus); $i++)
+        {
+            $formation_fixture = new FormationFixtures();
+            $formation_fixture->charger($manager, $cursus_fixture->list_cursus[$i]);
+        }
 
         $ues = new UEFixtures();
         $ues->charger($manager);
