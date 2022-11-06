@@ -6,8 +6,7 @@
 
     <h2>Filtres:</h2>
     <nav>
-        {#  {{ form(formationFormulaire) }} #}
-        <p>Formulaire</p>
+        {{ form(formationFormulaire) }}
     </nav>
     {# on n'affiche cette parite que si la liste est défini est pas vide #}
     {% if liste_formations is defined and liste_formations is not empty %}

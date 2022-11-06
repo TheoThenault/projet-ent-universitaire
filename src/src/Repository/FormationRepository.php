@@ -49,6 +49,26 @@ class FormationRepository extends ServiceEntityRepository
         return $queryBuilder->getQuery()->getArrayResult();
     }
 
+    public function findAllByCursusNameAndNiveau($name, $niveau): array
+    {
+        $queryBuilder = $this->createQueryBuilder('f');
+        $queryBuilder->leftJoin('f.cursus', 'c');
+        $queryBuilder->addSelect('c');
+        if($name != 'Tous')
+        {
+            $queryBuilder->where('c.nom = :name');
+            $queryBuilder->setParameter(':name', $name);
+        }
+        if($niveau != 'Tous')
+        {
+            $queryBuilder->andWhere('c.niveau = :niv');
+            $queryBuilder->setParameter(':niv', $niveau);
+        }
+        $queryBuilder->addOrderBy('c.nom');
+
+        return $queryBuilder->getQuery()->getArrayResult();
+    }
+
 //    /**
 //     * @return Formation[] Returns an array of Formation objects
 //     */

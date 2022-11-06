@@ -66,6 +66,50 @@ class CursusRepository extends ServiceEntityRepository
         return $result;
     }
 
+    public function findAllNom(): array
+    {
+        $queryBuilder = $this->createQueryBuilder('c');
+        $queryBuilder->select('c.nom');
+        $queryBuilder->groupBy('c.nom');
+        $queryResult = $queryBuilder->getQuery()->getArrayResult();
+
+        // enregistrer le tableau, en mettant les valeurs dans les cléfs
+        // pour etre utiliser par symfony
+        $result = array();
+        $result['Tous'] = 'Tous';   // ajout manuel d'un choix universel
+        for($i = 0; $i < count($queryResult); $i++) {
+            $nom = $queryResult[$i]['nom'];
+            $result[$nom] = $nom;
+        }
+
+        return $result;
+    }
+
+    /*
+     * Cette fonciton renvoit un tableau de tableau
+     * le premier niveau ne contient que 2 élément. Un élément nom et un élément niveau
+     * Cette fonction permet d'économiser une requete SQL
+     */
+    public function findAllNomEtNiveau(): array
+    {
+        $queryBuilder = $this->createQueryBuilder('c');
+        $queryBuilder->select('c.nom', 'c.niveau');
+        $queryResult = $queryBuilder->getQuery()->getArrayResult();
+
+        // enregistrer les noms et niveaux dans deux tableaux à l'intérieur d'un seul
+        $result = array();
+        $result['noms']['Tous'] = 'Tous';   // ajout manuel d'un choix universel
+        $result['niveaux']['Tous'] = 'Tous';
+        for($i = 0; $i < count($queryResult); $i++) {
+            $niv = $queryResult[$i]['niveau'];
+            $nom = $queryResult[$i]['nom'];
+            $result['niveaux'][$niv] = $niv;
+            $result['noms'][$nom] = $nom;
+        }
+
+        return $result;
+    }
+
 
 //    /**
 //     * @return Cursus[] Returns an array of Cursus objects
