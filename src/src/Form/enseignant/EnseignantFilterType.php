@@ -17,27 +17,39 @@ class EnseignantFilterType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('email_asc_or_desc',ChoiceType::class, [
-                'choices'  => [
-                    '' => "null",
-                    'Croissant' => "asc",
-                    'Décroissant' => "desc",
+            ->add('sort_asc_or_desc', ChoiceType::class,[
+                'choices' => [
+                    'email' => 'email',
+                    'email Décroissant' => 'email_desc',
+                    'Nom' => 'nom',
+                    'Nom Décroissant' => 'nom_desc',
+                    'Prénom' => 'prenom',
+                    'Prénom Décroissant' => 'prenom_desc',
                 ],
+                'label' => 'Trier par:',
+
             ])
-            ->add('nom_asc_or_desc',ChoiceType::class, [
-                'choices'  => [
-                    '' => "null",
-                    'Croissant' => "asc",
-                    'Décroissant' => "desc",
-                ],
-            ])
-            ->add('prenom_asc_or_desc',ChoiceType::class, [
-                'choices'  => [
-                    '' => "null",
-                    'Croissant' => "asc",
-                    'Décroissant' => "desc",
-                ],
-            ])
+//            ->add('email_asc_or_desc',ChoiceType::class, [
+//                'choices'  => [
+//                    '' => "null",
+//                    'Croissant' => "asc",
+//                    'Décroissant' => "desc",
+//                ],
+//            ])
+//            ->add('nom_asc_or_desc',ChoiceType::class, [
+//                'choices'  => [
+//                    '' => "null",
+//                    'Croissant' => "asc",
+//                    'Décroissant' => "desc",
+//                ],
+//            ])
+//            ->add('prenom_asc_or_desc',ChoiceType::class, [
+//                'choices'  => [
+//                    '' => "null",
+//                    'Croissant' => "asc",
+//                    'Décroissant' => "desc",
+//                ],
+//            ])
             ->add('statut_enseignant',EntityType::class, [
                 'class' => StatutEnseignant::class,
                 'query_builder' => function (EntityRepository $er) {

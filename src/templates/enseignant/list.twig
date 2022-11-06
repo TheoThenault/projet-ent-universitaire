@@ -5,26 +5,27 @@
 {% block body %}
 <div class="example-wrapper">
     <h1>liste d'enseignant </h1>
-    <div class="shadow rounded border border-danger">
+    <div class="shadow rounded">
         <table class="table table-hover table-striped" >
             <thead class="table-light">
-                <tr>
-                    {{ form_start(enseignantFilterForm) }}
-                    <th>
-                        Email
-                        {{ form_widget(enseignantFilterForm.email_asc_or_desc, { 'attr': {'class': 'form-select form-select-sm'} }) }}
+                <tr id="form_elem">
+                    {{ form_start(enseignantFilterForm, { 'attr': {'id': 'theForm'} }) }}
+                    {{ form_row(enseignantFilterForm.sort_asc_or_desc, { 'attr': {'class': 'form-select form-select-sm'} }) }}
+                    <th id="email">
+                        Email <span id="sort_mail">⇑</span>
+{#                        {{ form_widget(enseignantFilterForm.email_asc_or_desc, { 'attr': {'class': 'form-select form-select-sm'} }) }}#}
                     </th>
                     <th>
                         Nom
-                        {{ form_widget(enseignantFilterForm.nom_asc_or_desc, { 'attr': {'class': 'form-select form-select-sm'} }) }}
+{#                        {{ form_widget(enseignantFilterForm.nom_asc_or_desc, { 'attr': {'class': 'form-select form-select-sm'} }) }}#}
                     </th>
                     <th>
                         Prénom
-                        {{ form_widget(enseignantFilterForm.prenom_asc_or_desc, { 'attr': {'class': 'form-select form-select-sm'} }) }}
+{#                        {{ form_widget(enseignantFilterForm.prenom_asc_or_desc, { 'attr': {'class': 'form-select form-select-sm'} }) }}#}
                     </th>
                     <th>
                         Statut
-                        {{ form_widget(enseignantFilterForm.statut_enseignant, { 'attr': {'class': 'form-select form-select-sm'} }) }}
+{#                        {{ form_widget(enseignantFilterForm.statut_enseignant, { 'attr': {'class': 'form-select form-select-sm'} }) }}#}
                     </th>
                     {{ form_end(enseignantFilterForm) }}
                 </tr>
@@ -41,4 +42,25 @@
             </tbody>
         </table>
     </div>
+{% endblock %}
+{% block javascripts %}
+<script>
+    let down_or_up = document.getElementById("sort_mail")
+    email = document.getElementById("email")
+    email.addEventListener("click", sort)
+    form = document.getElementById("theForm")
+    function sort(){
+        let sort_asc_or_desc = document.getElementById("enseignant_filter_sort_asc_or_desc")
+        if(down_or_up.textContent === "⇑"){
+            down_or_up.innerHTML = "⇓"
+            sort_asc_or_desc.selectedIndex = 1
+            form.submit();
+        } else {
+            down_or_up.innerHTML = "⇑"
+            sort_asc_or_desc.selectedIndex = 0
+            form.submit();
+        }
+        console.log(down_or_up.textContent)
+    }
+</script>
 {% endblock %}

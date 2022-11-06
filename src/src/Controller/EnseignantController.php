@@ -30,31 +30,23 @@ class EnseignantController extends AbstractController
             dump($responses);
             dump($form->get("statut_enseignant")->getData()->getNom());
             dump($form->getExtraData());
-            switch($responses["email_asc_or_desc"]) {
-                case "asc":
+            switch($responses["sort_asc_or_desc"]) {
+                case "email":
                     $enseignants = $entityManager->getRepository(Enseignant::class)->sortByEmailAscOrDesc("ASC");
                     break;
-                case "desc":
+                case "email_desc":
                     $enseignants = $entityManager->getRepository(Enseignant::class)->sortByEmailAscOrDesc("DESC");
                     break;
-                default:
-                    break;
-            }
-            switch($responses["nom_asc_or_desc"]) {
-                case "asc":
+                case "nom":
                     $enseignants = $entityManager->getRepository(Enseignant::class)->sortByNameAscOrDesc("ASC");
                     break;
-                case "desc":
+                case "nom_desc":
                     $enseignants = $entityManager->getRepository(Enseignant::class)->sortByNameAscOrDesc("DESC");
                     break;
-                default:
-                    break;
-            }
-            switch($responses["prenom_asc_or_desc"]) {
-                case "asc":
+                case "prenom":
                     $enseignants = $entityManager->getRepository(Enseignant::class)->sortByNameAscOrDesc("ASC");
                     break;
-                case "desc":
+                case "prenom_desc":
                     $enseignants = $entityManager->getRepository(Enseignant::class)->sortByNameAscOrDesc("DESC");
                     break;
                 default:
