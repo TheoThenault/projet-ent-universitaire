@@ -19,6 +19,10 @@ class UE
     #[ORM\Column(nullable: true)]
     private ?int $volumeHoraire = null;
 
+    #[ORM\ManyToOne(inversedBy: 'ue')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Specialite $specialite = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -44,6 +48,18 @@ class UE
     public function setVolumeHoraire(?int $volumeHoraire): self
     {
         $this->volumeHoraire = $volumeHoraire;
+
+        return $this;
+    }
+
+    public function getSpecialite(): ?Specialite
+    {
+        return $this->specialite;
+    }
+
+    public function setSpecialite(?Specialite $specialite): self
+    {
+        $this->specialite = $specialite;
 
         return $this;
     }

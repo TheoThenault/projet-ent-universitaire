@@ -34,8 +34,8 @@ class AppFixtures extends Fixture
             $statuts_enseignant_fixture->list_statuts_enseignant
         );
 
-        $secialite_fixtures = new SpecialiteFixtures();
-        $secialite_fixtures->charger($manager);
+        $specialite_fixtures = new SpecialiteFixtures();
+        $specialite_fixtures->charger($manager);
 
         $cursus_fixture = new CursusFixtures();
         $cursus_fixture->charger($manager);
@@ -47,7 +47,7 @@ class AppFixtures extends Fixture
         }
 
         $ues = new UEFixtures();
-        $ues->charger($manager);
+        $ues->charger($manager, $specialite_fixtures->list_specialites);
 
         $manager->flush();
     }

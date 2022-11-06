@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\SpecialiteRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: SpecialiteRepository::class)]
@@ -21,6 +23,14 @@ class Specialite
 
     #[ORM\Column(length: 255)]
     private ?string $groupe = null;
+
+    #[ORM\OneToMany(mappedBy: 'specialite', targetEntity: UE::class)]
+    private Collection $ue;
+
+    public function __construct()
+    {
+        $this->ue = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -59,6 +69,36 @@ class Specialite
     public function setGroupe(string $groupe): self
     {
         $this->groupe = $groupe;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, UE>
+     */
+    public function getUe(): Collection
+    {
+        return $this->ue;
+    }
+
+    public function addUe(UE $ue): self
+    {
+        if (!$this->ue->contains($ue)) {
+            $this->ue->add($ue);
+            $ue->setSpecialite($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUe(UE $ue): self
+    {
+        if ($this->ue->removeElement($ue)) {
+            // set the owning side to null (unless already changed)
+            if ($ue->getSpecialite() === $this) {
+                $ue->setSpecialite(null);
+            }
+        }
 
         return $this;
     }
