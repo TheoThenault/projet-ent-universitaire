@@ -20,6 +20,9 @@ class Formation
     #[ORM\JoinColumn(nullable: false)]
     private ?Cursus $cursus = null;
 
+    #[ORM\Column]
+    private ?int $annee = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -45,6 +48,18 @@ class Formation
     public function setCursus(?Cursus $cursus): self
     {
         $this->cursus = $cursus;
+
+        return $this;
+    }
+
+    public function getAnnee(): ?int
+    {
+        return $this->annee;
+    }
+
+    public function setAnnee(int $annee): self
+    {
+        $this->annee = $annee;
 
         return $this;
     }
