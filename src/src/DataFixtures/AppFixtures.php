@@ -46,6 +46,9 @@ class AppFixtures extends Fixture
             $formation_fixture->charger($manager, $cursus_fixture->list_cursus[$i]);
         }
 
+        $etudiant_fixtures = new EtudiantFixtures();
+        $etudiant_fixtures->charger($manager, $personnes_fixture->list_personnes, 5, $formation_fixture->list_formations);
+
         $ues = new UEFixtures();
         $ues->charger($manager, $specialite_fixtures->list_specialites, $formation_fixture->list_formations);
 
