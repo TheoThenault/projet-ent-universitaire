@@ -13,7 +13,6 @@ class SpecialiteController extends AbstractController
     public function index(): Response
     {
         return $this->render('specialite/index.html.twig', [
-            'controller_name' => 'SpecialiteController',
         ]);
     }
 }
