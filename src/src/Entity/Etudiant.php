@@ -16,6 +16,9 @@ class Etudiant
     #[ORM\OneToOne(mappedBy: 'etudiant', cascade: ['persist', 'remove'])]
     private ?Personne $personne = null;
 
+    #[ORM\ManyToOne(inversedBy: 'etudiants')]
+    private ?Formation $formation = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -39,6 +42,18 @@ class Etudiant
         }
 
         $this->personne = $personne;
+
+        return $this;
+    }
+
+    public function getFormation(): ?Formation
+    {
+        return $this->formation;
+    }
+
+    public function setFormation(?Formation $formation): self
+    {
+        $this->formation = $formation;
 
         return $this;
     }

@@ -28,9 +28,13 @@ class Formation
     #[ORM\ManyToMany(targetEntity: UE::class, inversedBy: 'formations')]
     private Collection $ues;
 
+    #[ORM\OneToMany(mappedBy: 'formation', targetEntity: Etudiant::class)]
+    private Collection $etudiants;
+
     public function __construct()
     {
         $this->ues = new ArrayCollection();
+        $this->etudiants = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -94,6 +98,36 @@ class Formation
     public function removeUe(UE $ue): self
     {
         $this->ues->removeElement($ue);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Etudiant>
+     */
+    public function getEtudiants(): Collection
+    {
+        return $this->etudiants;
+    }
+
+    public function addEtudiant(Etudiant $etudiant): self
+    {
+        if (!$this->etudiants->contains($etudiant)) {
+            $this->etudiants->add($etudiant);
+            $etudiant->setFormation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEtudiant(Etudiant $etudiant): self
+    {
+        if ($this->etudiants->removeElement($etudiant)) {
+            // set the owning side to null (unless already changed)
+            if ($etudiant->getFormation() === $this) {
+                $etudiant->setFormation(null);
+            }
+        }
 
         return $this;
     }
