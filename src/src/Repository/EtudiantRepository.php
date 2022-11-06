@@ -39,6 +39,75 @@ class EtudiantRepository extends ServiceEntityRepository
         }
     }
 
+    public function findAllByCursusAndFormation($cursus, $formation): array
+    {
+        $queryBuilder = $this->createQueryBuilder('e');
+        $queryBuilder->Select('e');
+        $queryBuilder->leftJoin('e.personne', 'p');
+        $queryBuilder->addSelect('p');
+        $queryBuilder->leftJoin('e.formation', 'f');
+        $queryBuilder->addSelect('f');
+        $queryBuilder->leftJoin('f.cursus', 'c');
+        $queryBuilder->addSelect('c');
+        if($cursus != 'Tous')
+        {
+            $queryBuilder->where('c.nom = :name');
+            $queryBuilder->setParameter(':name', $cursus);
+        }
+        if($formation != 'Tous')
+        {
+            $queryBuilder->andWhere('f.nom = :for');
+            $queryBuilder->setParameter(':for', $formation);
+        }
+        //$queryBuilder->addOrderBy('c.nom');
+
+        $result = $queryBuilder->getQuery()->getArrayResult();
+
+        return $result;
+    }
+
+    public function findAllCursus(): array
+    {
+        $queryBuilder = $this->createQueryBuilder('e');
+        $queryBuilder->leftJoin('e.formation', 'f');
+        $queryBuilder->addSelect('f');
+        $queryBuilder->leftJoin('f.cursus', 'c');
+        $queryBuilder->addSelect('c');
+        $queryBuilder->groupBy('c.nom');
+
+        //$queryBuilder->addOrderBy('c.nom');
+
+        $queryResult = $queryBuilder->getQuery()->getArrayResult();
+        $result = array();
+        $result['Tous'] = 'Tous';   // ajout manuel d'un choix universel
+        for($i = 0; $i < count($queryResult); $i++) {
+            $nom = $queryResult[$i]['formation']['cursus']['nom'];
+            $result[$nom] = $nom;
+        }
+
+        return $result;
+    }
+
+    public function findAllFormation(): array
+    {
+        $queryBuilder = $this->createQueryBuilder('e');
+        $queryBuilder->leftJoin('e.formation', 'f');
+        $queryBuilder->addSelect('f');
+        $queryBuilder->groupBy('f.nom');
+
+        //$queryBuilder->addOrderBy('c.nom');
+
+        $queryResult = $queryBuilder->getQuery()->getArrayResult();
+        $result = array();
+        $result['Tous'] = 'Tous';   // ajout manuel d'un choix universel
+        for($i = 0; $i < count($queryResult); $i++) {
+            $nom = $queryResult[$i]['formation']['nom'];
+            $result[$nom] = $nom;
+        }
+
+        return $result;
+    }
+
 
 
 //    /**

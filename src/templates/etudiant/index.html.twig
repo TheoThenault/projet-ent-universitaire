@@ -5,9 +5,7 @@
 {% block body %}
     <h2>Filtres:</h2>
     <nav>
-        {#
-            {{ form(formationFormulaire) }}
-        #}
+        {{ form(formationFormulaire) }}
     </nav>
     {# on n'affiche cette parite que si la liste est défini est pas vide #}
     {% if liste_etudiants is defined and liste_etudiants is not empty %}
@@ -23,9 +21,9 @@
                 <tr>
                     <td>{{ etudiant.personne.nom }}</td>
                     <td>{{ etudiant.personne.prenom }}</td>
-                   {#  <td>{{ etudiant.formation.cursus.nom }}</td>
+                    <td>{{ etudiant.formation.cursus.nom }}</td>
                     <td>{{ etudiant.formation.nom }}</td>
-                    #}
+
                 </tr>
             {% endfor %}
         </table>
