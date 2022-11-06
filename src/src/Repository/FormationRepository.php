@@ -39,6 +39,16 @@ class FormationRepository extends ServiceEntityRepository
         }
     }
 
+    public function findAllOrderedByCursusName(): array
+    {
+        $queryBuilder = $this->createQueryBuilder('f');
+        $queryBuilder->leftJoin('f.cursus', 'c');
+        $queryBuilder->addSelect('c');
+        $queryBuilder->orderBy('c.nom');
+
+        return $queryBuilder->getQuery()->getArrayResult();
+    }
+
 //    /**
 //     * @return Formation[] Returns an array of Formation objects
 //     */
