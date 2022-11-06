@@ -49,6 +49,24 @@ class FormationRepository extends ServiceEntityRepository
         return $queryBuilder->getQuery()->getArrayResult();
     }
 
+    public function findAllNameOrdered(): array
+    {
+        $queryBuilder = $this->createQueryBuilder('f');
+        $queryBuilder->addSelect('f.nom');
+        $queryBuilder->groupBy('f.nom');
+        $queryBuilder->orderBy('f.nom');
+
+        $queryResult = $queryBuilder->getQuery()->getArrayResult();
+        $result = array();
+        $result['Tous'] = 'Tous';   // ajout manuel d'un choix universel
+        for($i = 0; $i < count($queryResult); $i++) {
+            $nom = $queryResult[$i]['nom'];
+            $result[$nom] = $nom;
+        }
+
+        return $result;
+    }
+
     public function findAllByCursusNameAndNiveau($name, $niveau): array
     {
         $queryBuilder = $this->createQueryBuilder('f');
