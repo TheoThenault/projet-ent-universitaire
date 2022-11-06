@@ -11,6 +11,7 @@ use App\DataFixtures\EnseignantFixtures;
 use App\DataFixtures\StatutEnseignantFixtures;
 use App\DataFixtures\UEFixtures;
 use App\DataFixtures\FormationFixtures;
+use App\DataFixtures\SpecialiteFixtures;
 use Symfony\Component\Form\Form;
 
 class AppFixtures extends Fixture
@@ -33,6 +34,8 @@ class AppFixtures extends Fixture
             $statuts_enseignant_fixture->list_statuts_enseignant
         );
 
+        $secialite_fixtures = new SpecialiteFixtures();
+        $secialite_fixtures->charger($manager);
 
         $cursus_fixture = new CursusFixtures();
         $cursus_fixture->charger($manager);
