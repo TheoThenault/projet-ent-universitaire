@@ -6,30 +6,21 @@
 
     <h2>Filtres:</h2>
     <nav>
-        <form>
-            <label for="specialite">Spécialité: </label>
-            <select id="specialite">
-                <option value="math">Math</option>
-                <option value="web">Web</option>
-                <option value="anglais">Anglais</option>
-                <option value="web_avance">Web Avancé</option>
-                <option value="droit">droit</option>
-                <option value="poo">POO</option>
-            </select>
-            <button type="submit">Filtrer</button>
-        </form>
+        {{ form(ueFormulaire) }}
     </nav>
     {% if liste_ues is defined %}
-        <h2>Résultat:</h2>
-        <table style="border: 1px solid black;">
+        <h2>Résultats:</h2>
+        <table class="table table-hover table-striped">
                 <tr>
                     <th>Nom</th>
                     <th>Volume horaire</th>
+                    <th>Spécialité</th>
                 </tr>
             {% for ue in liste_ues %}
                 <tr>
-                    <td style="border: 1px solid black;">{{ ue.nom }}</td>
-                    <td style="border: 1px solid black;">{{ ue.volumeHoraire }}</td>
+                    <td>{{ ue.nom }}</td>
+                    <td>{{ ue.volumeHoraire }}</td>
+                    <td>{{ ue.specialite.nom }}</td>
                 </tr>
             {% endfor %}
         </table>

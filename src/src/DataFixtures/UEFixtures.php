@@ -29,7 +29,7 @@ class UEFixtures
         $ue = new UE();
         $ue->setNom("Anglais");
         $ue->setVolumeHoraire(150);
-        $ue->setSpecialite($specialites[8]);
+        $ue->setSpecialite($specialites[10]);
         $manager->persist($ue);
         $this->list_ues[] = $ue;
 
