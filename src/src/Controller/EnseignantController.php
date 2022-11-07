@@ -28,8 +28,9 @@ class EnseignantController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $responses = $form->getData();
             dump($responses);
-            dump($form->get("statut_enseignant")->getData()->getNom());
-            dump($form->getExtraData());
+            $choix_statut = $form->get("statut_enseignant")->getData()->getNom();
+            $enseignants = $entityManager->getRepository(Enseignant::class)->filterByStatut($choix_statut);
+
             switch($responses["sort_asc_or_desc"]) {
                 case "email":
                     $enseignants = $entityManager->getRepository(Enseignant::class)->sortByEmailAscOrDesc("ASC");

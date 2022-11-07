@@ -50,17 +50,19 @@ class EnseignantFilterType extends AbstractType
 //                    'Décroissant' => "desc",
 //                ],
 //            ])
-            ->add('statut_enseignant',EntityType::class, [
-                'class' => StatutEnseignant::class,
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('statut')
-                        ->orderBy('statut.nom', 'ASC');
-                },
-                'multiple' => false,
-                'expanded' => false,
-                'choice_label' => 'nom'
-            ]);
 
+
+
+//            ->add('statut_enseignant',EntityType::class, [
+//                'class' => StatutEnseignant::class,
+//                'query_builder' => function (EntityRepository $er) {
+//                    return $er->createQueryBuilder('statut')
+//                        ->orderBy('statut.nom', 'ASC');
+//                },
+//                'multiple' => false,
+//                'expanded' => false,
+//                'choice_label' => 'nom'
+//            ]);
         ;
     }
 

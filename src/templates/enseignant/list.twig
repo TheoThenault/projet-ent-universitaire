@@ -4,12 +4,13 @@
 
 {% block body %}
 <div class="example-wrapper">
-    <h1>liste d'enseignant </h1>
+    <h1 id="test">liste d'enseignant </h1>
     <div class="shadow rounded">
         <table class="table table-hover table-striped" >
             <thead class="table-light">
                 <tr id="form_elem">
                     {{ form_start(enseignantFilterForm, { 'attr': {'id': 'theForm'} }) }}
+
                     {{ form_row(enseignantFilterForm.sort_asc_or_desc, { 'attr': {'class': 'form-select form-select-sm'} }) }}
                     <th id="email">
                         Email <span id="sort_mail_arrow">⇑</span>
@@ -47,9 +48,11 @@
 <script>
     let sort_mail_arrow = document.getElementById("sort_mail_arrow")
     if(localStorage.getItem("up_or_down") == null){
+        console.log("jndsjkf")
         sort_mail_arrow.innerHTML = "⇕"
+    } else {
+        sort_mail_arrow.innerHTML = localStorage.getItem("up_or_down")
     }
-    sort_mail_arrow.innerHTML = localStorage.getItem("up_or_down")
 
     email = document.getElementById("email")
     email.addEventListener("click", sort)

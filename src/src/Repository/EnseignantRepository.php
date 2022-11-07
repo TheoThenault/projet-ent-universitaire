@@ -40,6 +40,18 @@ class EnseignantRepository extends ServiceEntityRepository
         }
     }
 
+    public function findAllWithSort(): mixed
+    {
+        $qb = $this->createQueryBuilder("enseignant");
+        $qb
+            ->select("enseignant")
+            ->leftJoin('enseignant.personne', 'personne')
+            ->select('personne')
+            ->leftJoin('enseignant.StatutEnseignant', 'statutEnseignant')
+            ->select('statutEnseignant');
+        return $qb->getQuery()->getResult();
+    }
+
     /**
      * @param QueryBuilder $qb
      * @param string $orderBy
@@ -83,6 +95,20 @@ class EnseignantRepository extends ServiceEntityRepository
         $table = "enseignant";
         $qb = $this->createQueryBuilder($table);
         $this->sortAscOrDesc($qb,"email",$asc_or_desc, $table,"personne");
+        return $qb->getQuery()->getResult();
+    }
+
+    public function filterByStatut($choix_statut): mixed
+    {
+        $qb = $this->createQueryBuilder("enseignant");
+        dump($choix_statut);
+        $qb
+            ->select("enseignant")
+            ->leftJoin('enseignant.personne', 'personne')
+            ->leftJoin('enseignant.StatutEnseignant', 'statutEnseignant')
+            ->where('statutEnseignant.nom = :name')
+            ->setParameter(':name', $choix_statut);
+
         return $qb->getQuery()->getResult();
     }
 
