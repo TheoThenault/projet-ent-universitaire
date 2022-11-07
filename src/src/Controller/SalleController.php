@@ -36,10 +36,8 @@ class SalleController extends AbstractController{
 
         if($form->isSubmitted() && $form->isValid()){
 
-
-            $ordre = 'ASC';
             $salles = $em->getRepository(Salle::class)
-                ->myFindWithPaging($page, $nbPerPage,$form->getData()["filtre"],$ordre);
+                ->myFindWithPaging($page, $nbPerPage,$form->getData()["filtre"]);
         }else{
             //form rempli
             $salles = $em->getRepository(Salle::class)

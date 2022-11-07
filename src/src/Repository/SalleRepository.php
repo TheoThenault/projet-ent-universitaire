@@ -61,9 +61,11 @@ class SalleRepository extends ServiceEntityRepository
         return new Paginator($query);
     }*/
 
-    public function myFindWithPaging($currentPage, $nbPerPage, $filtre, $ordre): mixed{
+    public function myFindWithPaging($currentPage, $nbPerPage, $filtre): mixed{
+        $cat = substr($filtre, 0, strpos($filtre, '_'));
+        $ordre = substr($filtre, strlen($cat) + 1, strpos($filtre, '_') + 1);
         $query = $this->createQueryBuilder('s')
-            ->addOrderBy('s'.".".$filtre, $ordre)
+            ->addOrderBy('s'.".".$cat, $ordre)
             ->getQuery();
 
         return $query->getResult();

@@ -16,14 +16,17 @@ class SalleType extends AbstractType
         $builder
             ->add('filtre', ChoiceType::class,[
                 'choices' => [
-                    'Nom' => 'nom',
-                    'Batiment' => 'batiment',
-                    'Equipement'=> 'equipement',
-                    'Capacite' => 'capacite',
+                    'Nom' => 'nom_asc',
+                    'Nom Décroissant' => 'nom_desc',
+                    'Batiment' => 'batiment_asc',
+                    'Batiment Décroissant' => 'batiment_desc',
+                    'Equipement'=> 'equipement_asc',
+                    'Equipement Décroissant'=> 'equipement_desc',
+                    'Capacite' => 'capacite_asc',
+                    'Capacite Décroissant' => 'capacite_desc',
                 ]
             ])
-            ->add('ordre', ButtonType::class,[
-                'attr' => ['On/Off' => 'change'],])
+
 
         ;
     }
