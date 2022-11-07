@@ -2,15 +2,59 @@
 
 namespace App\DataFixtures;
 
+use App\DataFixtures\FormationFixtures;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use App\DataFixtures\SalleFixtures;
+
+use App\DataFixtures\PersonneFixtures;
+use App\DataFixtures\EnseignantFixtures;
+use App\DataFixtures\StatutEnseignantFixtures;
+use App\DataFixtures\UEFixtures;
+use App\DataFixtures\SpecialiteFixtures;
+use Symfony\Component\Form\Form;
 
 class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        // $product = new Product();
-        // $manager->persist($product);
+        $salleFixture = new SalleFixtures();
+        $salleFixture->charger($manager);
+
+        $personnes_fixture = new PersonneFixtures();
+        $personnes_fixture->charger($manager);
+
+        $statuts_enseignant_fixture = new StatutEnseignantFixtures();
+        $statuts_enseignant_fixture->charger($manager);
+
+        $enseigants_fixture = new EnseignantFixtures();
+        $enseigants_fixture->charger(
+            $manager,
+            $personnes_fixture->list_personnes,
+            $statuts_enseignant_fixture->list_statuts_enseignant
+        );
+
+        $specialite_fixtures = new SpecialiteFixtures();
+        $specialite_fixtures->charger($manager);
+
+        $cursus_fixture = new CursusFixtures();
+        $cursus_fixture->charger($manager);
+
+        $formation_fixture = new FormationFixtures();
+        for($i = 0; $i < count($cursus_fixture->list_cursus); $i++)
+        {
+            $formation_fixture->charger($manager, $cursus_fixture->list_cursus[$i]);
+        }
+
+        $etudiant_fixtures = new EtudiantFixtures();
+        $etudiant_fixtures->charger($manager, $personnes_fixture->list_personnes, 5, $formation_fixture->list_formations);
+
+        $ues = new UEFixtures();
+        $ues->charger($manager, $specialite_fixtures->list_specialites, $formation_fixture->list_formations);
+
+        $cours_fixtures = new CourFixtures();
+        $cours_fixtures->charger($manager, $enseigants_fixture->list_enseignants, $salleFixture->list_salles,
+                                $ues->list_ues);
 
         $manager->flush();
     }

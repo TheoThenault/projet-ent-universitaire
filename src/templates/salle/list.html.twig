@@ -1,0 +1,76 @@
+{%  extends 'base.html.twig' %}
+
+{% block title %}Salle{% endblock %}
+
+{% block body %}
+    {{ form(form) }}
+
+    <style>
+        table{
+            border-collapse: collapse;
+            border:1px solid #cccccc;
+            font-family: sans-serif;
+        }
+        thead{
+            background-color: #333;
+            color: #fff;
+        }
+        td, th{
+            padding: 5px 10px;
+            border:1px solid #cccccc;
+        }
+    </style>
+
+    <div class="example-wrapper">
+        <h1>liste des salles </h1>
+        <table>
+            <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Batiment</th>
+                <th>Equipement</th>
+                <th>Capacite</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for salle in salles %}
+                <tr>
+                    <td>{{ salle.nom }}</td>
+                    <td>{{ salle.batiment }}</td>
+                    <td>{{ salle.equipement }}</td>
+                    <td>{{ salle.capacite }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {# <nav>
+        <ul class=pagination">
+            {% if nbTotalPages > 1 %}
+                {% if page == 1 %}
+                    <a href="">Précédent</a>
+                {% else %}
+                    <a href="/salle/list/{{ page - 1 }}">Précédent</a>
+                {% endif %}
+
+                {% for nbPage in 1..nbTotalPages %}
+                    {% if nbPage == page %}
+                        <a href="">{{ page }}</a>
+                    {% else %}
+                        <a href="/salle/list/{{ nbPage }}">{{ nbPage }}</a>
+                    {% endif %}
+                {% endfor %}
+
+
+                {% if page == nbTotalPages %}
+                    <a href="">Suivant</a>
+                {% else %}
+                    <a href="/salle/list/{{ page + 1 }}">Suivant</a>
+                {% endif %}
+            {% endif %}
+            {% if nbTotalPages ==  1 %}
+                <a href="/salle/list/1">1</a>
+            {% endif %}
+        </ul>
+    </nav>#}
+{% endblock %}
