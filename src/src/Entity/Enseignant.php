@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\EnseignantRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: EnseignantRepository::class)]
@@ -18,6 +20,14 @@ class Enseignant
 
     #[ORM\ManyToOne(inversedBy: 'enseignants')]
     private ?StatutEnseignant $StatutEnseignant = null;
+
+    #[ORM\OneToMany(mappedBy: 'enseignant', targetEntity: Cour::class)]
+    private Collection $cours;
+
+    public function __construct()
+    {
+        $this->cours = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -54,6 +64,36 @@ class Enseignant
     public function setStatutEnseignant(?StatutEnseignant $StatutEnseignant): self
     {
         $this->StatutEnseignant = $StatutEnseignant;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Cour>
+     */
+    public function getCours(): Collection
+    {
+        return $this->cours;
+    }
+
+    public function addCour(Cour $cour): self
+    {
+        if (!$this->cours->contains($cour)) {
+            $this->cours->add($cour);
+            $cour->setEnseignant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCour(Cour $cour): self
+    {
+        if ($this->cours->removeElement($cour)) {
+            // set the owning side to null (unless already changed)
+            if ($cour->getEnseignant() === $this) {
+                $cour->setEnseignant(null);
+            }
+        }
 
         return $this;
     }

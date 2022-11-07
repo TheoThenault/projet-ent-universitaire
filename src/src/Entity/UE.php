@@ -28,9 +28,13 @@ class UE
     #[ORM\ManyToMany(targetEntity: Formation::class, mappedBy: 'ues')]
     private Collection $formations;
 
+    #[ORM\OneToMany(mappedBy: 'ue', targetEntity: Cour::class)]
+    private Collection $cours;
+
     public function __construct()
     {
         $this->formations = new ArrayCollection();
+        $this->cours = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -96,6 +100,36 @@ class UE
     {
         if ($this->formations->removeElement($formation)) {
             $formation->removeUe($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Cour>
+     */
+    public function getCours(): Collection
+    {
+        return $this->cours;
+    }
+
+    public function addCour(Cour $cour): self
+    {
+        if (!$this->cours->contains($cour)) {
+            $this->cours->add($cour);
+            $cour->setUe($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCour(Cour $cour): self
+    {
+        if ($this->cours->removeElement($cour)) {
+            // set the owning side to null (unless already changed)
+            if ($cour->getUe() === $this) {
+                $cour->setUe(null);
+            }
         }
 
         return $this;

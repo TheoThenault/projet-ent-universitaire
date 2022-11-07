@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello CourController!{% endblock %}
+
+{% block body %}
+    {#<h2>Filtres:</h2>
+    <nav>
+        {{ form(courForm) }}
+    </nav>#}
+    {# on n'affiche cette parite que si la liste est défini est pas vide #}
+    {% if liste_cours is defined and liste_cours is not empty %}
+        <h2>Résultats:</h2>
+        <table class="table table-hover table-striped">
+            <tr>
+                <th>Nom</th>
+                <th>Créneau</th>
+                <th>Cursus</th>
+                <th>Formation</th>
+                <th>Prof</th>
+            </tr>
+            {% for cour in liste_cours %}
+                <tr>
+                    <td>{{ cour.ue.nom }}</td>
+                    <td>{{ cour.creneau }}</td>
+                    <td>{{ cour.ue.formations[0].cursus.nom }}</td>
+                    <td>{{ cour.ue.formations[0].nom }}</td>
+                    <td>{{ cour.enseignant.personne.nom }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <h2>Aucun résultat !</h2>
+    {% endif %}
+{% endblock %}
