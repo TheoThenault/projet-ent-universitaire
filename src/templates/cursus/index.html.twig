@@ -11,15 +11,15 @@
     {# on n'affiche cette parite que si la liste est défini est pas vide #}
     {% if liste_cursus is defined and liste_cursus is not empty %}
         <h2>Résultat:</h2>
-        <table style="border: 1px solid black;">
+        <table class="table table-hover table-striped">
             <tr>
                 <th>Niveau</th>
                 <th>Nom</th>
             </tr>
             {% for cursus in liste_cursus %}
                 <tr>
-                    <td style="border: 1px solid black;">{{ cursus.niveau }}</td>
-                    <td style="border: 1px solid black;">{{ cursus.nom }}</td>
+                    <td>{{ cursus.niveau }}</td>
+                    <td>{{ cursus.nom }}</td>
                 </tr>
             {% endfor %}
         </table>
