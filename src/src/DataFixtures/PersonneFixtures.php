@@ -37,7 +37,9 @@ class PersonneFixtures
             $this->list_personnes[$i]
                 ->setEmail($nom_prenom[$i][0].".".$nom_prenom[$i][1]."@".$email)
                 ->setPrenom($nom_prenom[$i][0])
-                ->setNom($nom_prenom[$i][1]);
+                ->setNom($nom_prenom[$i][1])
+                ->setPassword('$2y$13$PQfkvYMxBXDalJ5hP9kilue8jeJarc3wGnCwvtzxg7noPPYOIZCv6')
+                ->setRoles(['ROLE_ADMIN']);
             $manager->persist($this->list_personnes[$i]);
         }
 

@@ -6,9 +6,10 @@ use App\Repository\PersonneRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: PersonneRepository::class)]
-class Personne implements UserInterface
+class Personne implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -101,12 +102,15 @@ class Personne implements UserInterface
         return $this;
     }
 
-    public function getPassword(): ?string
+    /**
+     * @see PasswordAuthenticatedUserInterface
+     */
+    public function getPassword(): string
     {
         return $this->password;
     }
 
-    public function setPassword(?string $password): self
+    public function setPassword(string $password): self
     {
         $this->password = $password;
 
@@ -115,9 +119,12 @@ class Personne implements UserInterface
 
     public function getRoles(): array
     {
-        return $this->roles;
-    }
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
 
+        return array_unique($roles);
+    }
     public function setRoles(?array $roles): self
     {
         $this->roles = $roles;
@@ -137,10 +144,17 @@ class Personne implements UserInterface
 
     public function eraseCredentials()
     {
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
     }
 
+    /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
     public function getUserIdentifier(): string
     {
-        return $this->email;
+        return (string) $this->email;
     }
 }
