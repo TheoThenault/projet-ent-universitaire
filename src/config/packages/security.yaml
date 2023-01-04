@@ -4,25 +4,39 @@ security:
         Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
     # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
     providers:
-        users_in_memory: { memory: null }
+        # used to reload user from session & other features (e.g. switch_user)
+        app_user_provider:
+            entity:
+                class: App\Entity\Personne
+                property: email
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
             lazy: true
-            provider: users_in_memory
+            provider: app_user_provider
+            custom_authenticator: App\Security\EntAuthenticator
+            logout:
+                path: app_logout
+                # where to redirect after logout
+                # target: app_any_route
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
 
             # https://symfony.com/doc/current/security/impersonating_user.html
             # switch_user: true
+    role_hierarchy:
+        ROLE_USER: ROLE_USER
+        ROLE_PROFESEUR: ROLE_USER # Un utilisateur avec le rôle ROLE_PROFESEUR aura à minima les droits d'un ROLE_USER
+        ROLE_ETUDIANT: ROLE_USER # idem pour un utilisateur ROLE_ETUDIANT
+        ROLE_ADMIN: [ ROLE_ADMIN, ROLE_ETUDIANT, ROLE_PROFESEUR ] # un utilisateur ROLE_ADMIN aura à minima les droits de 4 rôles
 
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/etudiant, roles: ROLE_ETUDIANT } # Il faut être ROLE_ETUDIANT pour accéder à /etudiant**
         # - { path: ^/profile, roles: ROLE_USER }
 
 when@test:
