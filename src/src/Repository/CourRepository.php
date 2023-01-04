@@ -62,6 +62,31 @@ class CourRepository extends ServiceEntityRepository
         return $queryBuilder->getQuery()->getArrayResult();
     }
 
+    public function findAllByChoices($cursus, $formation): array
+    {
+        $queryBuilder = $this->createQueryBuilder('cour');
+        $queryBuilder->addSelect('cour');
+	$queryBuilder->addSelect('cour.enseignant');
+        $queryBuilder->leftJoin('cour.ue', 'ue');
+        $queryBuilder->addSelect('ue');
+        $queryBuilder->leftJoin('ue.formations', 'f');
+        $queryBuilder->addSelect('f');
+        $queryBuilder->leftJoin('f.cursus', 'c');
+        $queryBuilder->addSelect('c');
+        if($cursus != 'Tous')
+        {
+            $queryBuilder->andWhere('c.nom = :cur');
+            $queryBuilder->setParameter('cur', $cursus);
+        }
+        if($formation != 'Tous')
+        {
+            $queryBuilder->andWhere('f.nom = :for');
+            $queryBuilder->setParameter('for', $formation);
+        }
+        $queryBuilder->orderBy('cour.creneau');
+	dump($queryBuilder);
+        return $queryBuilder->getQuery()->getArrayResult();
+    }
 
 //    /**
 //     * @return Cour[] Returns an array of Cour objects
