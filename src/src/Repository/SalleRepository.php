@@ -79,6 +79,70 @@ class SalleRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
+    public function findAllBatiment(): array{
+        $query = $this->createQueryBuilder('s');
+        $query->addSelect('s.batiment');
+        $queryResult = $query->getQuery()->getArrayResult();
+
+        $result = array();
+        $result['Tous les batiments'] = 'Tous';
+        for($i = 0; $i < count($queryResult); $i++) {
+            $batiment = $queryResult[$i]['batiment'];
+            $result[$batiment] = $batiment;
+        }
+        return $result;
+    }
+
+    public function findAllEquipement(): array{
+        $query = $this->createQueryBuilder('s');
+        $query->addSelect('s.equipement');
+        $queryResult = $query->getQuery()->getArrayResult();
+
+        $result = array();
+        $result['Tous les equipements'] = 'Tous';
+        for($i = 0; $i < count($queryResult); $i++) {
+            $equipement = $queryResult[$i]['equipement'];
+            $result[$equipement] = $equipement;
+        }
+        return $result;
+    }
+
+    public function findAllCapacite(): array{
+        $query = $this->createQueryBuilder('s');
+        $query->addSelect('s.capacite');
+        $queryResult = $query->getQuery()->getArrayResult();
+
+        $result = array();
+        $result['Toutes les capacités'] = 'Tous';
+        for($i = 0; $i < count($queryResult); $i++) {
+            $capacite = $queryResult[$i]['capacite'];
+            $result[$capacite] = $capacite;
+        }
+        return $result;
+    }
+
+    public function findAllByChoices($batiment, $equipement, $capacite): array
+    {
+        $queryBuilder = $this->createQueryBuilder('s');
+        if($batiment != 'Tous')
+        {
+            $queryBuilder->andWhere('s.batiment = :bat');
+            $queryBuilder->setParameter('bat', $batiment);
+        }
+        if($equipement != 'Tous')
+        {
+            $queryBuilder->andWhere('s.equipement = :equip');
+            $queryBuilder->setParameter('equip', $equipement);
+        }
+        if($capacite != 'Tous')
+        {
+            $queryBuilder->andWhere('s.capacite = :capacite');
+            $queryBuilder->setParameter('capacite', $capacite);
+        }
+        $queryBuilder->orderBy('s.nom');
+        return $queryBuilder->getQuery()->getArrayResult();
+    }
+
 
 //    /**
 //     * @return SalleFixtures[] Returns an array of SalleFixtures objects

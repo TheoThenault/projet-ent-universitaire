@@ -3,47 +3,33 @@
 {% block title %}Salle{% endblock %}
 
 {% block body %}
-    {{ form(form) }}
 
-    <style>
-        table{
-            border-collapse: collapse;
-            border:1px solid #cccccc;
-            font-family: sans-serif;
-        }
-        thead{
-            background-color: #333;
-            color: #fff;
-        }
-        td, th{
-            padding: 5px 10px;
-            border:1px solid #cccccc;
-        }
-    </style>
+    <h2>Filtres:</h2>
+    <nav>
+        {{ form(form) }}
+    </nav>
 
-    <div class="example-wrapper">
-        <h1>liste des salles </h1>
-        <table>
-            <thead>
+
+
+    <h2>Résultats:</h2>
+    <table class="table table-hover table-striped">
+        <tr>
+            <th>Nom</th>
+            <th>Batiment</th>
+            <th>Equipement</th>
+            <th>Capacite</th>
+        </tr>
+        <tbody>
+        {% for salle in salles %}
             <tr>
-                <th>Nom</th>
-                <th>Batiment</th>
-                <th>Equipement</th>
-                <th>Capacite</th>
+                <td>{{ salle.nom }}</td>
+                <td>{{ salle.batiment }}</td>
+                <td>{{ salle.equipement }}</td>
+                <td>{{ salle.capacite }}</td>
             </tr>
-            </thead>
-            <tbody>
-            {% for salle in salles %}
-                <tr>
-                    <td>{{ salle.nom }}</td>
-                    <td>{{ salle.batiment }}</td>
-                    <td>{{ salle.equipement }}</td>
-                    <td>{{ salle.capacite }}</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
+        {% endfor %}
+        </tbody>
+    </table>
     {# <nav>
         <ul class=pagination">
             {% if nbTotalPages > 1 %}
