@@ -16,6 +16,9 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class CourRepository extends ServiceEntityRepository
 {
+    private string $date = '2022-09-05';
+    //private array $date = [2022, 36];
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Cour::class);
@@ -89,7 +92,7 @@ class CourRepository extends ServiceEntityRepository
 
         $queryBuilder->orderBy('cour.creneau');
 
-        dump($queryBuilder->getQuery()->getArrayResult());
+        //dump($queryBuilder->getQuery()->getArrayResult());
 
         return $queryBuilder->getQuery()->getArrayResult();
     }
