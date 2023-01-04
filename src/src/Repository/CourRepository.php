@@ -66,7 +66,10 @@ class CourRepository extends ServiceEntityRepository
     {
         $queryBuilder = $this->createQueryBuilder('cour');
         $queryBuilder->addSelect('cour');
-	$queryBuilder->addSelect('cour.enseignant');
+        $queryBuilder->leftJoin('cour.enseignant', 'ens');
+        $queryBuilder->addSelect('ens');
+        $queryBuilder->leftJoin('ens.personne', 'pers');
+        $queryBuilder->addSelect('pers');
         $queryBuilder->leftJoin('cour.ue', 'ue');
         $queryBuilder->addSelect('ue');
         $queryBuilder->leftJoin('ue.formations', 'f');
@@ -83,8 +86,11 @@ class CourRepository extends ServiceEntityRepository
             $queryBuilder->andWhere('f.nom = :for');
             $queryBuilder->setParameter('for', $formation);
         }
+
         $queryBuilder->orderBy('cour.creneau');
-	dump($queryBuilder);
+
+        dump($queryBuilder->getQuery()->getArrayResult());
+
         return $queryBuilder->getQuery()->getArrayResult();
     }
 
