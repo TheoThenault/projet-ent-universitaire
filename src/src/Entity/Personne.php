@@ -3,10 +3,12 @@
 namespace App\Entity;
 
 use App\Repository\PersonneRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: PersonneRepository::class)]
-class Personne
+class Personne implements UserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -27,6 +29,12 @@ class Personne
 
     #[ORM\OneToOne(inversedBy: 'personne', cascade: ['persist', 'remove'])]
     private ?Enseignant $enseignant = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $password = null;
+
+    #[ORM\Column(type: Types::ARRAY, nullable: true)]
+    private array $roles = [];
 
     public function getId(): ?int
     {
@@ -92,4 +100,47 @@ class Personne
 
         return $this;
     }
+
+    public function getPassword(): ?string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(?string $password): self
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    public function getRoles(): array
+    {
+        return $this->roles;
+    }
+
+    public function setRoles(?array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    public function getSalt()
+    {
+        return null;
+    }
+
+    public function getUsername()
+    {
+        return $this->email;
+    }
+
+    public function eraseCredentials()
+    {
+    }
+
+//    public function getUserIdentifier(): string
+//    {
+//        // TODO: Implement getUserIdentifier() method.
+//    }
 }
