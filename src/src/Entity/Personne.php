@@ -139,8 +139,8 @@ class Personne implements UserInterface
     {
     }
 
-//    public function getUserIdentifier(): string
-//    {
-//        // TODO: Implement getUserIdentifier() method.
-//    }
+    public function getUserIdentifier(): string
+    {
+        return $this->email;
+    }
 }
