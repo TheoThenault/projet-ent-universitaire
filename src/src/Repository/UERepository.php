@@ -46,6 +46,7 @@ class UERepository extends ServiceEntityRepository
         $queryBuilder->addSelect('s.nom');
         $queryBuilder->groupBy('s.nom');
         $queryBuilder->orderBy('s.nom');
+        dump($queryBuilder);
         $queryResult = $queryBuilder->getQuery()->getArrayResult();
 
         $result = array();

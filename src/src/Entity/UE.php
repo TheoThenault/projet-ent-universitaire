@@ -28,12 +28,12 @@ class UE
     #[ORM\OneToMany(mappedBy: 'ue', targetEntity: Cour::class)]
     private Collection $cours;
 
-    #[ORM\ManyToOne(inversedBy: 'uEs')]
+    #[ORM\ManyToOne(inversedBy: 'ues')]
     private ?Formation $formation = null;
 
     public function __construct()
     {
-        $this->formations = new ArrayCollection();
+        $this->formation = new ArrayCollection();
         $this->cours = new ArrayCollection();
     }
 

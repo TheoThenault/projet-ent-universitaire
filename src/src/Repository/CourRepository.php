@@ -96,7 +96,7 @@ class CourRepository extends ServiceEntityRepository
         $queryBuilder->addSelect('pers');
         $queryBuilder->leftJoin('cour.ue', 'ue');
         $queryBuilder->addSelect('ue');
-        $queryBuilder->leftJoin('ue.formations', 'f');
+        $queryBuilder->leftJoin('ue.formation', 'f');
         $queryBuilder->addSelect('f');
         $queryBuilder->leftJoin('f.cursus', 'c');
         $queryBuilder->addSelect('c');
