@@ -22,8 +22,8 @@
                 <tr>
                     <td>{{ cour.ue.nom }}</td>
                     <td>{{ cour.creneau }}</td>
-                    <td>{{ cour.ue.formations[0].cursus.nom }}</td>
-                    <td>{{ cour.ue.formations[0].nom }}</td>
+                    <td>{{ cour.ue.formation.cursus.nom }}</td>
+                    <td>{{ cour.ue.formation.nom }}</td>
                     <td>{{ cour.enseignant.personne.nom }}</td>
                 </tr>
             {% endfor %}
