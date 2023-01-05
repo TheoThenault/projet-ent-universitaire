@@ -9,20 +9,35 @@
                 <!--
                 <li><a href="#" class="nav-link px-2">Home</a></li>
                 -->
-                <li><a href="{{ path('cour_index') }}" class="nav-link px-2">Cours</a></li>
-                <li><a href="{{ path('ue_index') }}" class="nav-link px-2">Ue</a></li>
-                <li><a href="{{ path('salle_index') }}" class="nav-link px-2">Salles</a></li>
-                <li><a href="{{ path('cursus_index') }}" class="nav-link px-2">Cursus</a></li>
-                <li><a href="{{ path('formation_index') }}" class="nav-link px-2">Formations</a></li>
-                <li><a href="{{ path('enseignant_list') }}" class="nav-link px-2">Enseignants</a></li>
-                <li><a href="{{ path('etudiant_index') }}" class="nav-link px-2">Etudiants</a></li>
+                {% if is_granted('ROLE_USER') %}
+                    <li><a href="{{ path('cour_index') }}" class="nav-link px-2">Cours</a></li>
+                {% endif %}
+                {% if is_granted('ROLE_SCOLARITE') %}
+                    <li><a href="{{ path('ue_index') }}" class="nav-link px-2">Ue</a></li>
+                {% endif %}
+                {% if is_granted('ROLE_ADMIN') %}
+                    <li><a href="{{ path('salle_list') }}" class="nav-link px-2">Salles</a></li>
+                {% endif %}
+                {% if is_granted('ROLE_SCOLARITE') %}
+                    <li><a href="{{ path('cursus_index') }}" class="nav-link px-2">Cursus</a></li>
+                {% endif %}
+                {% if is_granted('ROLE_SCOLARITE') %}
+                    <li><a href="{{ path('formation_index') }}" class="nav-link px-2">Formations</a></li>
+                {% endif %}
+                {% if is_granted('ROLE_RH') %}
+                    <li><a href="{{ path('enseignant_list') }}" class="nav-link px-2">Enseignants</a></li>
+                {% endif %}
+                {% if is_granted('ROLE_SCOLARITE') %}
+                    <li><a href="{{ path('etudiant_index') }}" class="nav-link px-2">Etudiants</a></li>
+                {% endif %}
             </ul>
 
             <div class="text-end">
-                <!--
-                <button type="button" class="btn btn-outline-light me-2">Login</button>
-                <button type="button" class="btn btn-danger">Sign-up</button>
-                -->
+                {% if app.user %}
+                    <a class="btn btn-danger" href="{{ path('app_logout') }}" role="button">Déconnexion</a>
+                {% else %}
+                    <a class="btn btn-outline-light me-2" href="{{ path('app_login') }}" role="button">Connexion</a>
+                {% endif %}
             </div>
         </nav>
     </div>
