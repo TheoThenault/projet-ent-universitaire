@@ -36,10 +36,6 @@ class SalleController extends AbstractController{
             $equipement_choisis = $form->get('Equipement')->getData();
             $capacite_choisis = $form->get('Capacite')->getData();
             $liste_salle = $em->getRepository(Salle::class)->findAllByChoices($batiment_choisis, $equipement_choisis, $capacite_choisis);
-        }else {
-            // aucun formulaire n'est remplit
-            //$liste_salle = $em->getRepository(Salle::class)->findAllOrdered();
-            $liste_salle = $em->getRepository(Salle::class)->findAll();
         }
 
 
