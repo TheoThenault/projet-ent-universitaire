@@ -19,15 +19,16 @@ class CourFixtures
         $nS = count($list_salles);
         $nU = count($list_ues);
 
-        $nombre_cours = 2 * $nU;
+        $nombre_cours = 40;
 
         for($i = 0; $i < $nombre_cours; $i++)
         {
             $cour = new Cour();
-            $cour->setCreneau(($i % 20) + 1);
+            $cour->setCreneau(($i % 40) + 1);
             $cour->setEnseignant($list_enseignant[$i % $nE]);
             $cour->setSalle($list_salles[$i%$nS]);
-            $cour->setUe($list_ues[$i % $nU]);
+            $cour->setUe($list_ues[1]);
+            //$cour->setUe($list_ues[$i % $nU]);
             $this->list_cours[] = $cour;
             $manager->persist($cour);
         }

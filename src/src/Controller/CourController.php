@@ -52,7 +52,7 @@ class CourController extends AbstractController
             dump($date_choisis);
             $cursus_choisis = $form->get('Cursus')->getData();
             $formation_choisis = $form->get('Formation')->getData();
-            $liste_cours = $entityManagerInterface->getRepository(Cour::class)->findAllByChoices($cursus_choisis, $formation_choisis);
+            $liste_cours = $entityManagerInterface->getRepository(Cour::class)->findAllByChoices($cursus_choisis, $formation_choisis, $date_choisis);
         }
 
         //dump($liste_cours);
