@@ -145,7 +145,7 @@ class CourRepository extends ServiceEntityRepository
         $weekTime = $creneau % 20;              // creneau dans la semaine
         $weekDay  = floor($weekTime / 4);  // 4 creneaux par jour
         $dayTime  = $weekTime - (4*$weekDay);
-        $dayTime  = 8 + $dayTime*2 + ($dayTime>2?2:0);
+        $dayTime  = 8 + $dayTime*2 + ($dayTime>1?2:0);
 
         //dump('c '.$creneau.' w '.$nWeek.' wt '.$weekTime.' wd '.$weekDay.' dt '.$dayTime);
 
