@@ -84,8 +84,8 @@ class CourRepository extends ServiceEntityRepository
         $numeroSemaine = floor($datediff->days / 7);
         $creneauMin = 20 * $numeroSemaine + 1;  // 20 creneaux par semaines
         $creneauMax = $creneauMin + 19;
-        dump($creneauMin);
-        dump($creneauMax);
+        //dump($creneauMin);
+        //dump($creneauMax);
 
 
         $queryBuilder = $this->createQueryBuilder('cour');
@@ -118,7 +118,7 @@ class CourRepository extends ServiceEntityRepository
         $queryBuilder->orderBy('cour.creneau');
         $result = $queryBuilder->getQuery()->getArrayResult();
 
-        dump(count($result));
+        //dump(count($result));
         for($i = 0; $i < count($result); $i++)
         {
             $curr = $result[$i]['creneau'] - 1;
@@ -147,7 +147,7 @@ class CourRepository extends ServiceEntityRepository
         $dayTime  = $weekTime - (4*$weekDay);
         $dayTime  = 8 + $dayTime*2 + ($dayTime>2?2:0);
 
-        dump('c '.$creneau.' w '.$nWeek.' wt '.$weekTime.' wd '.$weekDay.' dt '.$dayTime);
+        //dump('c '.$creneau.' w '.$nWeek.' wt '.$weekTime.' wd '.$weekDay.' dt '.$dayTime);
 
         $interval = null;
         try {
