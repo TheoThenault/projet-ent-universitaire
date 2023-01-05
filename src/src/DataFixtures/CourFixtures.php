@@ -15,19 +15,20 @@ class CourFixtures
 
     public function charger(ObjectManager $manager, array $list_enseignant, array $list_salles, array $list_ues): void
     {
-        $nombre_cours = 25;
-
         $nE = count($list_enseignant);
         $nS = count($list_salles);
         $nU = count($list_ues);
 
+        $nombre_cours = 40;
+
         for($i = 0; $i < $nombre_cours; $i++)
         {
             $cour = new Cour();
-            $cour->setCreneau(($i % 8) + 1);
+            $cour->setCreneau(($i % 40) + 1);
             $cour->setEnseignant($list_enseignant[$i % $nE]);
             $cour->setSalle($list_salles[$i%$nS]);
-            $cour->setUe($list_ues[$i % $nU]);
+            $cour->setUe($list_ues[1]);
+            //$cour->setUe($list_ues[$i % $nU]);
             $this->list_cours[] = $cour;
             $manager->persist($cour);
         }
