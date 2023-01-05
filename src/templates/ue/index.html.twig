@@ -23,8 +23,8 @@
                     <td>{{ ue.nom }}</td>
                     <td>{{ ue.volumeHoraire }}</td>
                     <td>{{ ue.specialite.nom }}</td>
-                    <td>{{ ue.formations[0].cursus.nom }}</td>
-                    <td>{{ ue.formations[0].nom }}</td>
+                    <td>{{ ue.formation.cursus.nom }}</td>
+                    <td>{{ ue.formation.nom }}</td>
                 </tr>
             {% endfor %}
         </table>

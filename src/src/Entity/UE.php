@@ -25,11 +25,11 @@ class UE
     #[ORM\JoinColumn(nullable: false)]
     private ?Specialite $specialite = null;
 
-    #[ORM\ManyToMany(targetEntity: Formation::class, mappedBy: 'ues')]
-    private Collection $formations;
-
     #[ORM\OneToMany(mappedBy: 'ue', targetEntity: Cour::class)]
     private Collection $cours;
+
+    #[ORM\ManyToOne(inversedBy: 'uEs')]
+    private ?Formation $formation = null;
 
     public function __construct()
     {
@@ -78,24 +78,6 @@ class UE
         return $this;
     }
 
-    /**
-     * @return Collection<int, Formation>
-     */
-    public function getFormations(): Collection
-    {
-        return $this->formations;
-    }
-
-    public function addFormation(Formation $formation): self
-    {
-        if (!$this->formations->contains($formation)) {
-            $this->formations->add($formation);
-            $formation->addUe($this);
-        }
-
-        return $this;
-    }
-
     public function removeFormation(Formation $formation): self
     {
         if ($this->formations->removeElement($formation)) {
@@ -131,6 +113,18 @@ class UE
                 $cour->setUe(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getFormation(): ?Formation
+    {
+        return $this->formation;
+    }
+
+    public function setFormation(?Formation $formation): self
+    {
+        $this->formation = $formation;
 
         return $this;
     }
