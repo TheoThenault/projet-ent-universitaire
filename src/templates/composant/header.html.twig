@@ -16,7 +16,7 @@
                     <li><a href="{{ path('ue_index') }}" class="nav-link px-2">Ue</a></li>
                 {% endif %}
                 {% if is_granted('ROLE_ADMIN') %}
-                    <li><a href="{{ path('salle_list') }}" class="nav-link px-2">Salles</a></li>
+                    <li><a href="{{ path('salle_index') }}" class="nav-link px-2">Salles</a></li>
                 {% endif %}
                 {% if is_granted('ROLE_SCOLARITE') %}
                     <li><a href="{{ path('cursus_index') }}" class="nav-link px-2">Cursus</a></li>
