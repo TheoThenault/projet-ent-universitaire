@@ -19,10 +19,11 @@
             </ul>
 
             <div class="text-end">
-                <!--
-                <button type="button" class="btn btn-outline-light me-2">Login</button>
-                <button type="button" class="btn btn-danger">Sign-up</button>
-                -->
+                {% if app.user %}
+                    <a class="btn btn-danger" href="{{ path('app_logout') }}" role="button">Déconnexion</a>
+                {% else %}
+                    <a class="btn btn-outline-light me-2" href="{{ path('app_login') }}" role="button">Connexion</a>
+                {% endif %}
             </div>
         </nav>
     </div>
