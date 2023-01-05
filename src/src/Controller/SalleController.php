@@ -13,10 +13,39 @@ use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/salle', name: 'salle_')]
 class SalleController extends AbstractController{
-    #[Route('')]
-    public function indexAction(): Response{
+    #[Route('', name: 'index')]
+    public function indexAction(EntityManagerInterface $em, Request $request): Response
+    {
+
+        $liste_bat = $em->getRepository(Salle::class)->findAllBatiment();
+        $liste_equip = $em->getRepository(Salle::class)->findAllEquipement();
+        $liste_capacite = $em->getRepository(Salle::class)->findAllCapacite();
+        $form = $this->createForm(SalleType::class, null, [
+            'batiment' => $liste_bat,
+            'equipement' => $liste_equip,
+            'capacite' => $liste_capacite,
+        ]);
+
+        $form->add('Filtrer', SubmitType::class);
+        $form->handleRequest($request);
+
+        $liste_salle = array();
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $batiment_choisis = $form->get('Batiment')->getData();
+            $equipement_choisis = $form->get('Equipement')->getData();
+            $capacite_choisis = $form->get('Capacite')->getData();
+            $liste_salle = $em->getRepository(Salle::class)->findAllByChoices($batiment_choisis, $equipement_choisis, $capacite_choisis);
+        }else {
+            // aucun formulaire n'est remplit
+            //$liste_salle = $em->getRepository(Salle::class)->findAllOrdered();
+            $liste_salle = $em->getRepository(Salle::class)->findAll();
+        }
+
+
         return $this->render('salle/index.html.twig', [
-            'controller_name' => 'SalleController',
+            'liste_salle' => $liste_salle,
+            'form' => $form->createView()
         ]);
     }
 

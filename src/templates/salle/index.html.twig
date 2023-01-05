@@ -1,20 +1,62 @@
-{% extends 'base.html.twig' %}
+{%  extends 'base.html.twig' %}
 
-{% block title %}Hello SalleController!{% endblock %}
+{% block title %}Salle{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+    <h2>Filtres:</h2>
+    <nav>
+        {{ form(form) }}
+    </nav>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ '/home/simon/Documents/Cours_LPro/Projet_ENT/projet-ent-universitaire/src/src/Controller/SalleController.php'|file_link(0) }}">src/Controller/SalleController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/home/simon/Documents/Cours_LPro/Projet_ENT/projet-ent-universitaire/src/templates/salle/index.html.twig'|file_link(0) }}">templates/salle/index.html.twig</a></code></li>
-    </ul>
-</div>
+
+
+    <h2>Résultats:</h2>
+    <table class="table table-hover table-striped">
+        <tr>
+            <th>Nom</th>
+            <th>Batiment</th>
+            <th>Equipement</th>
+            <th>Capacite</th>
+        </tr>
+        <tbody>
+        {% for salle in liste_salle %}
+            <tr>
+                <td>{{ salle.nom }}</td>
+                <td>{{ salle.batiment }}</td>
+                <td>{{ salle.equipement }}</td>
+                <td>{{ salle.capacite }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {# <nav>
+        <ul class=pagination">
+            {% if nbTotalPages > 1 %}
+                {% if page == 1 %}
+                    <a href="">Précédent</a>
+                {% else %}
+                    <a href="/salle/list/{{ page - 1 }}">Précédent</a>
+                {% endif %}
+
+                {% for nbPage in 1..nbTotalPages %}
+                    {% if nbPage == page %}
+                        <a href="">{{ page }}</a>
+                    {% else %}
+                        <a href="/salle/list/{{ nbPage }}">{{ nbPage }}</a>
+                    {% endif %}
+                {% endfor %}
+
+
+                {% if page == nbTotalPages %}
+                    <a href="">Suivant</a>
+                {% else %}
+                    <a href="/salle/list/{{ page + 1 }}">Suivant</a>
+                {% endif %}
+            {% endif %}
+            {% if nbTotalPages ==  1 %}
+                <a href="/salle/list/1">1</a>
+            {% endif %}
+        </ul>
+    </nav>#}
 {% endblock %}
