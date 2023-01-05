@@ -16,8 +16,11 @@ use Symfony\Component\Form\Form;
 
 class AppFixtures extends Fixture
 {
+    
     public function load(ObjectManager $manager): void
     {
+
+
         $salleFixture = new SalleFixtures();
         $salleFixture->charger($manager);
 

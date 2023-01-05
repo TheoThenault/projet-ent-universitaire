@@ -29,15 +29,23 @@ security:
             # switch_user: true
     role_hierarchy:
         ROLE_USER: ROLE_USER
-        ROLE_PROFESEUR: ROLE_USER # Un utilisateur avec le rôle ROLE_PROFESEUR aura à minima les droits d'un ROLE_USER
-        ROLE_ETUDIANT: ROLE_USER # idem pour un utilisateur ROLE_ETUDIANT
-        ROLE_ADMIN: [ ROLE_ADMIN, ROLE_ETUDIANT, ROLE_PROFESEUR ] # un utilisateur ROLE_ADMIN aura à minima les droits de 4 rôles
+        ROLE_ENSEIGNANT: ROLE_USER # Un utilisateur avec le rôle ROLE_PROFESEUR aura à minima les droits d'un ROLE_USER
+        ROLE_ENSEIGNANT_RES: ROLE_ENSEIGNANT
+        ROLE_ETUDIANT: ROLE_USER
+        ROLE_SCOLARITE: ROLE_USER
+        ROLE_RH: ROLE_USER
+        ROLE_ADMIN: [ ROLE_ADMIN, ROLE_ETUDIANT, ROLE_ENSEIGNANT_RES, ROLE_SCOLARITE, ROLE_RH ] # un utilisateur ROLE_ADMIN aura à minima les droits de 4 rôles
 
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        - { path: ^/etudiant, roles: ROLE_ETUDIANT } # Il faut être ROLE_ETUDIANT pour accéder à /etudiant**
-        # - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/cour, roles: ROLE_USER }
+        - { path: ^/etudiant, roles: ROLE_SCOLARITE }
+        - { path: ^/ue, roles: ROLE_SCOLARITE }
+        - { path: ^/cursus, roles: ROLE_SCOLARITE }
+        - { path: ^/formation, roles: ROLE_SCOLARITE }
+        - { path: ^/salle, roles: ROLE_ADMIN }
+        - { path: ^/enseignant, roles: ROLE_RH }
 
 when@test:
     security:
