@@ -18,7 +18,7 @@ class UEAddType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('nom', TextType::class, ['label' => 'Titre'])
+            ->add('nom', TextType::class, ['label' => 'Nom de l\'ue'])
             ->add('volumeHoraire', IntegerType::class)
             ->add('specialite', EntityType::class, [
                 'by_reference' => false,
