@@ -11,23 +11,6 @@ class SalleType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        /*$builder
-            ->add('filtre', ChoiceType::class,[
-                'choices' => [
-                    'Nom' => 'nom_asc',
-                    'Nom Décroissant' => 'nom_desc',
-                    'Batiment' => 'batiment_asc',
-                    'Batiment Décroissant' => 'batiment_desc',
-                    'Equipement'=> 'equipement_asc',
-                    'Equipement Décroissant'=> 'equipement_desc',
-                    'Capacite' => 'capacite_asc',
-                    'Capacite Décroissant' => 'capacite_desc',
-                ]
-            ])
-
-
-        ;*/
-
         $builder
             ->add('Batiment', ChoiceType::class, [
                 'label' => 'Batiment: ',

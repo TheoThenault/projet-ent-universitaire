@@ -101,7 +101,11 @@ class SalleRepository extends ServiceEntityRepository
         $result = array();
         $result['Tous les equipements'] = 'Tous';
         for($i = 0; $i < count($queryResult); $i++) {
-            $equipement = $queryResult[$i]['equipement'];
+            if($queryResult[$i]['equipement'] != null){
+                $equipement = $queryResult[$i]['equipement'];
+            } else {
+                $equipement = 'aucun';
+            }
             $result[$equipement] = $equipement;
         }
         return $result;
@@ -131,8 +135,12 @@ class SalleRepository extends ServiceEntityRepository
         }
         if($equipement != 'Tous')
         {
-            $queryBuilder->andWhere('s.equipement = :equip');
-            $queryBuilder->setParameter('equip', $equipement);
+            if($equipement == 'aucun'){
+                $queryBuilder->andWhere('s.equipement is null');
+            } else {
+                $queryBuilder->andWhere('s.equipement = :equip');
+                $queryBuilder->setParameter('equip', $equipement);
+            }
         }
         if($capacite != 'Tous')
         {
