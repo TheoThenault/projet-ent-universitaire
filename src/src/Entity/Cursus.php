@@ -87,4 +87,9 @@ class Cursus
 
         return $this;
     }
+
+    public function getCursusCompleteName(): string
+    {
+        return $this->getNom() . ' - ' . $this->getNiveau();
+    }
 }

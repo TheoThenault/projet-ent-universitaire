@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Enseignant;
 
+use App\Entity\Personne;
 use Doctrine\Persistence\ObjectManager;
 
 class EnseignantFixtures
@@ -14,6 +15,7 @@ class EnseignantFixtures
     {
         $nb_enseignant = 6;
 
+        // ========== CREATION DES ENSEIGNANTS ==========
         for ($i=0; $i<$nb_enseignant; $i++){
             $this->list_enseignants[$i] = new Enseignant();
 
@@ -23,6 +25,24 @@ class EnseignantFixtures
 
             $manager->persist($this->list_enseignants[$i]);
         }
+
+        // ========== ENSEIGNANTS SPÉCIFIQUE ==========
+        // Création d'un enseignant spécifique qui est une personne avec le role ROLE_ENSEIGNANT
+        // em = entity manager
+        $enseignantUser = new Enseignant();
+        $enseignantUser->setPersonne(
+            $manager->getRepository(Personne::class)->findOneBy(['email' => 'enseignant@univ-poitiers.fr'])
+        );
+        $enseignantUser->setStatutEnseignant($list_statuts_enseignant[array_rand($list_statuts_enseignant)]);
+        $manager->persist($enseignantUser);
+
+        // Création d'un enseignant spécifique qui est une personne avec le role ROLE_ENSEIGNANT_RES
+        $enseignantResUser = new Enseignant();
+        $enseignantResUser->setPersonne(
+            $manager->getRepository(Personne::class)->findOneBy(['email' => 'enseignant.res@univ-poitiers.fr'])
+        );
+        $enseignantResUser->setStatutEnseignant($list_statuts_enseignant[array_rand($list_statuts_enseignant)]);
+        $manager->persist($enseignantResUser);
 
         $manager->flush();
     }

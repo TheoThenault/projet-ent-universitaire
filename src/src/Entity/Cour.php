@@ -28,6 +28,9 @@ class Cour
     #[ORM\JoinColumn(nullable: false)]
     private ?Enseignant $enseignant = null;
 
+    #[ORM\ManyToOne(inversedBy: 'cours')]
+    private ?Groupe $groupe = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -77,6 +80,18 @@ class Cour
     public function setEnseignant(?Enseignant $enseignant): self
     {
         $this->enseignant = $enseignant;
+
+        return $this;
+    }
+
+    public function getGroupe(): ?Groupe
+    {
+        return $this->groupe;
+    }
+
+    public function setGroupe(?Groupe $groupe): self
+    {
+        $this->groupe = $groupe;
 
         return $this;
     }

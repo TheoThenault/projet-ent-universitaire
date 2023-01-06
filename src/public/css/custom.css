@@ -12,6 +12,10 @@
     transition: color .15s ease-in-out;
     text-decoration: none;
 }
+.text-end a {
+    color: white;
+}
+
 .site-header a:hover {
     color: rgb(240,3,64);
     text-decoration: none;

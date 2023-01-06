@@ -1,34 +1,35 @@
 <?php
 
-namespace App\Form;
+namespace App\Form\cursus;
 
+use App\Entity\Cursus;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class EtudiantFilterType extends AbstractType
+class CursusAddType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('Cursus', ChoiceType::class, [
-                'label' => 'Nom: ',
-                'choices' => $options['cursus']
+            ->add('nom', TextType::class, [
+                'help' => 'Droit, Informatique, Médecine ...',
             ])
-            ->add('Formation', ChoiceType::class, [
-                'label' => 'Niveaux: ',
-                'choices' => $options['formation']
-            ])
+            ->add('niveau', ChoiceType::class, [
+            'choices'  => [
+                'Licence' => 'Licence',
+                'Master' => 'Master'
+            ],
+        ]);
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            // Configure your form options here
-            'cursus' => [],
-            'formation' => []
+            'data_class' => Cursus::class,
         ]);
     }
 }

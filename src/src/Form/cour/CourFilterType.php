@@ -1,21 +1,19 @@
 <?php
 
-namespace App\Form;
+namespace App\Form\cour;
 
+use Exception;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class UEFilterType extends AbstractType
+class CourFilterType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('Specialite', ChoiceType::class, [
-                'label' => 'Spécialité: ',
-                'choices' => $options['specialite']
-            ])
             ->add('Cursus', ChoiceType::class, [
                 'label' => 'Cursus: ',
                 'choices' => $options['cursus']
@@ -24,16 +22,27 @@ class UEFilterType extends AbstractType
                 'label' => 'Formation: ',
                 'choices' => $options['formation']
             ])
+            ->add('Enseignant', ChoiceType::class, [
+                'label' => 'Enseignant: ',
+                'choices' => $options['enseignant']
+            ])
+            ->add('Semaine', DateType::class, [
+                'label' => 'Semaine du: ',
+                'widget' => 'single_text'
+            ])
         ;
     }
 
+    /**
+     * @throws Exception
+     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             // Configure your form options here
-            'specialite' => [],
             'cursus' => [],
-            'formation' => []
+            'formation' => [],
+            'enseignant' => []
         ]);
     }
 }

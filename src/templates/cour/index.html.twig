@@ -3,10 +3,10 @@
 {% block title %}Liste des Cours{% endblock %}
 
 {% block body %}
-    {#<h2>Filtres:</h2>
+    <h2>Filtres:</h2>
     <nav>
-        {{ form(courForm) }}
-    </nav>#}
+        {{ form(courFormulaire) }}
+    </nav>
     {# on n'affiche cette parite que si la liste est défini est pas vide #}
     {% if liste_cours is defined and liste_cours is not empty %}
         <h2>Résultats:</h2>
@@ -22,8 +22,8 @@
                 <tr>
                     <td>{{ cour.ue.nom }}</td>
                     <td>{{ cour.creneau }}</td>
-                    <td>{{ cour.ue.formations[0].cursus.nom }}</td>
-                    <td>{{ cour.ue.formations[0].nom }}</td>
+                    <td>{{ cour.ue.formation.cursus.nom }}</td>
+                    <td>{{ cour.ue.formation.nom }}</td>
                     <td>{{ cour.enseignant.personne.nom }}</td>
                 </tr>
             {% endfor %}

@@ -25,11 +25,11 @@ class Formation
     #[ORM\Column]
     private ?int $annee = null;
 
-    #[ORM\ManyToMany(targetEntity: UE::class, inversedBy: 'formations')]
-    private Collection $ues;
-
     #[ORM\OneToMany(mappedBy: 'formation', targetEntity: Etudiant::class)]
     private Collection $etudiants;
+
+    #[ORM\OneToMany(mappedBy: 'formation', targetEntity: UE::class)]
+    private Collection $ues;
 
     public function __construct()
     {
@@ -130,5 +130,10 @@ class Formation
         }
 
         return $this;
+    }
+
+    public function getCursusAndFormationName(): string
+    {
+        return $this->getNom() . ' - ' . $this->getCursus()->getNom();
     }
 }

@@ -4,7 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Cursus;
 use App\Entity\Formation;
-use App\Form\FormationFilterType;
+use App\Form\formation\FormationAddType;
+use App\Form\formation\FormationFilterType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -48,6 +49,27 @@ class FormationController extends AbstractController
         return $this->render('formation/index.html.twig', [
             'formationFormulaire' => $form->createView(),
             'liste_formations' => $liste_formations
+        ]);
+    }
+
+    #[Route('/add', name: 'add')]
+    public function addAction(EntityManagerInterface $entityManager, Request $request): Response
+    {
+        $formation = new Formation();
+        $form = $this->createForm(FormationAddType::class, $formation);
+        $form->add('send', SubmitType::class, ['label' => 'Ajouter une nouvelle formation']);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $entityManager->persist($formation);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('formation_index');
+        }
+
+        return $this->render('formation/add.html.twig', [
+            'addFormationForm' => $form->createView(),
         ]);
     }
 }

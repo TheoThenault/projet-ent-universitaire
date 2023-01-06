@@ -3,13 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\Cursus;
-use App\Form\CursusFilterType;
+use App\Form\cursus\CursusAddType;
+use App\Form\cursus\CursusFilterType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Request;
 
 #[Route('/cursus', name: 'cursus_')]
 class CursusController extends AbstractController
@@ -47,6 +48,27 @@ class CursusController extends AbstractController
         return $this->render('cursus/index.html.twig', [
             'cursusFormulaire' => $form->createView(),
             'liste_cursus' => $liste_cursus
+        ]);
+    }
+
+    #[Route('/add', name: 'add')]
+    public function addAction(EntityManagerInterface $entityManager, Request $request): Response
+    {
+        $cursus = new Cursus();
+        $form = $this->createForm(CursusAddType::class, $cursus);
+        $form->add('send', SubmitType::class, ['label' => 'Ajouter un nouveau cursus']);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $entityManager->persist($cursus);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('cursus_index');
+        }
+
+        return $this->render('cursus/add.html.twig', [
+            'addCursusForm' => $form->createView(),
         ]);
     }
 }

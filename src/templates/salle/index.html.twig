@@ -1,20 +1,37 @@
-{% extends 'base.html.twig' %}
+{%  extends 'base.html.twig' %}
 
-{% block title %}Hello SalleController!{% endblock %}
+{% block title %}Salle{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ '/home/simon/Documents/Cours_LPro/Projet_ENT/projet-ent-universitaire/src/src/Controller/SalleController.php'|file_link(0) }}">src/Controller/SalleController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/home/simon/Documents/Cours_LPro/Projet_ENT/projet-ent-universitaire/src/templates/salle/index.html.twig'|file_link(0) }}">templates/salle/index.html.twig</a></code></li>
-    </ul>
-</div>
+    <h2>Filtres:</h2>
+    <nav>
+        {{ form(form) }}
+    </nav>
+    {% if liste_salle is defined and liste_salle is not empty %}
+        <div class="d-flex flex-row mb-3 align-items-center">
+            <h2>Résultats:</h2>
+            <a class="btn btn-primary ms-5" href="{{ path('salle_add') }}" role="button"><i class="fa-solid fa-plus"></i> Salle</a>
+        </div>
+        <table class="table table-hover table-striped">
+            <tr>
+                <th>Nom</th>
+                <th>Batiment</th>
+                <th>Equipement</th>
+                <th>Capacite</th>
+            </tr>
+            {% for salle in liste_salle %}
+                <tr>
+                    <td>{{ salle.nom }}</td>
+                    <td>{{ salle.batiment }}</td>
+                    <td>{{ salle.equipement }}</td>
+                    <td>{{ salle.capacite }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <div class="d-flex flex-row mb-3 align-items-center">
+            <h2>Aucun résultat !</h2>
+            <a class="btn btn-primary ms-5" href="{{ path('salle_add') }}" role="button"><i class="fa-solid fa-plus"></i> Salle</a>
+        </div>
+    {% endif %}
 {% endblock %}
