@@ -17,7 +17,7 @@ class UEFixtures
             $ue->setNom("POO");
             $ue->setVolumeHoraire(75);
             $ue->setSpecialite($specialites[26]);
-            $ue->addFormation($formations[$i]);
+            $ue->setFormation($formations[$i]);
             $manager->persist($ue);
             $this->list_ues[] = $ue;
 
@@ -25,7 +25,7 @@ class UEFixtures
             $ue->setNom("Algorithmes");
             $ue->setVolumeHoraire(75);
             $ue->setSpecialite($specialites[26]);
-            $ue->addFormation($formations[$i]);
+            $ue->setFormation($formations[$i]);
             $manager->persist($ue);
             $this->list_ues[] = $ue;
 
@@ -33,7 +33,7 @@ class UEFixtures
             $ue->setNom("Anglais");
             $ue->setVolumeHoraire(150);
             $ue->setSpecialite($specialites[10]);
-            $ue->addFormation($formations[$i]);
+            $ue->setFormation($formations[$i]);
             $manager->persist($ue);
             $this->list_ues[] = $ue;
 
@@ -41,7 +41,7 @@ class UEFixtures
             $ue->setNom("Droits");
             $ue->setVolumeHoraire(25);
             $ue->setSpecialite($specialites[1]);
-            $ue->addFormation($formations[$i]);
+            $ue->setFormation($formations[$i]);
             $manager->persist($ue);
             $this->list_ues[] = $ue;
 
@@ -49,7 +49,7 @@ class UEFixtures
             $ue->setNom("Web");
             $ue->setVolumeHoraire(75);
             $ue->setSpecialite($specialites[26]);
-            $ue->addFormation($formations[$i]);
+            $ue->setFormation($formations[$i]);
             $manager->persist($ue);
             $this->list_ues[] = $ue;
 
@@ -57,7 +57,7 @@ class UEFixtures
             $ue->setNom("Web avancé");
             $ue->setVolumeHoraire(75);
             $ue->setSpecialite($specialites[26]);
-            $ue->addFormation($formations[$i]);
+            $ue->setFormation($formations[$i]);
             $manager->persist($ue);
             $this->list_ues[] = $ue;
         }

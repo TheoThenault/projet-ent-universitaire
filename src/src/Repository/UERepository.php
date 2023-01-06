@@ -46,6 +46,7 @@ class UERepository extends ServiceEntityRepository
         $queryBuilder->addSelect('s.nom');
         $queryBuilder->groupBy('s.nom');
         $queryBuilder->orderBy('s.nom');
+        dump($queryBuilder);
         $queryResult = $queryBuilder->getQuery()->getArrayResult();
 
         $result = array();
@@ -64,7 +65,7 @@ class UERepository extends ServiceEntityRepository
         $queryBuilder->addSelect('u');
         $queryBuilder->leftJoin('u.specialite', 's');
         $queryBuilder->addSelect('s');
-        $queryBuilder->leftJoin('u.formations', 'f');
+        $queryBuilder->leftJoin('u.formation', 'f');
         $queryBuilder->addSelect('f');
         $queryBuilder->leftJoin('f.cursus', 'c');
         $queryBuilder->addSelect('c');
@@ -93,7 +94,7 @@ class UERepository extends ServiceEntityRepository
         $queryBuilder->addSelect('u');
         $queryBuilder->leftJoin('u.specialite', 's');
         $queryBuilder->addSelect('s');
-        $queryBuilder->leftJoin('u.formations', 'f');
+        $queryBuilder->leftJoin('u.formation', 'f');
         $queryBuilder->addSelect('f');
         $queryBuilder->leftJoin('f.cursus', 'c');
         $queryBuilder->addSelect('c');
