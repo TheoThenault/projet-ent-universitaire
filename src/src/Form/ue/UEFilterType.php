@@ -1,25 +1,21 @@
 <?php
 
-namespace App\Form;
+namespace App\Form\ue;
 
-use Cassandra\Date;
-use Cassandra\Timeuuid;
-use DateTime;
-use Exception;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\DateIntervalType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\WeekType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\Time;
 
-class CourFilterType extends AbstractType
+class UEFilterType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('Specialite', ChoiceType::class, [
+                'label' => 'Spécialité: ',
+                'choices' => $options['specialite']
+            ])
             ->add('Cursus', ChoiceType::class, [
                 'label' => 'Cursus: ',
                 'choices' => $options['cursus']
@@ -28,20 +24,14 @@ class CourFilterType extends AbstractType
                 'label' => 'Formation: ',
                 'choices' => $options['formation']
             ])
-            ->add('Semaine', DateType::class, [
-                'label' => 'Semaine du: ',
-                'widget' => 'single_text'
-            ])
         ;
     }
 
-    /**
-     * @throws Exception
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             // Configure your form options here
+            'specialite' => [],
             'cursus' => [],
             'formation' => []
         ]);

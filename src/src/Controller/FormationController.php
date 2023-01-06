@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Cursus;
 use App\Entity\Formation;
-use App\Form\FormationFilterType;
+use App\Form\formation\FormationFilterType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;

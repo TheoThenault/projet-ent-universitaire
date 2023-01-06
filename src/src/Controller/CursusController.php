@@ -3,13 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\Cursus;
-use App\Form\CursusFilterType;
+use App\Form\cursus\CursusFilterType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Request;
 
 #[Route('/cursus', name: 'cursus_')]
 class CursusController extends AbstractController

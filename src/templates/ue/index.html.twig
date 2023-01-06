@@ -37,7 +37,10 @@
             {% endfor %}
         </table>
     {% else %}
-        <h2>Aucun résultat !</h2>
+        <div class="d-flex flex-row mb-3 align-items-center">
+            <h2>Aucun résultat !</h2>
+            <a class="btn btn-primary ms-5" href="{{ path('ue_add') }}" role="button"><i class="fa-solid fa-plus"></i> UE</a>
+        </div>
     {% endif %}
 
 {% endblock %}
