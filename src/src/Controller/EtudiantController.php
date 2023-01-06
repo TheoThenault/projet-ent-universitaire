@@ -42,8 +42,8 @@ class EtudiantController extends AbstractController
             $liste_etudiants = $entityManagerInterface->getRepository(Etudiant::class)
                 ->findAllByCursusAndFormation($cursus_chosis, $formation_choisis);
         }else{
-            $liste_etudiants = $entityManagerInterface->getRepository(Etudiant::class)
-                ->findAllByCursusAndFormation('Tous', 'Tous');
+//            $liste_etudiants = $entityManagerInterface->getRepository(Etudiant::class)
+//                ->findAllByCursusAndFormation('Tous', 'Tous');
         }
 
         return $this->render('etudiant/index.html.twig', [

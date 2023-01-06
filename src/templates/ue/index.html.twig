@@ -8,7 +8,7 @@
     <nav>
         {{ form(ueFormulaire) }}
     </nav>
-    {% if liste_ues is defined %}
+    {% if liste_ues is defined and liste_ues is not null%}
         <h2>Résultats:</h2>
         <table class="table table-hover table-striped">
                 <tr>
