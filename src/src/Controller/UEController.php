@@ -33,7 +33,7 @@ class UEController extends AbstractController
         $form->add('Filtrer', SubmitType::class);
         $form->handleRequest($request);
 
-        $liste_ues = array();
+        $liste_ues = null;
 
         if ($form->isSubmitted() && $form->isValid()) {
             // le formulaire à été remplit
@@ -43,7 +43,7 @@ class UEController extends AbstractController
             $liste_ues = $entityManagerInterface->getRepository(UE::class)->findAllByChoices($specialite_choisis, $cursus_choisis, $formation_choisis);
         } else {
             // aucun formulaire n'est remplit
-            $liste_ues = $entityManagerInterface->getRepository(UE::class)->findAllOrdered();
+            //$liste_ues = $entityManagerInterface->getRepository(UE::class)->findAllOrdered();
         }
 
         dump($liste_ues);
