@@ -22,6 +22,10 @@ class CourFilterType extends AbstractType
                 'label' => 'Formation: ',
                 'choices' => $options['formation']
             ])
+            ->add('Enseignant', ChoiceType::class, [
+                'label' => 'Enseignant: ',
+                'choices' => $options['enseignant']
+            ])
             ->add('Semaine', DateType::class, [
                 'label' => 'Semaine du: ',
                 'widget' => 'single_text'
@@ -37,7 +41,8 @@ class CourFilterType extends AbstractType
         $resolver->setDefaults([
             // Configure your form options here
             'cursus' => [],
-            'formation' => []
+            'formation' => [],
+            'enseignant' => []
         ]);
     }
 }

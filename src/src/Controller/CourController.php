@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Cour;
 use App\Entity\Cursus;
 use App\Entity\Formation;
+use App\Entity\Enseignant;
 use App\Form\cour\CourFilterType;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
@@ -35,9 +36,20 @@ class CourController extends AbstractController
     {
         $liste_cur = $entityManagerInterface->getRepository(Cursus::class)->findAllNom();
         $liste_for = $entityManagerInterface->getRepository(Formation::class)->findAllNameOrdered();
+        $liste_enstmp = $entityManagerInterface->getRepository(Enseignant::class)->sortByNameAscOrDesc('ASC');
+        $liste_ens['Tous'] = 'Tous';
+        for($i = 0; $i < count($liste_enstmp); $i++)
+        {
+            $nom = $liste_enstmp[$i]->getPersonne()->getNom() . ' ' . $liste_enstmp[$i]->getPersonne()->getPrenom();
+            $liste_ens[$nom] = $liste_enstmp[$i]->getPersonne()->getNom();
+        }
+
+        dump($liste_ens);
+
         $form = $this->createForm(CourFilterType::class, null, [
             'cursus' => $liste_cur,
-            'formation' => $liste_for
+            'formation' => $liste_for,
+            'enseignant' => $liste_ens
         ]);
         $form->add('Filtrer', SubmitType::class);
         $form->handleRequest($request);
@@ -50,7 +62,8 @@ class CourController extends AbstractController
             //dump($date_choisis);
             $cursus_choisis = $form->get('Cursus')->getData();
             $formation_choisis = $form->get('Formation')->getData();
-            $liste_cours = $entityManagerInterface->getRepository(Cour::class)->findAllByChoices($cursus_choisis, $formation_choisis, $date_choisis);
+            $prof_choisis = $form->get('Enseignant')->getData();
+            $liste_cours = $entityManagerInterface->getRepository(Cour::class)->findAllByChoices($cursus_choisis, $formation_choisis, $date_choisis, $prof_choisis);
         }
 
         //dump($liste_cours);

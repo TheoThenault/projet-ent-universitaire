@@ -68,7 +68,7 @@ class CourRepository extends ServiceEntityRepository
         return $queryBuilder->getQuery()->getArrayResult();
     }
 
-    public function findAllByChoices($cursus, $formation, $date): array
+    public function findAllByChoices($cursus, $formation, $date, $prof): array
     {
         try {
             $debut_annee = $this->getDebutAnnee();
@@ -113,6 +113,10 @@ class CourRepository extends ServiceEntityRepository
         if($formation != 'Tous') {
             $queryBuilder->andWhere('f.nom = :for');
             $queryBuilder->setParameter('for', $formation);
+        }
+        if($prof != 'Tous') {
+            $queryBuilder->andWhere('pers.nom = :prof');
+            $queryBuilder->setParameter('prof', $prof);
         }
 
         $queryBuilder->orderBy('cour.creneau');
