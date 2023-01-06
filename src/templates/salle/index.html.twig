@@ -8,7 +8,10 @@
         {{ form(form) }}
     </nav>
     {% if liste_salle is defined and liste_salle is not empty %}
-        <h2>Résultats:</h2>
+        <div class="d-flex flex-row mb-3 align-items-center">
+            <h2>Résultats:</h2>
+            <a class="btn btn-primary ms-5" href="{{ path('salle_add') }}" role="button"><i class="fa-solid fa-plus"></i> Salle</a>
+        </div>
         <table class="table table-hover table-striped">
             <tr>
                 <th>Nom</th>
@@ -26,6 +29,9 @@
             {% endfor %}
         </table>
     {% else %}
-        <h2>Aucun résultat !</h2>
+        <div class="d-flex flex-row mb-3 align-items-center">
+            <h2>Aucun résultat !</h2>
+            <a class="btn btn-primary ms-5" href="{{ path('salle_add') }}" role="button"><i class="fa-solid fa-plus"></i> Salle</a>
+        </div>
     {% endif %}
 {% endblock %}

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Salle;
+use App\Form\salle\SalleAddType;
 use App\Form\salle\SalleType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -45,37 +46,25 @@ class SalleController extends AbstractController{
         ]);
     }
 
-    #[Route('/list/{page}', name : 'list', requirements: ['page' => '\d+'], defaults: ['page' => 1])]
-    public function listAction(int $page, EntityManagerInterface $em, Request $request): Response{
-
-        if($page < 1) {
-            throw $this->createNotFoundException("La page $page n'existe pas");
-        }
-
-        //$nbPerPage = $this->getParameter('my_parameter');//Si on utilise une variable globale pour le nombre par page comme dans le tp symfony
-        $nbPerPage = 5;
-
-        $form = $this->createForm(SalleType::class);
-        $form->add('send', SubmitType::class, ['label' => 'Valider le filtre']);
+    #[Route('/add', name: 'add')]
+    public function addAction(EntityManagerInterface $entityManager, Request $request): Response
+    {
+        $salle = new Salle();
+        $form = $this->createForm(SalleAddType::class, $salle);
+        $form->add('send', SubmitType::class, ['label' => 'Ajouter une nouvelle salle']);
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
 
-            $salles = $em->getRepository(Salle::class)
-                ->myFindWithPaging($page, $nbPerPage,$form->getData()["filtre"]);
-        }else{
-            //form rempli
-            $salles = $em->getRepository(Salle::class)
-                ->myFindAllWithPaging($page, $nbPerPage);
-        }
-        $nbTotalPages = intval(ceil(count($salles) / $nbPerPage));
+            $entityManager->persist($salle);
+            $entityManager->flush();
 
-        if($page > $nbTotalPages){
-            throw $this->createNotFoundException("La page $page n'existe pas");
+            return $this->redirectToRoute('salle_index');
         }
 
-        return $this->render('salle/list.html.twig',['salles'=> $salles, 'nbTotalPages'=>$nbTotalPages, 'page'=>$page, 'form' => $form->createView()]);
+        return $this->render('salle/add.html.twig', [
+            'addSalleForm' => $form->createView(),
+        ]);
     }
-
 
 }
