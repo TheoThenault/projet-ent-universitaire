@@ -35,12 +35,17 @@ class UEAddType extends AbstractType
                 'by_reference' => false,
                 'class' => Formation::class,
                 'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('c')
-                        ->orderBy('c.nom', 'ASC');
+                    return $er->createQueryBuilder('f')
+                        ->leftJoin('f.cursus', 'c')
+                        ->addSelect('c')
+                        ->orderBy('c.nom', 'ASC')
+                        ->addOrderBy('f.nom', 'ASC');
                 },
                 'multiple' => false,
                 'expanded' => false,
-                'choice_label' => 'nom'
+                'choice_label' => function ($formation) {
+                    return $formation->getCursusAndFormationName();
+                }
             ])
         ;
     }

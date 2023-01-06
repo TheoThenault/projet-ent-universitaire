@@ -131,4 +131,9 @@ class Formation
 
         return $this;
     }
+
+    public function getCursusAndFormationName(): string
+    {
+        return $this->getNom() . ' - ' . $this->getCursus()->getNom();
+    }
 }

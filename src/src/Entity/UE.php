@@ -33,7 +33,6 @@ class UE
 
     public function __construct()
     {
-        $this->formation = new ArrayCollection();
         $this->cours = new ArrayCollection();
     }
 
@@ -74,15 +73,6 @@ class UE
     public function setSpecialite(?Specialite $specialite): self
     {
         $this->specialite = $specialite;
-
-        return $this;
-    }
-
-    public function removeFormation(Formation $formation): self
-    {
-        if ($this->formations->removeElement($formation)) {
-            $formation->removeUe($this);
-        }
 
         return $this;
     }
