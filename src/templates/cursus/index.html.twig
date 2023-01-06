@@ -10,7 +10,10 @@
     </nav>
     {# on n'affiche cette parite que si la liste est défini est pas vide #}
     {% if liste_cursus is defined and liste_cursus is not empty %}
-        <h2>Résultat:</h2>
+        <div class="d-flex flex-row mb-3 align-items-center">
+            <h2>Résultats:</h2>
+            <a class="btn btn-primary ms-5" href="{{ path('cursus_add') }}" role="button"><i class="fa-solid fa-plus"></i> Cursus</a>
+        </div>
         <table class="table table-hover table-striped">
             <tr>
                 <th>Niveau</th>
@@ -24,7 +27,10 @@
             {% endfor %}
         </table>
     {% else %}
-        <h2>Aucun résultat !</h2>
+        <div class="d-flex flex-row mb-3 align-items-center">
+            <h2>Aucun résultat !</h2>
+            <a class="btn btn-primary ms-5" href="{{ path('cursus_add') }}" role="button"><i class="fa-solid fa-plus"></i> Cursus</a>
+        </div>
     {% endif %}
 
 {% endblock %}
