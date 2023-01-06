@@ -38,6 +38,7 @@ class EtudiantFixtures
         );
         $etudiantUser->setFormation($list_formations[0]);
         $manager->persist($etudiantUser);
+        $this->list_etudiants[] = $etudiantUser;
 
         // ========== FLUSH ==========
 
