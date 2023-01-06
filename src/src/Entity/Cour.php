@@ -29,7 +29,6 @@ class Cour
     private ?Enseignant $enseignant = null;
 
     #[ORM\ManyToOne(inversedBy: 'cours')]
-    #[ORM\JoinColumn(nullable: false)]
     private ?Groupe $groupe = null;
 
     public function getId(): ?int

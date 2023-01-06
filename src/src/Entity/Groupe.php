@@ -47,6 +47,15 @@ class Groupe
         return $this;
     }
 
+    public function getFormation() : ?Formation
+    {
+        if($this->getEtudiants()[0] != null)
+        {
+            return $this->getEtudiants()[0]->getFormation(); 
+        }
+        return null;
+    }
+
     /**
      * @return Collection<int, Etudiant>
      */

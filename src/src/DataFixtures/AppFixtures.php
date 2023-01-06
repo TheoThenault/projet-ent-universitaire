@@ -10,6 +10,7 @@ use App\DataFixtures\SalleFixtures;
 use App\DataFixtures\PersonneFixtures;
 use App\DataFixtures\EnseignantFixtures;
 use App\DataFixtures\StatutEnseignantFixtures;
+use App\DataFixtures\GroupeFixtures;
 use App\DataFixtures\UEFixtures;
 use App\DataFixtures\SpecialiteFixtures;
 use Symfony\Component\Form\Form;
@@ -19,8 +20,6 @@ class AppFixtures extends Fixture
     
     public function load(ObjectManager $manager): void
     {
-
-
         $salleFixture = new SalleFixtures();
         $salleFixture->charger($manager);
 
@@ -52,12 +51,16 @@ class AppFixtures extends Fixture
         $etudiant_fixtures = new EtudiantFixtures();
         $etudiant_fixtures->charger($manager, $personnes_fixture->list_personnes, 5, $formation_fixture->list_formations);
 
+        // groupes fixtures
+        $groupe_fixtures = new GroupeFixtures();
+        $groupe_fixtures->charger($manager, $etudiant_fixtures->list_etudiants);
+
         $ues = new UEFixtures();
         $ues->charger($manager, $specialite_fixtures->list_specialites, $formation_fixture->list_formations);
 
         $cours_fixtures = new CourFixtures();
         $cours_fixtures->charger($manager, $enseigants_fixture->list_enseignants, $salleFixture->list_salles,
-                                $ues->list_ues);
+                                $ues->list_ues, $groupe_fixtures->list_groupes);
 
         $manager->flush();
     }

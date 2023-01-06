@@ -21,6 +21,7 @@ class Etudiant
     #[ORM\ManyToOne(inversedBy: 'etudiants')]
     private ?Formation $formation = null;
 
+    // Un étudiant à un groupe de TD, de TP et de CM
     #[ORM\ManyToMany(targetEntity: Groupe::class, mappedBy: 'etudiants')]
     private Collection $groupes;
 
