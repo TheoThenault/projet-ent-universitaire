@@ -20,10 +20,10 @@ class UEValideController extends AbstractController
         }
         $etudiantID = $this->getUser()->getEtudiant()->getId();
         $uesValides = $this->getUser()->getEtudiant()->getUesValides();
-        dump($this->getUser());
-        dump($etudiantID);
-        dump($uesValides);
-        return $this->render('ue_valide/index.html.twig');
+        //dump($this->getUser());
+        //dump($etudiantID);
+        //dump($uesValides->toArray());
+        return $this->render('ue_valide/index.html.twig', ['list_ues' => $uesValides->toArray()]);
     }
 
 }
