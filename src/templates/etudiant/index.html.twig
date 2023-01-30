@@ -19,7 +19,7 @@
                 <th>Prénom</th>
                 <th>Cursus</th>
                 <th>Formation</th>
-{#                  <th></th>#}
+                  <th></th>
             </tr>
             {% for etudiant in liste_etudiants %}
                 <tr>
@@ -27,10 +27,10 @@
                     <td>{{ etudiant.personne.prenom }}</td>
                     <td>{{ etudiant.formation.cursus.nom }}</td>
                     <td>{{ etudiant.formation.nom }}</td>
-{#                    <td>#}
-{#                        <a class="btn btn-primary" href="{{ path('etudiant_add') }}" role="button"><i class="fa-solid fa-pen-to-square"></i></a>#}
+                    <td>
+                        <a class="btn btn-primary" href="{{ path('etudiant_edit', {'id': etudiant.id}) }}" role="button"><i class="fa-solid fa-pen-to-square"></i></a>
 {#                        <a class="btn btn-primary ms-2" href="{{ path('etudiant_add') }}" role="button"><i class="fa-solid fa-trash"></i></a>#}
-{#                    </td>#}
+                    </td>
                 </tr>
             {% endfor %}
         </table>
