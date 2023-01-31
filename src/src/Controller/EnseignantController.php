@@ -30,7 +30,7 @@ class EnseignantController extends AbstractController
             dump($responses);
             if(array_key_exists('Entry', $responses))
             {
-                $enseignants =  $entityManager->getRepository(Enseignant::class)->findByNomOrPrenom($responses['Entry']);
+                $enseignants =  $entityManager->getRepository(Enseignant::class)->findByNomOrPrenomArray(explode(' ', $responses['Entry']));
                 return $this->render('enseignant/list.twig', ['profForm' => $form->createView(), 'list' => $enseignants]);
             }
         }

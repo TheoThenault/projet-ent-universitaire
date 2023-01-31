@@ -129,6 +129,29 @@ class EnseignantRepository extends ServiceEntityRepository
         return $queryBuilder->getQuery()->getResult();
     }
 
+    public function findByNomOrPrenomArray(array $entries): mixed
+    {
+        $queryBuilder = $this->createQueryBuilder('prof');
+        $queryBuilder->addSelect('prof');
+        $queryBuilder->leftJoin('prof.StatutEnseignant', 'status');
+        $queryBuilder->addSelect('status');
+        $queryBuilder->leftJoin('prof.personne', 'pers');
+        $queryBuilder->addSelect('pers');
+
+        for($i = 0; $i < count($entries); $i++)
+        {
+            $entry = $entries[$i];
+            if(strlen($entry) < 3)
+                continue;
+
+            $queryBuilder->orWhere('pers.nom LIKE :format'.$i);
+            $queryBuilder->orWhere('pers.prenom LIKE :format'.$i);
+            $queryBuilder->setParameter('format'.$i, $entry . '%');
+        }
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+
 //    /**
 //     * @return Enseignant[] Returns an array of Enseignant objects
 //     */
