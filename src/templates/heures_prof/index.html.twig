@@ -3,5 +3,39 @@
 {% block title %}Heures{% endblock %}
 
 {% block body %}
+    {% if is_granted('ROLE_ENSEIGNANT') and not is_granted('ROLE_ADMIN') %}
+        {% if list_UES is not defined or list_UES is empty %}
+            <h2>Aucun UES</h2>
+        {% else %}
 
+            <h2>Vos Heures:</h2>
+            <table class="table table-hover table-striped">
+                <tr>
+                    <th>Nom UE</th>
+                    <th>Formation</th>
+                    <th>Cursus</th>
+                    <th>CM</th>
+                    <th>TD</th>
+                    <th>TP</th>
+                    <th>Total</th>
+                </tr>
+
+                {% for ue in list_UES %}
+                    <tr>
+                        <td>{{ ue.nom }}</td>
+                        <td>{{ ue.Formation }}</td>
+                        <td>{{ ue.Cursus }}</td>
+                        <td>{{ ue.CM }}</td>
+                        <td>{{ ue.TD }}</td>
+                        <td>{{ ue.TP }}</td>
+                        <td>{{ ue.TOTAL }}</td>
+                    </tr>
+                {% endfor %}
+
+            </table>
+
+        {% endif %}
+    {% else %}
+        <h2>Vous n'êtes pas un enseignant !</h2>
+    {% endif %}
 {% endblock %}
