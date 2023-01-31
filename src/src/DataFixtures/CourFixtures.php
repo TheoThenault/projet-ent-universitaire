@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Cour;
 use App\Entity\Etudiant;
+use App\Entity\Groupe;
 use Doctrine\Persistence\ObjectManager;
 
 use App\Entity\Formation;
@@ -13,8 +14,11 @@ class CourFixtures
 {
     public array $list_cours = array();
 
-    public function charger(ObjectManager $manager, array $list_enseignant, array $list_salles, array $list_ues, array $list_groupes): void
+    public function charger(ObjectManager $manager, array $list_enseignant, array $list_salles, array $list_ues): void
     {
+        $manager->flush();
+        $list_groupes = $manager->getRepository(Groupe::class)->findAll();
+
         $nE = count($list_enseignant);
         $nS = count($list_salles);
         $nU = count($list_ues);

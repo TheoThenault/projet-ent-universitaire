@@ -49,11 +49,7 @@ class AppFixtures extends Fixture
         }
 
         $etudiant_fixtures = new EtudiantFixtures();
-        $etudiant_fixtures->charger($manager, $personnes_fixture->list_personnes, 1000, $formation_fixture->list_formations);
-
-        // groupes fixtures
-        $groupe_fixtures = new GroupeFixtures();
-        $groupe_fixtures->charger($manager, $etudiant_fixtures->list_etudiants);
+        $etudiant_fixtures->charger($manager, $personnes_fixture->list_personnes, 100, $formation_fixture->list_formations);
 
         $ues = new UEFixtures();
         $ues->charger($manager, $specialite_fixtures->list_specialites, $formation_fixture->list_formations);
@@ -63,7 +59,7 @@ class AppFixtures extends Fixture
 
         $cours_fixtures = new CourFixtures();
         $cours_fixtures->charger($manager, $enseigants_fixture->list_enseignants, $salleFixture->list_salles,
-                                $ues->list_ues, $groupe_fixtures->list_groupes);
+                                $ues->list_ues);
 
         $manager->flush();
     }

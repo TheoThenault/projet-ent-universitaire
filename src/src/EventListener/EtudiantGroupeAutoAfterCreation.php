@@ -47,16 +47,17 @@ class EtudiantGroupeAutoAfterCreation
 
             foreach ($groupesWithSameFormation as $groupe) {
                 // add student to CM. NO MAX
-                if($groupe->getType() ==  'CM'){
+                $type = $groupe->getType();
+                if($type ==  'CM'){
                     $groupe->addEtudiant($etudiant);
                     $this->entityManager->persist($groupe);
                 }
                 // add all TD groupe to $grpsTp
-                if($groupe->getType() ==  'TD'){
+                if($type ==  'TD'){
                     $grpsTd[] = $groupe;
                 }
                 // add all TP groupe to $grpsTd
-                if($groupe->getType() ==  'TP'){
+                if($type ==  'TP'){
                     $grpsTp[] = $groupe;
                 }
             }
