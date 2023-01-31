@@ -76,11 +76,13 @@ class CourRepository extends ServiceEntityRepository
             return [];
         }
 
-        $datediff = $date->diff($debut_annee);
-        if($datediff->days < 0)
+        if($date < $debut_annee)
         {
             return [];
         }
+
+
+        $datediff = $date->diff($debut_annee);
         $numeroSemaine = floor($datediff->days / 7);
         $creneauMin = 20 * $numeroSemaine + 1;  // 20 creneaux par semaines
         $creneauMax = $creneauMin + 19;
