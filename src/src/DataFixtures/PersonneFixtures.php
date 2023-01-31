@@ -10,37 +10,52 @@ class PersonneFixtures
 {
     public array $list_personnes = array();
 
+    private function getNom(): string
+    {
+        $noms = [
+            'Martin', 'Simon', 'Morel', 'Legrand', 'Perrin', 'Bernard', 'Laurent', 'Girard', 'Garnier',
+            'Morin', 'Dubois', 'Lefebvre', 'Andre', 'Faure', 'Dupont', 'Fontaine', 'Lopez', 'Robin',
+            'Leroy', 'Durand', 'Petit', 'Bertrand', 'Richard', 'Poirier', 'Rideau', 'Merlu', 'Duval',
+            'Brun', 'Noel', 'Sins', 'Gourdin', 'Rhoades', 'Melon', 'Guerin', 'Nicolas', 'Leclerc',
+            'Laporte', 'Lemaitre', 'Langlois', 'Breton', 'Leroux', 'Charles', 'Bonnet', 'Dubois', 'Deschamps',
+            'Kenobi', 'Potter', 'Fujiwara', 'Usumaki', 'Willis', 'Cruise'
+        ];
+        $index =  rand(0, count($noms)-1);
+        return $noms[$index];
+    }
+
+    private function getPrenom(): string
+    {
+        $prenoms = [
+            'Mattieu', 'Jean', 'Pierre', 'Michel', 'Sasha', 'André', 'Philippe', 'Olivier', 'Bernard',
+            'Marie', 'Jeanne', 'Monique', 'Isabelle', 'Nathalie', 'Sylvie', 'Suzanne', 'Abella', 'Lana',
+            'Johnny', 'Camille', 'Roger', 'Paul', 'Daniel', 'Henri', 'Nicolas', 'Manuel', 'Jacques',
+            'Mia', 'Sarah', 'Rose', 'Jade', 'Emma', 'Angele', 'Léa', 'Manon', 'Lucie', 'Clara',
+            'Alexandre', 'Hugo', 'Lucas', 'Théo', 'Simon', 'Quentin', 'Mathis', 'Paul', 'Bastien',
+            'Amélie', 'Alicia', 'Carla', 'Elisa', 'Margaux', 'Mélissa', 'Léna', 'Elise', 'Ambre',
+            'Bruce', 'Takumi', 'Harry', 'Obiwan', 'Anakin', 'Qui-Gon', 'Tom'
+        ];
+        $index =  rand(0, count($prenoms)-1);
+        return $prenoms[$index];
+    }
+
     public function charger(ObjectManager $manager): void
     {
         $email="univ-poitiers.fr";
 
-        $nom_prenom = array(
-            array("Adèle", "Hiriome"),
-            array("Ahmed", "Epan"),
-            array("Archibald", "Hépompier"),
-            array("Bérénice", "Hafoy"),
-            array("Bob", "Hinard"),
-            array("Bruno", "Zieuvair"),
-            array("Carrie", "Danter"),
-            array("Célimène", "Kacraké"),
-            array("Daisy", "Meuble"),
-            array("Danielle", "Nimoit"),
-            array("David", "Poche"),
-            array("Eléonore", "Cessaint"),
-            array("Eugénie", "Desalpage"),
-            array("Gary", "Guette"),
-            array("Natacha", "Rivari"),
-        );
+        $nombre_personnes = 2000;
 
         // ========== CREATION DE PERSONNE ==========
-        for ($i = 0; $i <count($nom_prenom); $i++){
+        for ($i = 0; $i < $nombre_personnes; $i++){
+            $prenom = $this->getPrenom();
+            $nom = $this->getNom();
             $this->list_personnes[$i] = new Personne();
             $this->list_personnes[$i]
-                ->setEmail($nom_prenom[$i][0].".".$nom_prenom[$i][1]."@".$email)
-                ->setPrenom($nom_prenom[$i][0])
-                ->setNom($nom_prenom[$i][1])
+                ->setEmailSafe($nom.".".$prenom, $manager)
+                ->setPrenom($prenom)
+                ->setNom($nom)
                 ->setPassword('$2y$13$PQfkvYMxBXDalJ5hP9kilue8jeJarc3wGnCwvtzxg7noPPYOIZCv6')
-                ->setRoles(['ROLE_ADMIN']);
+                ->setRoles(['ROLE_USER']);
             $manager->persist($this->list_personnes[$i]);
         }
 
