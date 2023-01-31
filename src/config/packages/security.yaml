@@ -40,7 +40,7 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         - { path: ^/cour, roles: ROLE_USER }
-        - { path: ^/ueValide, roles: ROLE_USER }
+        - { path: ^/ueValide, roles: ROLE_ETUDIANT }
         - { path: ^/etudiant, roles: ROLE_SCOLARITE }
         - { path: ^/ue, roles: ROLE_SCOLARITE }
         - { path: ^/cursus, roles: ROLE_SCOLARITE }
