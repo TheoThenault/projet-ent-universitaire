@@ -65,6 +65,7 @@ class FormationController extends AbstractController
             $entityManager->persist($formation);
             $entityManager->flush();
 
+            $this->addFlash('crud', "La formation : {$form->get('nom')->getData()}, a été créée avec succès.");
             return $this->redirectToRoute('formation_index');
         }
 
