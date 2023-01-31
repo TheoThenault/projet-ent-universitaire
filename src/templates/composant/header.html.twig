@@ -12,6 +12,9 @@
                 {% if is_granted('ROLE_USER') %}
                     <li><a href="{{ path('cour_index') }}" class="nav-link px-2">Cours</a></li>
                 {% endif %}
+                {% if is_granted('ROLE_ENSEIGNANT') %}
+                    <li><a href="{{ path('heuresProf_index') }}" class="nav-link px-2">Heures</a></li>
+                {% endif %}
                 {% if is_granted('ROLE_ETUDIANT') %}
                     <li><a href="{{ path('ueValide_index') }}" class="nav-link px-2">Ues Validés</a></li>
                 {% endif %}

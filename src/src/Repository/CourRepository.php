@@ -76,11 +76,13 @@ class CourRepository extends ServiceEntityRepository
             return [];
         }
 
-        $datediff = $date->diff($debut_annee);
-        if($datediff->days < 0)
+        if($date < $debut_annee)
         {
             return [];
         }
+
+
+        $datediff = $date->diff($debut_annee);
         $numeroSemaine = floor($datediff->days / 7);
         $creneauMin = 20 * $numeroSemaine + 1;  // 20 creneaux par semaines
         $creneauMax = $creneauMin + 19;
@@ -133,6 +135,29 @@ class CourRepository extends ServiceEntityRepository
         }
 
         return $result;
+    }
+
+    public function findAllByProf($profPersID): array
+    {
+        $queryBuilder = $this->createQueryBuilder('cour');
+        $queryBuilder->addSelect('cour');
+        $queryBuilder->leftJoin('cour.enseignant', 'ens');
+        $queryBuilder->addSelect('ens');
+        $queryBuilder->leftJoin('ens.personne', 'pers');
+        $queryBuilder->addSelect('pers');
+        $queryBuilder->leftJoin('cour.ue', 'ue');
+        $queryBuilder->addSelect('ue');
+        $queryBuilder->leftJoin('cour.groupe', 'grp');
+        $queryBuilder->addSelect('grp');
+        $queryBuilder->leftJoin('ue.formation', 'f');
+        $queryBuilder->addSelect('f');
+        $queryBuilder->leftJoin('f.cursus', 'c');
+        $queryBuilder->addSelect('c');
+
+        $queryBuilder->andWhere('pers.id = :id');
+        $queryBuilder->setParameter('id', $profPersID);
+
+        return $queryBuilder->getQuery()->getArrayResult();
     }
 
     /**

@@ -42,6 +42,7 @@ security:
         - { path: ^/cour, roles: ROLE_USER }
         - { path: ^/ueValide, roles: ROLE_ETUDIANT }
         - { path: ^/etudiant, roles: ROLE_SCOLARITE }
+        - { path: ^/heures, roles: ROLE_ENSEIGNANT }
         - { path: ^/ue, roles: ROLE_SCOLARITE }
         - { path: ^/cursus, roles: ROLE_SCOLARITE }
         - { path: ^/formation, roles: ROLE_SCOLARITE }
