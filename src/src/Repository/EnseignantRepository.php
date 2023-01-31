@@ -112,6 +112,24 @@ class EnseignantRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    public function findByNomOrPrenom($entry): mixed
+    {
+        if(strlen($entry) < 3)
+        {
+            return null;
+        }
+
+        $queryBuilder = $this->createQueryBuilder('prof');
+        $queryBuilder->addSelect('prof');
+        $queryBuilder->leftJoin('prof.personne', 'pers');
+        $queryBuilder->addSelect('pers');
+
+        $queryBuilder->where('pers.nom like \':entry%\'');
+        $queryBuilder->where('pers.prenom like \':entry%\'');
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+
 //    /**
 //     * @return Enseignant[] Returns an array of Enseignant objects
 //     */
