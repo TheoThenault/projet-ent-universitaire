@@ -1,10 +1,34 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello EnseignantController!{% endblock %}
+{% block title %}Liste enseignants!{% endblock %}
 
 {% block body %}
 
+    <h2>Recherche d'enseignant:</h2>
 
+    {{ form(profForm) }}
+
+    {% if list is not defined %}
+        <h3>Aucun résultat!</h3>
+    {% else %}
+        <h2>Enseignants:</h2>
+        <table class="table table-hover table-striped">
+            <tr>
+                <th>Nom</th>
+                <th>Prenom</th>
+                <th>Email</th>
+                <th>Status</th>
+            </tr>
+            {% for prof in list %}
+                <tr>
+                    <td>{{ prof.personne.nom }}</td>
+                    <td>{{ prof.personne.prenom }}</td>
+                    <td>{{ prof.personne.email }}</td>
+                    <td>{{ prof.StatutEnseignant.nom }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
 
 {% endblock %}
 {% block javascripts %}

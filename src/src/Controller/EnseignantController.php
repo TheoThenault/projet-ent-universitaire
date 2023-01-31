@@ -19,19 +19,22 @@ class EnseignantController extends AbstractController
     #[Route('/list', name: 'list')]
     public function index(EntityManagerInterface $entityManager, Request $request): Response
     {
-        //$enseignants =  $entityManager->getRepository(Enseignant::class)->findAll();
 
         $form = $this->createForm(RechercheProfType::class);
-        $form->add('send', SubmitType::class, ['label' => 'Filter']);
+        $form->add('send', SubmitType::class, ['label' => 'Filtrer']);
         $form->handleRequest($request);
 
 
         if ($form->isSubmitted() && $form->isValid()) {
             $responses = $form->getData();
             dump($responses);
-
+            if(array_key_exists('Entry', $responses))
+            {
+                $enseignants =  $entityManager->getRepository(Enseignant::class)->findByNomOrPrenom($responses['Entry']);
+                return $this->render('enseignant/list.twig', ['profForm' => $form->createView(), 'list' => $enseignants]);
+            }
         }
 
-        return $this->render('enseignant/list.twig');
+        return $this->render('enseignant/list.twig', ['profForm' => $form->createView()]);
     }
 }

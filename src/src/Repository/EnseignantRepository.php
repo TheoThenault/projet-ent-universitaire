@@ -114,18 +114,17 @@ class EnseignantRepository extends ServiceEntityRepository
 
     public function findByNomOrPrenom($entry): mixed
     {
-        if(strlen($entry) < 3)
-        {
-            return null;
-        }
-
         $queryBuilder = $this->createQueryBuilder('prof');
         $queryBuilder->addSelect('prof');
+        $queryBuilder->leftJoin('prof.StatutEnseignant', 'status');
+        $queryBuilder->addSelect('status');
         $queryBuilder->leftJoin('prof.personne', 'pers');
         $queryBuilder->addSelect('pers');
 
-        $queryBuilder->where('pers.nom like \':entry%\'');
-        $queryBuilder->where('pers.prenom like \':entry%\'');
+        $queryBuilder->where('pers.nom LIKE :format');
+        $queryBuilder->orWhere('pers.prenom LIKE :format');
+
+        $queryBuilder->setParameter('format', $entry . '%');
 
         return $queryBuilder->getQuery()->getResult();
     }
