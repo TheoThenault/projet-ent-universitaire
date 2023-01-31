@@ -49,7 +49,7 @@ class AppFixtures extends Fixture
         }
 
         $etudiant_fixtures = new EtudiantFixtures();
-        $etudiant_fixtures->charger($manager, $personnes_fixture->list_personnes, 5, $formation_fixture->list_formations);
+        $etudiant_fixtures->charger($manager, $personnes_fixture->list_personnes, 1000, $formation_fixture->list_formations);
 
         // groupes fixtures
         $groupe_fixtures = new GroupeFixtures();
