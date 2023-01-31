@@ -160,6 +160,74 @@ class CourRepository extends ServiceEntityRepository
         return $queryBuilder->getQuery()->getArrayResult();
     }
 
+    public function findAllByChoicesCreneau($cursus, $formation, $date): array
+    {
+        try {
+            $debut_annee = $this->getDebutAnnee();
+        } catch (Exception $e) {
+            return [];
+        }
+
+        $datediff = $date->diff($debut_annee);
+        if($datediff->days < 0)
+        {
+            return [];
+        }
+        $numeroSemaine = floor($datediff->days / 7);
+        $creneauMin = 20 * $numeroSemaine + 1;  // 20 creneaux par semaines
+        $creneauMax = $creneauMin + 19;
+        //dump($creneauMin);
+        //dump($creneauMax);
+
+
+        $queryBuilder = $this->createQueryBuilder('cour');
+        $queryBuilder->addSelect('cour');
+
+        $queryBuilder->leftJoin('cour.salle', 's');
+        $queryBuilder->addSelect('s');
+        $queryBuilder->leftJoin('cour.enseignant', 'ens');
+        $queryBuilder->addSelect('ens');
+        $queryBuilder->leftJoin('ens.personne', 'pers');
+        $queryBuilder->addSelect('pers');
+        $queryBuilder->leftJoin('cour.ue', 'ue');
+        $queryBuilder->addSelect('ue');
+        $queryBuilder->leftJoin('ue.formation', 'f');
+        $queryBuilder->addSelect('f');
+        $queryBuilder->leftJoin('f.cursus', 'c');
+        $queryBuilder->addSelect('c');
+
+        //$queryBuilder->addSelect('cour.creneau');
+
+        $queryBuilder->andWhere('cour.creneau BETWEEN :cmin AND :cmax');
+        $queryBuilder->setParameter('cmin', $creneauMin);
+        $queryBuilder->setParameter('cmax', $creneauMax);
+
+        if($cursus != 'Tous')
+        {
+            $queryBuilder->andWhere('c.nom = :cur');
+            $queryBuilder->setParameter('cur', $cursus);
+        }
+        if($formation != 'Tous') {
+            $queryBuilder->andWhere('f.nom = :for');
+            $queryBuilder->setParameter('for', $formation);
+        }
+
+        $queryBuilder->orderBy('cour.creneau');
+        $result = $queryBuilder->getQuery()->getArrayResult();
+
+        //dump(count($result));
+        /*for($i = 0; $i < count($result); $i++)
+        {
+            $curr = $result[$i]['creneau'] - 1;
+            //dump($result[$i]);
+            $res = $this->creneauToDate($curr);
+            if($res != null)
+                $result[$i]['creneau'] = $res;
+        }*/
+
+        return $result;
+    }
+
     /**
      * @throws Exception
      */

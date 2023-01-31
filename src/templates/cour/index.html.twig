@@ -3,7 +3,7 @@
 {% block title %}Liste des Cours{% endblock %}
 
 {% block body %}
-    {% if not is_granted('ROLE_ETUDINAT') %}
+    {% if not is_granted('ROLE_ETUDIANT') %}
         <h2>Filtres:</h2>
         <nav>
             {{ form(form) }}
@@ -198,5 +198,6 @@
         </div>
 
         {{ form_end(form) }}
+
     {% endif %}
 {% endblock %}

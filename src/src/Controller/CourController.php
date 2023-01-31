@@ -35,7 +35,40 @@ class CourController extends AbstractController
     #[Route('', name: 'index')]
     public function index(Request $request, EntityManagerInterface $entityManagerInterface): Response
     {
-        if(!$this->isGranted('ROLE_ETUDIANT')){
+        if($this->isGranted('ROLE_ETUDIANT')){
+            $form = $this->createForm(CourEtuDateFilterType::class);
+            $form->add('Valider', SubmitType::class);
+            $form->add("Date_du_jour", SubmitType::class, ['label' => "Aujourd'hui"]);
+
+            $form->handleRequest($request);
+            $liste_cours = array();
+
+            $formation = $this->getUser()->getEtudiant()->getFormation()->getNom();
+            $cursus = $this->getUser()->getEtudiant()->getFormation()->getCursus()->getNom();
+
+            if($form->isSubmitted() && $form->isValid() && $form->getClickedButton()->getName() == 'Date_du_jour') {
+                dump("zob");
+                $liste_cours = $entityManagerInterface->getRepository(Cour::class)->findAllByChoicesCreneau($cursus, $formation, $this->getNow());
+            }elseif($form->isSubmitted() && $form->isValid())
+            {
+                $date_choisis = $form->get('Semaine')->getData();
+                $liste_cours = $entityManagerInterface->getRepository(Cour::class)->findAllByChoicesCreneau($cursus, $formation, $date_choisis);
+            }else{
+                //La premiere fois que la page est chargée
+                $liste_cours = $entityManagerInterface->getRepository(Cour::class)->findAllByChoicesCreneau($cursus, $formation, $this->getNow());
+            }
+
+            $liste_edt = $this->listeEdtPourPlanning($liste_cours);
+            dump($liste_cours);
+            dump($liste_edt);
+            return $this->render('cour/index.html.twig', [
+                'liste_cours' => $liste_cours,
+                'liste_edt' => $liste_edt,
+                'form' => $form->createView()
+            ]);
+
+        }
+        else{
             $liste_cur = $entityManagerInterface->getRepository(Cursus::class)->findAllNom();
             $liste_for = $entityManagerInterface->getRepository(Formation::class)->findAllNameOrdered();
             $liste_enstmp = $entityManagerInterface->getRepository(Enseignant::class)->sortByNameAscOrDesc('ASC');
@@ -60,57 +93,18 @@ class CourController extends AbstractController
             {
                 // le formulaire à été remplit
                 $date_choisis = $form->get('Semaine')->getData();
-                //dump($date_choisis);
                 $cursus_choisis = $form->get('Cursus')->getData();
                 $formation_choisis = $form->get('Formation')->getData();
                 $prof_choisis = $form->get('Enseignant')->getData();
                 $liste_cours = $entityManagerInterface->getRepository(Cour::class)->findAllByChoices($cursus_choisis, $formation_choisis, $date_choisis, $prof_choisis);
             }
 
-            //dump($liste_cours);
             return $this->render('cour/index.html.twig', [
                 'liste_cours' => $liste_cours,
                 'form' => $form->createView()
             ]);
 
-
         }
-        else{//Pour étudiant
-            $form = $this->createForm(CourEtuDateFilterType::class);
-            $form->add('Valider', SubmitType::class);
-            $form->add("Date_du_jour", SubmitType::class, ['label' => "Aujourd'hui",]);
-
-            $form->handleRequest($request);
-            $liste_cours = array();
-
-            $formation = $this->getUser()->getEtudiant()->getFormation()->getNom();
-            $cursus = $this->getUser()->getEtudiant()->getFormation()->getCursus()->getNom();
-
-            if($form->isSubmitted() && $form->isValid() && $form->getClickedButton()->getName() == 'Today') {
-                $liste_cours = $entityManagerInterface->getRepository(Cour::class)->findAllByChoices($cursus, $formation, $this->getNow(),'Tous');
-            }elseif($form->isSubmitted() && $form->isValid())
-            {
-                // le formulaire à été remplit
-                $date_choisis = $form->get('Semaine')->getData();
-                $liste_cours = $entityManagerInterface->getRepository(Cour::class)->findAllByChoices($cursus, $formation, $date_choisis,'Tous');
-            }else{
-                $liste_cours = $entityManagerInterface->getRepository(Cour::class)->findAllByChoices($cursus, $formation, $this->getNow(),'Tous');
-            }
-
-            dump($liste_cours);
-            $liste_edt = $this->listeEdtPourPlanning($liste_cours);
-            dump($liste_edt);
-
-
-
-
-            return $this->render('cour/index.html.twig', [
-                'liste_cours' => $liste_cours,
-                'liste_edt' => $liste_edt,
-                'form' => $form->createView()
-            ]);
-        }
-
     }
 
     private function listeEdtPourPlanning($liste_cours):array{
@@ -121,7 +115,6 @@ class CourController extends AbstractController
             $nbPremierCreneaux = $liste_cours[0]['creneau'];
         }
 
-        dump($nbPremierCreneaux);
         $creneau = ($nbPremierCreneaux - $nbPremierCreneaux % 20) + 1;
         for($i = 0; $i < count($liste_cours) ; $i++){
 
