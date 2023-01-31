@@ -58,6 +58,9 @@ class AppFixtures extends Fixture
         $ues = new UEFixtures();
         $ues->charger($manager, $specialite_fixtures->list_specialites, $formation_fixture->list_formations);
 
+        $uesValideFixtures = new UEValideFixtures();
+        $uesValideFixtures->charger($manager, $etudiant_fixtures->list_etudiants, $ues->list_ues);
+
         $cours_fixtures = new CourFixtures();
         $cours_fixtures->charger($manager, $enseigants_fixture->list_enseignants, $salleFixture->list_salles,
                                 $ues->list_ues, $groupe_fixtures->list_groupes);

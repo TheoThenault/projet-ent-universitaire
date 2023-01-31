@@ -25,9 +25,13 @@ class Etudiant
     #[ORM\ManyToMany(targetEntity: Groupe::class, mappedBy: 'etudiants')]
     private Collection $groupes;
 
+    #[ORM\ManyToMany(targetEntity: UE::class)]
+    private Collection $uesValides;
+
     public function __construct()
     {
         $this->groupes = new ArrayCollection();
+        $this->uesValides = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -92,6 +96,30 @@ class Etudiant
         if ($this->groupes->removeElement($groupe)) {
             $groupe->removeEtudiant($this);
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, UE>
+     */
+    public function getUesValides(): Collection
+    {
+        return $this->uesValides;
+    }
+
+    public function addUesValide(UE $uesValide): self
+    {
+        if (!$this->uesValides->contains($uesValide)) {
+            $this->uesValides->add($uesValide);
+        }
+
+        return $this;
+    }
+
+    public function removeUesValide(UE $uesValide): self
+    {
+        $this->uesValides->removeElement($uesValide);
 
         return $this;
     }
