@@ -80,7 +80,7 @@ class EtudiantController extends AbstractController
             $entityManager->persist($personne);
 
             $entityManager->flush();
-
+            $this->addFlash('crud', "L'étudiant : {$form->get('prenom')->getData()} {$form->get('nom')->getData()}, a été créé avec succès.");
             return $this->redirectToRoute('etudiant_index');
         }
 
@@ -90,7 +90,7 @@ class EtudiantController extends AbstractController
     }
 
     #[Route('/edit/{id}', name: 'edit')]
-    public function editAction(EntityManagerInterface $em, Request $request, int $id): Response
+    public function editAction(EntityManagerInterface $em, Request $request, int $id, ): Response
     {
         $etudiant = $em->getRepository(Etudiant::class)->find($id);
         $form = $this->createForm(EtudiantEditType::class, $etudiant);
@@ -100,25 +100,16 @@ class EtudiantController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $em->persist($etudiant);
 
             $personne = $etudiant->getPersonne();
             $personne->setNom($form->get('nom')->getData());
             $personne->setPrenom($form->get('prenom')->getData());
 
-            $liste_persone = $em->getRepository(Personne::class)->findBy(
-                ['email' => $personne->getNom() . '.' . $personne->getPrenom() . '@univ-poitiers.fr']
-            );
-            if(count($liste_persone) > 0){
-                $personne->setEmail($personne->getNom() . '.' . $personne->getPrenom() . count($liste_persone) . '@univ-poitiers.fr');
-            } else {
-                $personne->setEmail($personne->getNom() . '.' . $personne->getPrenom() . '@univ-poitiers.fr');
-            }
-
             $em->persist($personne);
             $em->flush();
 
+            $this->addFlash('crud', "L'étudiant : {$form->get('prenom')->getData()} {$form->get('nom')->getData()}, a été modifié avec succès.");
             return $this->redirectToRoute('etudiant_index');
         }
 

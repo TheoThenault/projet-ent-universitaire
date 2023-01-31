@@ -62,6 +62,7 @@ class SalleController extends AbstractController{
             return $this->redirectToRoute('salle_index');
         }
 
+        $this->addFlash('crud', "La salle : {$form->get('nom')->getData()}, a été créée avec succès.");
         return $this->render('salle/add.html.twig', [
             'addSalleForm' => $form->createView(),
         ]);

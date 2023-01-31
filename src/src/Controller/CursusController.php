@@ -63,7 +63,7 @@ class CursusController extends AbstractController
 
             $entityManager->persist($cursus);
             $entityManager->flush();
-
+            $this->addFlash('crud', "Le cursus : {$form->get('nom')->getData()}, a été créé avec succès.");
             return $this->redirectToRoute('cursus_index');
         }
 

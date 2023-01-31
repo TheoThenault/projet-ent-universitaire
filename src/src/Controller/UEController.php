@@ -67,6 +67,7 @@ class UEController extends AbstractController
             $entityManager->persist($ue);
             $entityManager->flush();
 
+            $this->addFlash('crud', "L'UE : {$form->get('nom')->getData()}, a été créée avec succès.");
             return $this->redirectToRoute('ue_index');
         }
 
