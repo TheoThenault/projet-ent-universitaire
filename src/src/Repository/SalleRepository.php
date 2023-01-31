@@ -151,7 +151,6 @@ class SalleRepository extends ServiceEntityRepository
         return $queryBuilder->getQuery()->getArrayResult();
     }
 
-
 //    /**
 //     * @return SalleFixtures[] Returns an array of SalleFixtures objects
 //     */

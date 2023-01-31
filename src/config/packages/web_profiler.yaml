@@ -1,7 +1,7 @@
 when@dev:
     web_profiler:
         toolbar: true
-        intercept_redirects: false
+        intercept_redirects: true
 
     framework:
         profiler:
