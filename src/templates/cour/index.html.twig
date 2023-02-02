@@ -92,6 +92,15 @@
                                 {{liste_edt[i*4][1]}} <br>
                                 Salle:
                                 {{liste_edt[i*4][2]}} <br>
+                            {% elseif is_granted('ROLE_ENSEIGNANT_RES') %}
+                                UE:
+                                {{liste_edt[i*4][1]}} <br>
+                                Formation:
+                                {{liste_edt[i*4][4]}} <br>
+                                Enseignant:
+                                {{liste_edt[i*4][0]}} <br>
+                                Salle:
+                                {{liste_edt[i*4][2]}} <br>
                             {% else %}
                                 UE:
                                 {{liste_edt[i*4][1]}} <br>
@@ -122,6 +131,15 @@
                                     {{liste_edt[i*4 + 1][0]}} <br>
                                     UE:
                                     {{liste_edt[i*4 + 1][1]}} <br>
+                                    Salle:
+                                    {{liste_edt[i*4 + 1][2]}} <br>
+                                {% elseif is_granted('ROLE_ENSEIGNANT_RES') %}
+                                    UE:
+                                    {{liste_edt[i*4 + 1][1]}} <br>
+                                    Formation:
+                                    {{liste_edt[i*4 + 1][4]}} <br>
+                                    Enseignant:
+                                    {{liste_edt[i*4 + 1][0]}} <br>
                                     Salle:
                                     {{liste_edt[i*4 + 1][2]}} <br>
                                 {% else %}
@@ -176,6 +194,15 @@
                                     {{liste_edt[i*4 + 2][1]}} <br>
                                     Salle:
                                     {{liste_edt[i*4 + 2][2]}} <br>
+                                {% elseif is_granted('ROLE_ENSEIGNANT_RES') %}
+                                    UE:
+                                    {{liste_edt[i*4 + 2][1]}} <br>
+                                    Formation:
+                                    {{liste_edt[i*4 + 2][4]}} <br>
+                                    Enseignant:
+                                    {{liste_edt[i*4 + 2][0]}} <br>
+                                    Salle:
+                                    {{liste_edt[i*4 + 2][2]}} <br>
                                 {% else %}
                                     UE:
                                     {{liste_edt[i*4 + 2][1]}} <br>
@@ -205,6 +232,15 @@
                                     {{liste_edt[i*4 + 3][0]}} <br>
                                     UE:
                                     {{liste_edt[i*4 + 3][1]}} <br>
+                                    Salle:
+                                    {{liste_edt[i*4 + 3][2]}} <br>
+                                {% elseif is_granted('ROLE_ENSEIGNANT_RES') %}
+                                    UE:
+                                    {{liste_edt[i*4 + 3][1]}} <br>
+                                    Formation:
+                                    {{liste_edt[i*4 + 3][4]}} <br>
+                                    Enseignant:
+                                    {{liste_edt[i*4 + 3][0]}} <br>
                                     Salle:
                                     {{liste_edt[i*4 + 3][2]}} <br>
                                 {% else %}

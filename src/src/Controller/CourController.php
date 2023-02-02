@@ -8,8 +8,10 @@ use App\Entity\Etudiant;
 use App\Entity\Formation;
 use App\Entity\Enseignant;
 use App\Entity\Personne;
+use App\Entity\UE;
 use App\Form\cour\CourFilterType;
 use App\Form\cour\CourEtuDateFilterType;
+use App\Form\cour\EdtEnsRespFilterType;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -39,24 +41,64 @@ class CourController extends AbstractController
     {
         $etu = $this->isGranted('ROLE_ETUDIANT');
         $ens = $this->isGranted('ROLE_ENSEIGNANT');
-        if($etu || $ens){
+        $ens_res = $this->isGranted('ROLE_ENSEIGNANT_RES');//Enseignant res est aussi un prof. Ordre pour les if etu, ens_res, ens
 
-            $form = $this->createForm(CourEtuDateFilterType::class);
-            $form->add('Valider', SubmitType::class);
-            $form->add("Date_du_jour", SubmitType::class, ['label' => "Aujourd'hui"]);
+        if($etu or $ens){
+
+            if($ens_res){
+
+                $liste_uetmp = $entityManagerInterface->getRepository(UE::class)->findByFormation($this->getUser()->getEnseignant()->getResponsableFormation());
+                $liste_enstmp = $entityManagerInterface->getRepository(Enseignant::class)->sortByNameAscOrDesc('ASC');
+                $liste_ens['Tous'] = 'Tous';
+                $liste_ue['Tous'] = 'Tous';
+                for($i = 0; $i < count($liste_enstmp); $i++)
+                {
+                    $nom = $liste_enstmp[$i]->getPersonne()->getNom() . ' ' . $liste_enstmp[$i]->getPersonne()->getPrenom();
+                    $liste_ens[$nom] = $liste_enstmp[$i]->getPersonne()->getNom();
+                }
+
+                for($i = 0; $i < count($liste_uetmp); $i++)
+                {
+                    $nom = $liste_uetmp[$i]['nom'];
+                    $liste_ue[$nom] = $liste_uetmp[$i]['nom'];
+                }
+
+                //todo rajouter nom des prof dans l'edt
+                $form = $this->createForm(EdtEnsRespFilterType::class, null,[
+                    'ue' => $liste_ue,
+                    'enseignant' => $liste_ens
+                ]);
+                $form->add('Valider', SubmitType::class);
+                $form->add("Date_du_jour", SubmitType::class, ['label' => "Aujourd'hui"]);
+
+
+            }else{
+
+                $form = $this->createForm(CourEtuDateFilterType::class);
+                $form->add('Valider', SubmitType::class);
+                $form->add("Date_du_jour", SubmitType::class, ['label' => "Aujourd'hui"]);
+            }
 
             $form->handleRequest($request);
-            $liste_cours = array();
-
 
             if($etu){
+
                 $formation = $this->getUser()->getEtudiant()->getFormation()->getNom();
                 $cursus = $this->getUser()->getEtudiant()->getFormation()->getCursus()->getNom();
 
             }
+
             if($form->isSubmitted() && $form->isValid() && $form->getClickedButton()->getName() == 'Date_du_jour') {
-                if($etu) {
+
+                if ($etu) {
                     $liste_cours = $entityManagerInterface->getRepository(Cour::class)->findAllByChoicesCreneau($cursus, $formation, $this->getNow());
+
+                }elseif($ens_res){
+
+                    $ue_choisis = $form->get('Ue')->getData();
+                    $prof_choisis = $form->get('Enseignant')->getData();
+                    $formation =$this->getUser()->getEnseignant()->getResponsableFormation()->getnom();
+                    $liste_cours = $entityManagerInterface->getRepository(Cour::class)->findAllByChoicesCreneauProfResp($ue_choisis, $prof_choisis, $formation, $this->getNow());
 
                 }else{
                     $liste_cours = $entityManagerInterface->getRepository(Cour::class)->findAllByChoicesCreneauByProf($this->getNow(), $this->getUser()->getEnseignant());
@@ -65,8 +107,16 @@ class CourController extends AbstractController
             }elseif($form->isSubmitted() && $form->isValid())
             {
                 $date_choisis = $form->get('Semaine')->getData();
+
                 if($etu) {
                     $liste_cours = $entityManagerInterface->getRepository(Cour::class)->findAllByChoicesCreneau($cursus, $formation, $date_choisis);
+
+                }elseif($ens_res){
+
+                $ue_choisis = $form->get('Ue')->getData();
+                $prof_choisis = $form->get('Enseignant')->getData();
+                $formation =$this->getUser()->getEnseignant()->getResponsableFormation()->getNom();
+                $liste_cours = $entityManagerInterface->getRepository(Cour::class)->findAllByChoicesCreneauProfResp($ue_choisis, $prof_choisis, $formation, $date_choisis);
 
                 }else{
                     $liste_cours = $entityManagerInterface->getRepository(Cour::class)->findAllByChoicesCreneauByProf($date_choisis, $this->getUser()->getEnseignant());
@@ -76,6 +126,12 @@ class CourController extends AbstractController
                 //La premiere fois que la page est chargée
                 if($etu) {
                     $liste_cours = $entityManagerInterface->getRepository(Cour::class)->findAllByChoicesCreneau($cursus, $formation, $this->getNow());
+
+                }elseif($ens_res) {
+
+                    $formation = $this->getUser()->getEnseignant()->getResponsableFormation()->getNom();
+                    $liste_cours = $entityManagerInterface->getRepository(Cour::class)->findAllByChoicesCreneauProfResp('Tous', $this->getUser()->getEnseignant()->getPersonne()->getNom(), $formation, $this->getNow());
+
                 }else{
                     $liste_cours = $entityManagerInterface->getRepository(Cour::class)->findAllByChoicesCreneauByProf($this->getNow(), $this->getUser()->getEnseignant());
                 }
@@ -87,7 +143,6 @@ class CourController extends AbstractController
                 'liste_edt' => $liste_edt,
                 'form' => $form->createView()
             ]);
-
 
         }
         else{
@@ -106,7 +161,8 @@ class CourController extends AbstractController
                 'formation' => $liste_for,
                 'enseignant' => $liste_ens
             ]);
-            $form->add('Filtrer', SubmitType::class);
+            $form->add('Valider', SubmitType::class);
+            $form->add("Date_du_jour", SubmitType::class, ['label' => "Aujourd'hui"]);
 
             $form->handleRequest($request);
             $liste_cours = array();
