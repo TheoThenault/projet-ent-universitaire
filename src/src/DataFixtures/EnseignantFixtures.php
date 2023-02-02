@@ -30,7 +30,7 @@ class EnseignantFixtures
         // em = entity manager
         $enseignantUser = new Enseignant();
         $enseignantUser->setPersonne(
-            $manager->getRepository(Personne::class)->findOneBy(['email' => 'enseignant'. getenv('EMAIL')])
+            $manager->getRepository(Personne::class)->findOneBy(['email' => 'enseignant'. "@univ-poitiers.fr"])
         );
         $enseignantUser->setStatutEnseignant($list_statuts_enseignant[array_rand($list_statuts_enseignant)]);
         $this->list_enseignants[] = $enseignantUser;
@@ -39,7 +39,7 @@ class EnseignantFixtures
         // Création d'un enseignant spécifique qui est une personne avec le role ROLE_ENSEIGNANT_RES
         $enseignantResUser = new Enseignant();
         $enseignantResUser->setPersonne(
-            $manager->getRepository(Personne::class)->findOneBy(['email' => 'enseignant.res' . getenv('EMAIL')])
+            $manager->getRepository(Personne::class)->findOneBy(['email' => 'enseignant.res' . "@univ-poitiers.fr"])
         );
         $enseignantResUser->setStatutEnseignant($list_statuts_enseignant[array_rand($list_statuts_enseignant)]);
         $this->list_enseignants[] = $enseignantResUser;

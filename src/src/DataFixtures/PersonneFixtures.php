@@ -41,7 +41,7 @@ class PersonneFixtures
 
     public function charger(ObjectManager $manager, int $nbPersonnes): void
     {
-        $email=getenv('EMAIL');
+        $email= "@univ-poitiers.fr";
 
         // ========== CREATION DE PERSONNE ==========
         for ($i = 0; $i < $nbPersonnes; $i++){

@@ -59,7 +59,7 @@ class PersonneRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('p');
         $qb->where("p.email LIKE :mailFormat")
-            ->setParameter(':mailFormat', $prenom . '.' . $nom . '%' . getenv('EMAIL'));
+            ->setParameter(':mailFormat', $prenom . '.' . $nom . '%' . "@univ-poitiers.fr");
         return $qb->getQuery()->getArrayResult();
     }
 
