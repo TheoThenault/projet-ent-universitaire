@@ -6,9 +6,13 @@
 
     <h2>Recherche d'enseignant:</h2>
 
-    {{ form(profForm) }}
+    {{ form_start(profForm) }}
+    {{ form_errors(profForm) }}
 
-    {% if list is not defined %}
+    {{ form_row(profForm.Entry) }}
+    {{ form_row(profForm.send) }}
+
+    {% if list is not defined or list is empty%}
         <h3>Aucun résultat!</h3>
     {% else %}
         <h2>Enseignants:</h2>
@@ -28,7 +32,19 @@
                 </tr>
             {% endfor %}
         </table>
+
+        {% if pageMax > 1 %}
+            {% for page in 1..pageMax %}
+                {% if page != currPage %}
+                    <button type="submit" name="submit{{ page }}" formaction="{{ path('enseignant_list', {'nPage': page}) }}">{{ page }}</button>
+                {% else %}
+                    <a>{{ page }}</a>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
     {% endif %}
+
+    {{ form_end(profForm) }}
 
 {% endblock %}
 {% block javascripts %}

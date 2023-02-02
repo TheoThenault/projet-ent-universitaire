@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Enseignant;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
 
@@ -129,7 +130,7 @@ class EnseignantRepository extends ServiceEntityRepository
         return $queryBuilder->getQuery()->getResult();
     }
 
-    public function findByNomOrPrenomArray(array $entries): mixed
+    public function findByNomOrPrenomArrayPaged(array $entries, $nPage, $perPage): Paginator
     {
         $queryBuilder = $this->createQueryBuilder('prof');
         $queryBuilder->addSelect('prof');
@@ -151,7 +152,11 @@ class EnseignantRepository extends ServiceEntityRepository
 
         $queryBuilder->orderBy('pers.nom', 'ASC');
 
-        return $queryBuilder->getQuery()->getResult();
+        $query = $queryBuilder->getQuery();
+        $query->setFirstResult(($nPage - 1) * $perPage);
+        $query->setMaxResults($perPage);
+
+        return new Paginator($query);
     }
 
 //    /**

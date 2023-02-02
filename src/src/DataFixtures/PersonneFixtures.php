@@ -43,7 +43,7 @@ class PersonneFixtures
     {
         $email="univ-poitiers.fr";
 
-        $nombre_personnes = 2000;
+        $nombre_personnes = 10000;
 
         // ========== CREATION DE PERSONNE ==========
         for ($i = 0; $i < $nombre_personnes; $i++){
