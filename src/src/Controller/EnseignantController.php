@@ -35,16 +35,16 @@ class EnseignantController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $responses = $form->getData();
-            dump($responses);
+            //dump($responses);
             if(array_key_exists('Entry', $responses))
             {
-                $perPage = 20;
+                $perPage = $this->getParameter('lignes_par_page');
 
                 $enseignants =  $entityManager->getRepository(Enseignant::class)
                     ->findByNomOrPrenomArrayPaged(explode(' ', $responses['Entry']), $nPage, $perPage);
 
-                dump($enseignants->getQuery()->getResult());
-                dump(count($enseignants));
+                //dump($enseignants->getQuery()->getResult());
+                //dump(count($enseignants));
                 $pageMax = intval(ceil(count($enseignants)/$perPage));
                 if($nPage != 1 && $nPage > $pageMax)  // Différent de 1 car si la BDD est vide on veut quand même afficher une page basique pour l'utilisateur
                 {
