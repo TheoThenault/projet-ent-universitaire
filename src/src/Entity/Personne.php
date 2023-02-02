@@ -6,10 +6,12 @@ use App\Repository\PersonneRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: PersonneRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Personne implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -54,19 +56,16 @@ class Personne implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function setEmailSafe(string $email, EntityManagerInterface $entityManager): self
+    #[ORM\PostPersist]
+    public function setEmailSafe(LifecycleEventArgs $args): void
     {
-        $liste_persone = $entityManager->getRepository(Personne::class)->findBy(
-            ['email' => $email . '@univ-poitiers.fr']
-        );
-
-        if(count($liste_persone) > 0){
-            $this->setEmail($email . count($liste_persone) . '@univ-poitiers.fr');
-        } else {
-            $this->setEmail($email . '@univ-poitiers.fr');
+        $entityManager = $args->getObjectManager();
+        $liste_persone = $entityManager->getRepository(Personne::class)->findWhithSameMail($this->prenom, $this->nom);
+        var_dump("double : " .  count($liste_persone));
+        if(count($liste_persone) > 1){
+            $this->setEmail($this->prenom . '.' . $this->nom . count($liste_persone) . '@univ-poitiers.fr');
+            var_dump("new mail : " .  $this->prenom . '.' . $this->nom . count($liste_persone) . '@univ-poitiers.fr');
         }
-
-        return $this;
     }
 
     public function getNom(): ?string

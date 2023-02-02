@@ -55,6 +55,15 @@ class PersonneRepository extends ServiceEntityRepository
         $this->save($user, true);
     }
 
+    public  function findWhithSameMail($prenom, $nom): array
+    {
+        $qb = $this->createQueryBuilder('p');
+        $qb->where("p.email LIKE :mailFormat")
+            ->setParameter(':mailFormat', $prenom . '.' . $nom . '%@univ-poitiers.fr');
+        var_dump($prenom . '.' . $nom . '%@univ-poitiers.fr');
+        return $qb->getQuery()->getArrayResult();
+    }
+
 //    /**
 //     * @return Personne[] Returns an array of Personne objects
 //     */
