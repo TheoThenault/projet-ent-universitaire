@@ -41,7 +41,7 @@ class PersonneFixtures
 
     public function charger(ObjectManager $manager): void
     {
-        $email="univ-poitiers.fr";
+        $email="@univ-poitiers.fr";
 
         $nombre_personnes = 2000;
 
@@ -51,12 +51,13 @@ class PersonneFixtures
             $nom = $this->getNom();
             $this->list_personnes[$i] = new Personne();
             $this->list_personnes[$i]
-                ->setEmailSafe($nom.".".$prenom, $manager)
+                ->setEmail($prenom.".".$nom. $email)
                 ->setPrenom($prenom)
                 ->setNom($nom)
                 ->setPassword('$2y$13$PQfkvYMxBXDalJ5hP9kilue8jeJarc3wGnCwvtzxg7noPPYOIZCv6')
                 ->setRoles(['ROLE_USER']);
             $manager->persist($this->list_personnes[$i]);
+            $manager->flush();
         }
 
         // ========== CREATION ETUDIANT ==========
