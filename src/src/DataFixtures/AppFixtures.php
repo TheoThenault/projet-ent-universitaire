@@ -3,16 +3,15 @@
 namespace App\DataFixtures;
 
 use App\DataFixtures\FormationFixtures;
+use App\DataFixtures\SpecialiteFixtures;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use App\DataFixtures\SalleFixtures;
-
 use App\DataFixtures\PersonneFixtures;
 use App\DataFixtures\EnseignantFixtures;
 use App\DataFixtures\StatutEnseignantFixtures;
 use App\DataFixtures\GroupeFixtures;
 use App\DataFixtures\UEFixtures;
-use App\DataFixtures\SpecialiteFixtures;
 use Symfony\Component\Form\Form;
 
 class AppFixtures extends Fixture
@@ -35,19 +34,20 @@ class AppFixtures extends Fixture
 
         var_dump('status_enseignant fini');
 
-        $enseigants_fixture = new EnseignantFixtures();
-        $enseigants_fixture->charger(
-            $manager,
-            $personnes_fixture->list_personnes,
-            $statuts_enseignant_fixture->list_statuts_enseignant
-        );
-
-        var_dump('enseignant fini');
-
         $specialite_fixtures = new SpecialiteFixtures();
         $specialite_fixtures->charger($manager);
 
         var_dump('specialités fini');
+
+        $enseigants_fixture = new EnseignantFixtures();
+        $enseigants_fixture->charger(
+            $manager,
+            $personnes_fixture->list_personnes,
+            $statuts_enseignant_fixture->list_statuts_enseignant,
+            $specialite_fixtures->list_specialites
+        );
+
+        var_dump('enseignant fini');
 
         $cursus_fixture = new CursusFixtures();
         $cursus_fixture->charger($manager);

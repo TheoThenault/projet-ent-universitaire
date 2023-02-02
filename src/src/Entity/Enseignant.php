@@ -24,6 +24,9 @@ class Enseignant
     #[ORM\OneToMany(mappedBy: 'enseignant', targetEntity: Cour::class)]
     private Collection $cours;
 
+    #[ORM\ManyToOne(inversedBy: 'enseignants')]
+    private ?Specialite $section = null;
+
     public function __construct()
     {
         $this->cours = new ArrayCollection();
@@ -94,6 +97,18 @@ class Enseignant
                 $cour->setEnseignant(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSection(): ?Specialite
+    {
+        return $this->section;
+    }
+
+    public function setSection(?Specialite $section): self
+    {
+        $this->section = $section;
 
         return $this;
     }

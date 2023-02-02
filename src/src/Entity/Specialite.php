@@ -27,9 +27,13 @@ class Specialite
     #[ORM\OneToMany(mappedBy: 'specialite', targetEntity: UE::class)]
     private Collection $ue;
 
+    #[ORM\OneToMany(mappedBy: 'section', targetEntity: Enseignant::class)]
+    private Collection $enseignants;
+
     public function __construct()
     {
         $this->ue = new ArrayCollection();
+        $this->enseignants = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -97,6 +101,36 @@ class Specialite
             // set the owning side to null (unless already changed)
             if ($ue->getSpecialite() === $this) {
                 $ue->setSpecialite(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Enseignant>
+     */
+    public function getEnseignants(): Collection
+    {
+        return $this->enseignants;
+    }
+
+    public function addEnseignant(Enseignant $enseignant): self
+    {
+        if (!$this->enseignants->contains($enseignant)) {
+            $this->enseignants->add($enseignant);
+            $enseignant->setSection($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEnseignant(Enseignant $enseignant): self
+    {
+        if ($this->enseignants->removeElement($enseignant)) {
+            // set the owning side to null (unless already changed)
+            if ($enseignant->getSection() === $this) {
+                $enseignant->setSection(null);
             }
         }
 

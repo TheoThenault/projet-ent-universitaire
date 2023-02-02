@@ -16,14 +16,14 @@
         <div class="d-flex flex-row mb-3 align-items-center">
             <h3>Aucun résultat!</h3>
             {% if is_granted('ROLE_RH') %}
-                <a class="btn btn-primary ms-5" href="{{ path('etudiant_add') }}" role="button"><i class="fa-solid fa-plus"></i> Enseignants</a>
+                <a class="btn btn-primary ms-5" href="{{ path('enseignant_add') }}" role="button"><i class="fa-solid fa-plus"></i> Enseignants</a>
             {% endif%}
         </div>
     {% else %}
         <div class="d-flex flex-row mb-3 align-items-center">
             <h3>Enseignants: </h3>
             {% if is_granted('ROLE_RH') %}
-                <a class="btn btn-primary ms-5" href="{{ path('etudiant_add') }}" role="button"><i class="fa-solid fa-plus"></i> Enseignants</a>
+                <a class="btn btn-primary ms-5" href="{{ path('enseignant_add') }}" role="button"><i class="fa-solid fa-plus"></i> Enseignants</a>
             {% endif%}
         </div>
         <table class="table table-hover table-striped">
@@ -93,9 +93,4 @@
 
     {{ form_end(profForm) }}
 
-{% endblock %}
-{% block javascripts %}
-<script>
-
-</script>
 {% endblock %}

@@ -48,6 +48,7 @@ security:
         - { path: ^/formation, roles: ROLE_SCOLARITE }
         - { path: ^/salle, roles: ROLE_ADMIN }
         - { path: ^/enseignant, roles: ROLE_RH }
+        - { path: ^/enseignant/add, roles: ROLE_RH }
 
 when@test:
     security:

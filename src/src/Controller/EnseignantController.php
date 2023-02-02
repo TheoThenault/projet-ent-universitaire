@@ -3,7 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Enseignant;
+use App\Entity\Formation;
+use App\Entity\Personne;
+use App\Entity\Specialite;
+use App\Entity\StatutEnseignant;
 use App\Form\enseignant\EnseignantFilterType;
+use App\Form\enseignant\EnseignantType;
 use App\Form\enseignant\RechercheProfType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -44,8 +49,6 @@ class EnseignantController extends AbstractController
                 $enseignants =  $entityManager->getRepository(Enseignant::class)
                     ->findByNomOrPrenomArrayPaged(explode(' ', $responses['Entry']), $nPage, $perPage);
 
-
-
                 //dump($enseignants->getQuery()->getResult());
                 //dump(count($enseignants));
                 $pageMax = intval(ceil(count($enseignants)/$perPage));
@@ -61,4 +64,51 @@ class EnseignantController extends AbstractController
 
         return $this->render('enseignant/list.twig', ['profForm' => $form->createView()]);
     }
+
+    #[Route('/add', name: 'add')]
+    public function add(EntityManagerInterface $entityManager, Request $request): Response
+    {
+        $listeStatus = $entityManager->getRepository(StatutEnseignant::class)->getAllForm();
+        $listeSpecialites = $entityManager->getRepository(Specialite::class)->getAllForm();
+        $listeFormations = $entityManager->getRepository(Formation::class)->getAllForm();
+        $form = $this->createForm(EnseignantType::class, null,[
+            'status' => $listeStatus,
+            'specialites' => $listeSpecialites,
+            'formations' => $listeFormations
+        ]);
+        $form->add('send', SubmitType::class, ['label' => 'Créer']);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $newPersonne = new Personne();
+            $newPersonne->setNom($form->get('Nom')->getData());
+            $newPersonne->setPrenom($form->get('Prenom')->getData());
+            $newPersonne->setEmail($form->get('Prenom')->getData() . '.' . $form->get('Nom')->getData() . '@univ-poitiers.fr');
+            $newPersonne->setPassword('');
+            $newPersonne->setRoles(['ROLE_ENSEIGNANT']);
+            $newEnseignant = new Enseignant();
+            $newEnseignant->setPersonne($newPersonne);
+            $newEnseignant->setStatutEnseignant($entityManager->getRepository(StatutEnseignant::class)->findOneBy(['id' => $form->get('Status')->getData()]));
+            $newEnseignant->setSection($entityManager->getRepository(Specialite::class)->findOneBy(['id' => $form->get('SectionDenseignement')->getData()]));
+            $formationres = $form->get('FormationRes')->getData();
+            if($formationres != 'non')
+            {
+                // Prof responsable
+                dump("prof responsable");
+            }
+            $entityManager->persist($newEnseignant);
+            $entityManager->flush();
+
+            $this->addFlash('crud', "L'enseignant : {$form->get('Nom')->getData()} {$form->get('Prenom')->getData()}, a été créé avec succès.");
+            return $this->redirectToRoute('enseignant_list');
+        }
+
+
+        return $this->render('enseignant/add.html.twig', ['profForm' => $form->createView()]);
+    }
+
+
+
+
 }

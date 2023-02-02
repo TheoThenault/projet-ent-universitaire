@@ -87,6 +87,29 @@ class FormationRepository extends ServiceEntityRepository
         return $queryBuilder->getQuery()->getArrayResult();
     }
 
+    public function getAllForm(): mixed
+    {
+        $queryBuilder = $this->createQueryBuilder('f');
+        $queryBuilder->select('f');
+        $queryBuilder->leftJoin('f.cursus', 'c');
+        $queryBuilder->addSelect('c');
+
+        $queryBuilder->orderBy('f.nom', 'ASC');
+        $queryBuilder->addOrderBy('c.nom', 'ASC');
+        $queryResult = $queryBuilder->getQuery()->getArrayResult();
+
+        // enregistrer le tableau, en mettant les valeurs dans les cléfs
+        // pour etre utiliser par symfony
+        $result = array();
+        $result['Non'] = 'non';
+        for($i = 0; $i < count($queryResult); $i++) {
+            $niv = $queryResult[$i]['nom'] . ' ' . $queryResult[$i]['cursus']['nom'];
+            $result[$niv] = $queryResult[$i]['id'];
+        }
+
+        return $result;
+    }
+
 //    /**
 //     * @return Formation[] Returns an array of Formation objects
 //     */
