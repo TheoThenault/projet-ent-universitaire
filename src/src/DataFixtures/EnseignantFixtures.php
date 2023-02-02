@@ -11,7 +11,7 @@ class EnseignantFixtures
 {
     public array $list_enseignants = array();
 
-    public function charger(ObjectManager $manager, array $list_personnes, array $list_statuts_enseignant, int $nbEnseignants): void
+    public function charger(ObjectManager $manager, array $list_personnes, array $list_statuts_enseignant, array $sections, int $nbEnseignants): void
     {
 
         // ========== CREATION DES ENSEIGNANTS ==========
@@ -20,7 +20,8 @@ class EnseignantFixtures
 
             $this->list_enseignants[$i]
                 ->setPersonne($list_personnes[$i])
-                ->setStatutEnseignant($list_statuts_enseignant[array_rand($list_statuts_enseignant)]);
+                ->setStatutEnseignant($list_statuts_enseignant[array_rand($list_statuts_enseignant)])
+                ->setSection($sections[array_rand($sections)]);
 
             $manager->persist($this->list_enseignants[$i]);
         }
@@ -32,7 +33,7 @@ class EnseignantFixtures
         $enseignantUser->setPersonne(
             $manager->getRepository(Personne::class)->findOneBy(['email' => 'enseignant'. "@univ-poitiers.fr"])
         );
-        $enseignantUser->setStatutEnseignant($list_statuts_enseignant[array_rand($list_statuts_enseignant)]);
+        $enseignantUser->setStatutEnseignant($list_statuts_enseignant[array_rand($list_statuts_enseignant)])->setSection($sections[array_rand($sections)]);
         $this->list_enseignants[] = $enseignantUser;
         $manager->persist($enseignantUser);
 
@@ -41,7 +42,7 @@ class EnseignantFixtures
         $enseignantResUser->setPersonne(
             $manager->getRepository(Personne::class)->findOneBy(['email' => 'enseignant.res' . "@univ-poitiers.fr"])
         );
-        $enseignantResUser->setStatutEnseignant($list_statuts_enseignant[array_rand($list_statuts_enseignant)]);
+        $enseignantResUser->setStatutEnseignant($list_statuts_enseignant[array_rand($list_statuts_enseignant)])->setSection($sections[array_rand($sections)]);
         $this->list_enseignants[] = $enseignantResUser;
         $manager->persist($enseignantResUser);
 

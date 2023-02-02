@@ -24,6 +24,9 @@ class Enseignant
     #[ORM\OneToMany(mappedBy: 'enseignant', targetEntity: Cour::class)]
     private Collection $cours;
 
+    #[ORM\ManyToOne(inversedBy: 'enseignants')]
+    private ?Specialite $section = null;
+
     #[ORM\OneToOne(inversedBy: 'enseignant', cascade: ['persist', 'remove'])]
     private ?Formation $ResponsableFormation = null;
 
@@ -101,6 +104,16 @@ class Enseignant
         return $this;
     }
 
+
+    public function getSection(): ?Specialite
+    {
+        return $this->section;
+    }
+
+    public function setSection(?Specialite $section): self
+    {
+        $this->section = $section;
+
     public function getResponsableFormation(): ?Formation
     {
         return $this->ResponsableFormation;
@@ -109,6 +122,7 @@ class Enseignant
     public function setResponsableFormation(?Formation $ResponsableFormation): self
     {
         $this->ResponsableFormation = $ResponsableFormation;
+
 
         return $this;
     }
