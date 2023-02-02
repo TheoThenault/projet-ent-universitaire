@@ -39,7 +39,7 @@ class GroupeRepository extends ServiceEntityRepository
         }
     }
 
-    public function findAllWithSameFormation($formation): mixed{
+    public function findAllWithSameFormationAndType($formation, $type): mixed{
         $queryBuilder = $this->createQueryBuilder('g');
         $queryBuilder->Select('g');
         // Join all etudiant
@@ -50,7 +50,10 @@ class GroupeRepository extends ServiceEntityRepository
         $queryBuilder->addSelect('f');
         // Where formation == $formation
         $queryBuilder->where('f.id = :id');
-        $queryBuilder->setParameter(':id', $formation);
+        $queryBuilder->setParameter('id', $formation);
+
+        $queryBuilder->andWhere('g.type = :type');
+        $queryBuilder->setParameter('type', $type);
 
         $result = $queryBuilder->getQuery()->getResult();
         return $result;
