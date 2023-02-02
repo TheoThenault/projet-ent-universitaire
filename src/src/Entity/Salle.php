@@ -6,6 +6,7 @@ use App\Repository\SalleRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: SalleRepository::class)]
 class Salle
@@ -15,19 +16,46 @@ class Salle
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 60)]
+    #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Le nom d'une salle est obligatoire")]
+    #[Assert\Length(
+        min: 2,
+        max: 64,
+        minMessage: "Le nom d'une salle doit comporter au moins {{ limit }} caractères.",
+        maxMessage: "Le nom d'une salle ne peut pas comporter plus de {{ limite }} caractères.",
+    )]
     private ?string $nom = null;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Le bâtiment d'une salle est obligatoire")]
+    #[Assert\Length(
+        min: 2,
+        max: 64,
+        minMessage: "Le bâtiment d'une salle doit comporter au moins {{ limit }} caractères.",
+        maxMessage: "Le bâtiment d'une salle ne peut pas comporter plus de {{ limite }} caractères.",
+    )]
     private ?string $batiment = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\Length(
+        min: 2,
+        max: 128,
+        minMessage: "L'équipement d'une salle doit comporter au moins {{ limit }} caractères.",
+        maxMessage: "L'équipement d'une salle ne peut pas comporter plus de {{ limite }} caractères.",
+    )]
     private ?string $equipement = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message: "La capacité d'une salle est obligatoire")]
+    #[Assert\Range(
+        notInRangeMessage: "La capacité d'une salle doit être entre {{ min }} et {{ max }}",
+        min: 0,
+        max: 1000,
+    )]
     private ?int $capacite = null;
 
     #[ORM\OneToMany(mappedBy: 'salle', targetEntity: Cour::class)]
+    #[Assert\Valid]
     private Collection $cours;
 
     public function __construct()
