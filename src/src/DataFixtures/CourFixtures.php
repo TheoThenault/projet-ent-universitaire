@@ -23,7 +23,7 @@ class CourFixtures
         $nS = count($list_salles);
         $nU = count($list_ues);
 
-        $nombre_cours = 4000;
+        $nombre_cours = 6000;
 
         for($i = 0; $i < $nombre_cours; $i++)
         {
