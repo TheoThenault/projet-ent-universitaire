@@ -88,6 +88,23 @@ class UERepository extends ServiceEntityRepository
         return $queryBuilder->getQuery()->getArrayResult();;
     }
 
+    public function findAllByFormation($formationID): array
+    {
+        $queryBuilder = $this->createQueryBuilder('u');
+        $queryBuilder->addSelect('u');
+        $queryBuilder->leftJoin('u.specialite', 's');
+        $queryBuilder->addSelect('s');
+        $queryBuilder->leftJoin('u.formation', 'f');
+        $queryBuilder->addSelect('f');
+        $queryBuilder->leftJoin('f.cursus', 'c');
+        $queryBuilder->addSelect('c');
+        $queryBuilder->andWhere('f.id = :id');
+        $queryBuilder->setParameter('id', $formationID);
+
+
+        return $queryBuilder->getQuery()->getResult();;
+    }
+
     public function findAllOrdered(): array
     {
         $queryBuilder = $this->createQueryBuilder('u');

@@ -66,14 +66,7 @@ class EtudiantController extends AbstractController
             $personne->setNom($form->get('nom')->getData());
             $personne->setPrenom($form->get('prenom')->getData());
 
-            $liste_persone = $entityManager->getRepository(Personne::class)->findBy(
-                ['email' => $personne->getNom() . '.' . $personne->getPrenom() . '@univ-poitiers.fr']
-            );
-            if(count($liste_persone) > 0){
-                $personne->setEmail($personne->getNom() . '.' . $personne->getPrenom() . count($liste_persone) . '@univ-poitiers.fr');
-            } else {
-                $personne->setEmail($personne->getNom() . '.' . $personne->getPrenom() . '@univ-poitiers.fr');
-            }
+            $personne->setEmailSafe($personne->getNom() . '.' . $personne->getPrenom(), $entityManager);
 
             $personne->setRoles(['ROLE_ETUDIANT']);
             $personne->setEtudiant($etudiant);

@@ -22,77 +22,82 @@ class EtudiantGroupeAutoAfterCreation
     // the entity instance and the lifecycle event
     public function postPersist(Etudiant $etudiant, LifecycleEventArgs $event): void
     {
+        var_dump($etudiant->getFormation()->getNom() . ' ' . $etudiant->getFormation()->getCursus()->getNom());
         // Récupérez tous groupes dont les étudiants ont la meme formation que le nouvel étudiant
-        $groupesWithSameFormation = $this->entityManager->getRepository(Groupe::class)->findAllWithSameFormation($etudiant->getFormation()->getId());
+        $groupesWithSameFormationTD = $this->entityManager->getRepository(Groupe::class)->findAllWithSameFormationAndType($etudiant->getFormation()->getId(), 'TD');
+        $groupesWithSameFormationTP = $this->entityManager->getRepository(Groupe::class)->findAllWithSameFormationAndType($etudiant->getFormation()->getId(), 'TP');
+        $groupesWithSameFormationCM = $this->entityManager->getRepository(Groupe::class)->findAllWithSameFormationAndType($etudiant->getFormation()->getId(), 'CM');
 
-        // Si il n'y a aucun de groupe avec la meme formation alors on en créer trois
-        if (!$groupesWithSameFormation){
-            $grpTd = new Groupe();
-            $grpTd->addEtudiant($etudiant);
-            $grpTd->setType('TD');
-            $this->entityManager->persist($grpTd);
 
-            $grpTp = new Groupe();
-            $grpTp->addEtudiant($etudiant);
-            $grpTp->setType('TP');
-            $this->entityManager->persist($grpTp);
 
+        // ####### CM
+        if(count($groupesWithSameFormationCM) == 0)
+        {
             $grpCm = new Groupe();
             $grpCm->addEtudiant($etudiant);
             $grpCm->setType('CM');
             $this->entityManager->persist($grpCm);
-        } else {
-            $grpsTp = [];
-            $grpsTd = [];
+        }else{
+            $groupesWithSameFormationCM[0]->addEtudiant($etudiant);
+        }
+        // #######
 
-            foreach ($groupesWithSameFormation as $groupe) {
-                // add student to CM. NO MAX
-                if($groupe->getType() ==  'CM'){
+
+        // ####### TD
+        if(count($groupesWithSameFormationTD) == 0)
+        {
+            $grpTd = new Groupe();
+            $grpTd->addEtudiant($etudiant);
+            $grpTd->setType('TD');
+            $this->entityManager->persist($grpTd);
+        }else{
+            $groupFound = 0;
+            foreach ($groupesWithSameFormationTD as $groupe)
+            {
+                $sizeOfGroup = sizeof($groupe->getEtudiants());
+                if($sizeOfGroup < 40){
                     $groupe->addEtudiant($etudiant);
-                    $this->entityManager->persist($groupe);
-                }
-                // add all TD groupe to $grpsTp
-                if($groupe->getType() ==  'TD'){
-                    $grpsTd[] = $groupe;
-                }
-                // add all TP groupe to $grpsTd
-                if($groupe->getType() ==  'TP'){
-                    $grpsTp[] = $groupe;
+                    //$this->entityManager->persist($groupe);
+                    $groupFound++;
                 }
             }
+            if($groupFound == 0){
+                $newGrpTP = new Groupe();
+                $newGrpTP->addEtudiant($etudiant);
+                $newGrpTP->setType('TD');
+                $this->entityManager->persist($newGrpTP);
+            }
+        }
+        // ############
 
-            // add student to TP. MAX = 20
-            $groupTpFound = 0;
-            foreach ($grpsTp as $groupe){
-                if(sizeof($groupe->getEtudiants())<20){
+        // ########### TP
+        if(count($groupesWithSameFormationTP) == 0)
+        {
+            $grp = new Groupe();
+            $grp->addEtudiant($etudiant);
+            $grp->setType('TP');
+            $this->entityManager->persist($grp);
+        }else{
+            $groupFound = 0;
+            foreach ($groupesWithSameFormationTP as $groupe)
+            {
+                $sizeOfGroup = sizeof($groupe->getEtudiants());
+                if($sizeOfGroup < 20){
                     $groupe->addEtudiant($etudiant);
-                    $this->entityManager->persist($groupe);
-                    $groupTpFound++;
+                    //$this->entityManager->persist($groupe);
+                    $groupFound++;
                 }
             }
-            if($groupTpFound == 0){
+            if($groupFound == 0){
                 $newGrpTP = new Groupe();
                 $newGrpTP->addEtudiant($etudiant);
                 $newGrpTP->setType('TP');
                 $this->entityManager->persist($newGrpTP);
             }
-
-            // add student to TD MAX = 40
-            $groupTdFound = 0;
-            foreach ($grpsTd as $groupe){
-                if(sizeof($groupe->getEtudiants())<40){
-                    $groupe->addEtudiant($etudiant);
-                    $this->entityManager->persist($groupe);
-                    $groupTdFound++;
-                }
-            }
-            if($groupTdFound == 0){
-                $newGrpTD = new Groupe();
-                $newGrpTD->addEtudiant($etudiant);
-                $newGrpTD->setType('TD');
-                $this->entityManager->persist($newGrpTD);
-            }
         }
+        // ###########
+
+
         $this->entityManager->flush();
     }
 }

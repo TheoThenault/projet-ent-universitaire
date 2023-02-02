@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\PersonneRepository;
 use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -50,6 +51,20 @@ class Personne implements UserInterface, PasswordAuthenticatedUserInterface
     public function setEmail(string $email): self
     {
         $this->email = $email;
+        return $this;
+    }
+
+    public function setEmailSafe(string $email, EntityManagerInterface $entityManager): self
+    {
+        $liste_persone = $entityManager->getRepository(Personne::class)->findBy(
+            ['email' => $email . '@univ-poitiers.fr']
+        );
+
+        if(count($liste_persone) > 0){
+            $this->setEmail($email . count($liste_persone) . '@univ-poitiers.fr');
+        } else {
+            $this->setEmail($email . '@univ-poitiers.fr');
+        }
 
         return $this;
     }
