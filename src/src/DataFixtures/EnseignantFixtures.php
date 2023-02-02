@@ -11,12 +11,11 @@ class EnseignantFixtures
 {
     public array $list_enseignants = array();
 
-    public function charger(ObjectManager $manager, array $list_personnes, array $list_statuts_enseignant, array $sections): void
+    public function charger(ObjectManager $manager, array $list_personnes, array $list_statuts_enseignant, array $sections, int $nbEnseignants): void
     {
-        $nb_enseignant = 2000;
 
         // ========== CREATION DES ENSEIGNANTS ==========
-        for ($i=0; $i<$nb_enseignant; $i++){
+        for ($i=0; $i<$nbEnseignants; $i++){
             $this->list_enseignants[$i] = new Enseignant();
 
             $this->list_enseignants[$i]
@@ -32,7 +31,7 @@ class EnseignantFixtures
         // em = entity manager
         $enseignantUser = new Enseignant();
         $enseignantUser->setPersonne(
-            $manager->getRepository(Personne::class)->findOneBy(['email' => 'enseignant@univ-poitiers.fr'])
+            $manager->getRepository(Personne::class)->findOneBy(['email' => 'enseignant'. "@univ-poitiers.fr"])
         );
         $enseignantUser->setStatutEnseignant($list_statuts_enseignant[array_rand($list_statuts_enseignant)])->setSection($sections[array_rand($sections)]);
         $this->list_enseignants[] = $enseignantUser;
@@ -41,7 +40,7 @@ class EnseignantFixtures
         // Création d'un enseignant spécifique qui est une personne avec le role ROLE_ENSEIGNANT_RES
         $enseignantResUser = new Enseignant();
         $enseignantResUser->setPersonne(
-            $manager->getRepository(Personne::class)->findOneBy(['email' => 'enseignant.res@univ-poitiers.fr'])
+            $manager->getRepository(Personne::class)->findOneBy(['email' => 'enseignant.res' . "@univ-poitiers.fr"])
         );
         $enseignantResUser->setStatutEnseignant($list_statuts_enseignant[array_rand($list_statuts_enseignant)])->setSection($sections[array_rand($sections)]);
         $this->list_enseignants[] = $enseignantResUser;

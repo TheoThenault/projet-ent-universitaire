@@ -27,6 +27,9 @@ class Enseignant
     #[ORM\ManyToOne(inversedBy: 'enseignants')]
     private ?Specialite $section = null;
 
+    #[ORM\OneToOne(inversedBy: 'enseignant', cascade: ['persist', 'remove'])]
+    private ?Formation $ResponsableFormation = null;
+
     public function __construct()
     {
         $this->cours = new ArrayCollection();
@@ -101,6 +104,7 @@ class Enseignant
         return $this;
     }
 
+
     public function getSection(): ?Specialite
     {
         return $this->section;
@@ -109,6 +113,16 @@ class Enseignant
     public function setSection(?Specialite $section): self
     {
         $this->section = $section;
+
+    public function getResponsableFormation(): ?Formation
+    {
+        return $this->ResponsableFormation;
+    }
+
+    public function setResponsableFormation(?Formation $ResponsableFormation): self
+    {
+        $this->ResponsableFormation = $ResponsableFormation;
+
 
         return $this;
     }

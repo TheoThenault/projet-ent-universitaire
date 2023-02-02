@@ -12,7 +12,7 @@ class SalleFixtures{
 
     public array $list_salles = array();
 
-    public function charger(ObjectManager $manager): void
+    public function charger(ObjectManager $manager, int $nbSalles): void
     {
         $batiment = array(
             "a",
@@ -36,7 +36,7 @@ class SalleFixtures{
             "physique",
         );
 
-        for($i = 0; $i < 40; $i++){
+        for($i = 0; $i < $nbSalles; $i++){
             $this->list_salles[$i] = new Salle();
             $b = $batiment[rand(0,count($batiment) - 1)];
             $n = $b . " " . $i;

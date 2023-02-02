@@ -31,6 +31,9 @@ class Formation
     #[ORM\OneToMany(mappedBy: 'formation', targetEntity: UE::class)]
     private Collection $ues;
 
+    #[ORM\OneToOne(mappedBy: 'ResponsableFormation', cascade: ['persist', 'remove'])]
+    private ?Enseignant $enseignant = null;
+
     public function __construct()
     {
         $this->ues = new ArrayCollection();
@@ -135,5 +138,27 @@ class Formation
     public function getCursusAndFormationName(): string
     {
         return $this->getNom() . ' - ' . $this->getCursus()->getNom();
+    }
+
+    public function getEnseignant(): ?Enseignant
+    {
+        return $this->enseignant;
+    }
+
+    public function setEnseignant(?Enseignant $enseignant): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($enseignant === null && $this->enseignant !== null) {
+            $this->enseignant->setResponsableFormation(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($enseignant !== null && $enseignant->getResponsableFormation() !== $this) {
+            $enseignant->setResponsableFormation($this);
+        }
+
+        $this->enseignant = $enseignant;
+
+        return $this;
     }
 }

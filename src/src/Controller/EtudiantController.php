@@ -66,7 +66,7 @@ class EtudiantController extends AbstractController
             $personne->setNom($form->get('nom')->getData());
             $personne->setPrenom($form->get('prenom')->getData());
 
-            $personne->setEmail($personne->getPrenom() . '.' . $personne->getNom() . '@univ-poitiers.fr');
+            $personne->setEmail($personne->getPrenom() . '.' . $personne->getNom() . "@univ-poitiers.fr");
 
             $personne->setRoles(['ROLE_ETUDIANT']);
             $personne->setEtudiant($etudiant);

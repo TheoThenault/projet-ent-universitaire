@@ -39,14 +39,12 @@ class PersonneFixtures
         return $prenoms[$index];
     }
 
-    public function charger(ObjectManager $manager): void
+    public function charger(ObjectManager $manager, int $nbPersonnes): void
     {
-        $email="@univ-poitiers.fr";
-
-        $nombre_personnes = 5000;
+        $email= "@univ-poitiers.fr";
 
         // ========== CREATION DE PERSONNE ==========
-        for ($i = 0; $i < $nombre_personnes; $i++){
+        for ($i = 0; $i < $nbPersonnes; $i++){
             $prenom = $this->getPrenom();
             $nom = $this->getNom();
             $this->list_personnes[$i] = new Personne();

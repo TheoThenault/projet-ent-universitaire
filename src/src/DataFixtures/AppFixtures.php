@@ -16,16 +16,27 @@ use Symfony\Component\Form\Form;
 
 class AppFixtures extends Fixture
 {
-    
+
+    private int $nbEtudiants;
+    private int $nbEnseignants;
+    private int $nbPersonnes;
+    private int $nbSalles;
+    function __construct() {
+        $this->nbPersonnes = 2000;
+        $this->nbEtudiants = 1500;
+        $this->nbEnseignants = 500;
+        $this->nbSalles = 200;
+    }
     public function load(ObjectManager $manager): void
     {
+
         $salleFixture = new SalleFixtures();
-        $salleFixture->charger($manager);
+        $salleFixture->charger($manager, $this->nbSalles);
 
         var_dump('salle fini');
 
         $personnes_fixture = new PersonneFixtures();
-        $personnes_fixture->charger($manager);
+        $personnes_fixture->charger($manager, $this->nbPersonnes);
 
         var_dump('personne fini');
 
@@ -44,7 +55,8 @@ class AppFixtures extends Fixture
             $manager,
             $personnes_fixture->list_personnes,
             $statuts_enseignant_fixture->list_statuts_enseignant,
-            $specialite_fixtures->list_specialites
+            $specialite_fixtures->list_specialites,
+            $this->nbEnseignants
         );
 
         var_dump('enseignant fini');
@@ -63,7 +75,7 @@ class AppFixtures extends Fixture
         var_dump('formations fini');
 
         $etudiant_fixtures = new EtudiantFixtures();
-        $etudiant_fixtures->charger($manager, $personnes_fixture->list_personnes, 1000, $formation_fixture->list_formations);
+        $etudiant_fixtures->charger($manager, $personnes_fixture->list_personnes, $this->nbEtudiants, $formation_fixture->list_formations);
 
         var_dump('etudiants fini');
 

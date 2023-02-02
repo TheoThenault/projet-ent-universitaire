@@ -3,32 +3,277 @@
 {% block title %}Liste des Cours{% endblock %}
 
 {% block body %}
-    <h2>Filtres:</h2>
-    <nav>
-        {{ form(courFormulaire) }}
-    </nav>
-    {# on n'affiche cette parite que si la liste est défini est pas vide #}
-    {% if liste_cours is defined and liste_cours is not empty %}
-        <h2>Résultats:</h2>
-        <table class="table table-hover table-striped">
-            <tr>
-                <th>Nom</th>
-                <th>Créneau</th>
-                <th>Cursus</th>
-                <th>Formation</th>
-                <th>Prof</th>
-            </tr>
-            {% for cour in liste_cours %}
-                <tr>
-                    <td>{{ cour.ue.nom }}</td>
-                    <td>{{ cour.creneau }}</td>
-                    <td>{{ cour.ue.formation.cursus.nom }}</td>
-                    <td>{{ cour.ue.formation.nom }}</td>
-                    <td>{{ cour.enseignant.personne.nom }}</td>
-                </tr>
-            {% endfor %}
-        </table>
+
+    {% if pasEtudiant is defined %}
+        <h2>Vous n'êtes pas un étudiant!!</h2>
     {% else %}
-        <h2>Aucun résultat !</h2>
+    {% if not is_granted('ROLE_ETUDIANT') and is_granted('ROLE_ENDEIGNANT')%}
+        <h2>Filtres:</h2>
+        <nav>
+            {{ form(form) }}
+        </nav>
+        {# on n'affiche cette parite que si la liste est défini est pas vide #}
+        {% if liste_cours is defined and liste_cours is not empty %}
+            <h2>Résultats:</h2>
+            <table class="table table-hover table-striped">
+                <tr>
+                    <th>Nom</th>
+                    <th>Créneau</th>
+                    <th>Cursus</th>
+                    <th>Formation</th>
+                    <th>Prof</th>
+                </tr>
+                {% for cour in liste_cours %}
+                    <tr>
+                        <td>{{ cour.ue.nom }}</td>
+                        <td>{{ cour.creneau }}</td>
+                        <td>{{ cour.ue.formation.cursus.nom }}</td>
+                        <td>{{ cour.ue.formation.nom }}</td>
+                        <td>{{ cour.enseignant.personne.nom }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <h2>Aucun résultat !</h2>
+        {% endif %}
+    {% else %}
+        <nav>
+            {{ form_start(form) }}
+
+            <div class = "mb-4 mt-4">
+                {{ form_label(form.Semaine) }}
+                {{ form_widget(form.Semaine) }}
+            </div>
+
+            <div class = "mb-4">
+                {{ form_widget(form.Valider) }}
+            </div>
+
+        </nav>
+        {# on n'affiche cette parite que si la liste est défini est pas vide #}
+        <style>
+            .row > div {
+                flex: 1;
+                background: lightgrey;
+                border: 1px solid grey;
+            }
+        </style>
+
+        {% if liste_edt is defined and liste_edt is not empty %}
+            <div class="container text-center mb-5" >
+                <div class="row" style="background-color:lavender;">
+                    <div class="col">
+
+                    </div>
+                    <div class="col">
+                        Lundi
+                    </div>
+                    <div class="col">
+                        Mardi
+                    </div>
+                    <div class="col">
+                        Mercredi
+                    </div>
+                    <div class="col">
+                        Jeudi
+                    </div>
+                    <div class="col">
+                        Vendredi
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col" style="background-color:lavender;">
+                        8h - 10h
+                    </div>
+                    {% for i in 0..4 %}
+                        {% if liste_edt[i*4][0] != [] %}
+                            <div class="col">
+                            {% if is_granted('ROLE_ETUDAINT') %}
+                                Prof:
+                                {{liste_edt[i*4][0]}} <br>
+                                UE:
+                                {{liste_edt[i*4][1]}} <br>
+                                Salle:
+                                {{liste_edt[i*4][2]}} <br>
+                            {% elseif is_granted('ROLE_ENSEIGNANT_RES') %}
+                                UE:
+                                {{liste_edt[i*4][1]}} <br>
+                                Formation:
+                                {{liste_edt[i*4][4]}} <br>
+                                Enseignant:
+                                {{liste_edt[i*4][0]}} <br>
+                                Salle:
+                                {{liste_edt[i*4][2]}} <br>
+                            {% else %}
+                                UE:
+                                {{liste_edt[i*4][1]}} <br>
+                                Formation:
+                                {{liste_edt[i*4][4]}} <br>
+                                Salle:
+                                {{liste_edt[i*4][2]}} <br>
+                            {% endif %}
+                            </div>
+                        {% else %}
+                            <div class="col">
+                                Pas de cours <br>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+
+
+                <div class="row">
+                    <div class="col" style="background-color:lavender;">
+                        10h - 12h
+                    </div>
+                    {% for i in 0..4 %}
+                        {% if liste_edt[i*4 + 1][0] != [] %}
+                            <div class="col">
+                                {% if is_granted('ROLE_ETUDAINT') %}
+                                    Prof:
+                                    {{liste_edt[i*4 + 1][0]}} <br>
+                                    UE:
+                                    {{liste_edt[i*4 + 1][1]}} <br>
+                                    Salle:
+                                    {{liste_edt[i*4 + 1][2]}} <br>
+                                {% elseif is_granted('ROLE_ENSEIGNANT_RES') %}
+                                    UE:
+                                    {{liste_edt[i*4 + 1][1]}} <br>
+                                    Formation:
+                                    {{liste_edt[i*4 + 1][4]}} <br>
+                                    Enseignant:
+                                    {{liste_edt[i*4 + 1][0]}} <br>
+                                    Salle:
+                                    {{liste_edt[i*4 + 1][2]}} <br>
+                                {% else %}
+                                    UE:
+                                    {{liste_edt[i*4 + 1][1]}} <br>
+                                    Formation:
+                                    {{liste_edt[i*4 + 1][4]}} <br>
+                                    Salle:
+                                    {{liste_edt[i*4 + 1][2]}} <br>
+                                {% endif %}
+                            </div>
+                        {% else %}
+                            <div class="col">
+                                Pas de cours <br>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+
+                <div class="row" style="background-color:lavender;">
+                    <div class="col">
+                        MIDI
+                    </div>
+                    <div class="col">
+                        MIDI
+                    </div>
+                    <div class="col">
+                        MIDI
+                    </div>
+                    <div class="col">
+                        MIDI
+                    </div>
+                    <div class="col">
+                        MIDI
+                    </div>
+                    <div class="col">
+                        MIDI
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col" style="background-color:lavender;">
+                        14h - 16h
+                    </div>
+                    {% for i in 0..4 %}
+                        {% if liste_edt[i*4 + 2][0] != [] %}
+                            <div class="col">
+                                {% if is_granted('ROLE_ETUDAINT') %}
+                                    Prof:
+                                    {{liste_edt[i*4 + 2][0]}} <br>
+                                    UE:
+                                    {{liste_edt[i*4 + 2][1]}} <br>
+                                    Salle:
+                                    {{liste_edt[i*4 + 2][2]}} <br>
+                                {% elseif is_granted('ROLE_ENSEIGNANT_RES') %}
+                                    UE:
+                                    {{liste_edt[i*4 + 2][1]}} <br>
+                                    Formation:
+                                    {{liste_edt[i*4 + 2][4]}} <br>
+                                    Enseignant:
+                                    {{liste_edt[i*4 + 2][0]}} <br>
+                                    Salle:
+                                    {{liste_edt[i*4 + 2][2]}} <br>
+                                {% else %}
+                                    UE:
+                                    {{liste_edt[i*4 + 2][1]}} <br>
+                                    Formation:
+                                    {{liste_edt[i*4 + 2][4]}} <br>
+                                    Salle:
+                                    {{liste_edt[i*4 + 2][2]}} <br>
+                                {% endif %}
+                            </div>
+                        {% else %}
+                            <div class="col">
+                                Pas de cours <br>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+
+                <div class="row">
+                    <div class="col" style="background-color:lavender;">
+                        16h - 18h
+                    </div>
+                    {% for i in 0..4 %}
+                        {% if liste_edt[i*4 + 3][0] != [] %}
+                            <div class="col">
+                                {% if is_granted('ROLE_ETUDAINT') %}
+                                    Prof:
+                                    {{liste_edt[i*4 + 3][0]}} <br>
+                                    UE:
+                                    {{liste_edt[i*4 + 3][1]}} <br>
+                                    Salle:
+                                    {{liste_edt[i*4 + 3][2]}} <br>
+                                {% elseif is_granted('ROLE_ENSEIGNANT_RES') %}
+                                    UE:
+                                    {{liste_edt[i*4 + 3][1]}} <br>
+                                    Formation:
+                                    {{liste_edt[i*4 + 3][4]}} <br>
+                                    Enseignant:
+                                    {{liste_edt[i*4 + 3][0]}} <br>
+                                    Salle:
+                                    {{liste_edt[i*4 + 3][2]}} <br>
+                                {% else %}
+                                    UE:
+                                    {{liste_edt[i*4 + 3][1]}} <br>
+                                    Formation:
+                                    {{liste_edt[i*4 + 3][4]}} <br>
+                                    Salle:
+                                    {{liste_edt[i*4 + 3][2]}} <br>
+                                {% endif %}
+                            </div>
+                        {% else %}
+                            <div class="col">
+                                Pas de cours <br>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        {% else %}
+            <h2>Aucun résultat !</h2>
+        {% endif %}
+
+        <div class = 'mt-3'>
+            {{ form_widget(form.Date_du_jour) }}
+        </div>
+
+        {{ form_end(form) }}
+
+    {% endif %}
     {% endif %}
 {% endblock %}
