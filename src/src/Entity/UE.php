@@ -37,15 +37,12 @@ class UE
 
     #[ORM\ManyToOne(inversedBy: 'ue')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Assert\Valid]
     private ?Specialite $specialite = null;
 
     #[ORM\OneToMany(mappedBy: 'ue', targetEntity: Cour::class)]
-    #[Assert\Valid]
     private Collection $cours;
 
     #[ORM\ManyToOne(inversedBy: 'ues')]
-    #[Assert\Valid]
     private ?Formation $formation = null;
 
     public function __construct()

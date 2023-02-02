@@ -24,11 +24,9 @@ class Groupe
     private ?string $type = null;
 
     #[ORM\ManyToMany(targetEntity: Etudiant::class, inversedBy: 'groupes')]
-    #[Assert\Valid]
     private Collection $etudiants;
 
     #[ORM\OneToMany(mappedBy: 'groupe', targetEntity: Cour::class)]
-    #[Assert\Valid]
     private Collection $cours;
 
     public function __construct()

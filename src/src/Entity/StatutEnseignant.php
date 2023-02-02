@@ -45,7 +45,6 @@ class StatutEnseignant
     private ?int $nbHeureMax = null;
 
     #[ORM\OneToMany(mappedBy: 'StatutEnseignant', targetEntity: Enseignant::class)]
-    #[Assert\Valid]
     private Collection $enseignants;
 
     public function __construct()

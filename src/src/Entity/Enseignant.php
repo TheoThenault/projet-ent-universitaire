@@ -17,23 +17,18 @@ class Enseignant
     private ?int $id = null;
 
     #[ORM\OneToOne(mappedBy: 'enseignant', cascade: ['persist', 'remove'])]
-    #[Assert\Valid]
     private ?Personne $personne = null;
 
     #[ORM\ManyToOne(inversedBy: 'enseignants')]
-    #[Assert\Valid]
     private ?StatutEnseignant $StatutEnseignant = null;
 
     #[ORM\OneToMany(mappedBy: 'enseignant', targetEntity: Cour::class)]
-    #[Assert\Valid]
     private Collection $cours;
 
     #[ORM\ManyToOne(inversedBy: 'enseignants')]
-    #[Assert\Valid]
     private ?Specialite $section = null;
 
     #[ORM\OneToOne(inversedBy: 'enseignant', cascade: ['persist', 'remove'])]
-    #[Assert\Valid]
     private ?Formation $ResponsableFormation = null;
 
     public function __construct()

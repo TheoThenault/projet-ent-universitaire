@@ -25,21 +25,17 @@ class Cour
 
     #[ORM\ManyToOne(inversedBy: 'cours')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Assert\Valid]
     private ?UE $ue = null;
 
     #[ORM\ManyToOne(inversedBy: 'cours')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Assert\Valid]
     private ?Salle $salle = null;
 
     #[ORM\ManyToOne(inversedBy: 'cours')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Assert\Valid]
     private ?Enseignant $enseignant = null;
 
     #[ORM\ManyToOne(inversedBy: 'cours')]
-    #[Assert\Valid]
     private ?Groupe $groupe = null;
 
     public function getId(): ?int

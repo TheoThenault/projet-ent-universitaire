@@ -17,20 +17,16 @@ class Etudiant
     private ?int $id = null;
 
     #[ORM\OneToOne(mappedBy: 'etudiant', cascade: ['persist', 'remove'])]
-    #[Assert\Valid]
     private ?Personne $personne = null;
 
     #[ORM\ManyToOne(inversedBy: 'etudiants')]
-    #[Assert\Valid]
     private ?Formation $formation = null;
 
     // Un étudiant à un groupe de TD, de TP et de CM
     #[ORM\ManyToMany(targetEntity: Groupe::class, mappedBy: 'etudiants')]
-    #[Assert\Valid]
     private Collection $groupes;
 
     #[ORM\ManyToMany(targetEntity: UE::class)]
-    #[Assert\Valid]
     private Collection $uesValides;
 
     public function __construct()
