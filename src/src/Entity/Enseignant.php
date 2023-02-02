@@ -6,6 +6,7 @@ use App\Repository\EnseignantRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: EnseignantRepository::class)]
 class Enseignant
@@ -16,12 +17,15 @@ class Enseignant
     private ?int $id = null;
 
     #[ORM\OneToOne(mappedBy: 'enseignant', cascade: ['persist', 'remove'])]
+    #[Assert\Valid]
     private ?Personne $personne = null;
 
     #[ORM\ManyToOne(inversedBy: 'enseignants')]
+    #[Assert\Valid]
     private ?StatutEnseignant $StatutEnseignant = null;
 
     #[ORM\OneToMany(mappedBy: 'enseignant', targetEntity: Cour::class)]
+    #[Assert\Valid]
     private Collection $cours;
 
     public function __construct()

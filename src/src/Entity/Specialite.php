@@ -6,6 +6,7 @@ use App\Repository\SpecialiteRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: SpecialiteRepository::class)]
 class Specialite
@@ -16,15 +17,24 @@ class Specialite
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Le nom d'une spécialité est obligatoire")]
+    #[Assert\Length(
+        min: 2,
+        max: 255,
+        minMessage: "Le nom d'une spécialité doit comporter au moins {{ limit }} caractères.",
+        maxMessage: "Le nom d'une spécialité ne peut pas comporter plus de {{ limite }} caractères.",
+    )]
     private ?string $nom = null;
 
     #[ORM\Column]
+    #[Assert\Positive]
     private ?int $section = null;
 
     #[ORM\Column(length: 255)]
     private ?string $groupe = null;
 
     #[ORM\OneToMany(mappedBy: 'specialite', targetEntity: UE::class)]
+    #[Assert\Valid]
     private Collection $ue;
 
     public function __construct()

@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: PersonneRepository::class)]
 #[ORM\HasLifecycleCallbacks]
@@ -20,18 +21,38 @@ class Personne implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Email(
+        message: "l'email {{ value }} n'est pas un email valide.",
+    )]
+    #[Assert\NotBlank(message: "L'email d'une personne est obligatoire")]
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Le nom d'une personne est obligatoire")]
+    #[Assert\Length(
+        min: 2,
+        max: 64,
+        minMessage: "Le nom d'une personne doit comporter au moins {{ limit }} caractères.",
+        maxMessage: "Le nom d'une personne ne peut pas comporter plus de {{ limite }} caractères.",
+    )]
     private ?string $nom = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Le prénom d'une personne est obligatoire")]
+    #[Assert\Length(
+        min: 2,
+        max: 64,
+        minMessage: "Le prénom d'une personne doit comporter au moins {{ limit }} caractères.",
+        maxMessage: "Le prénom d'une personne ne peut pas comporter plus de {{ limite }} caractères.",
+    )]
     private ?string $prenom = null;
 
     #[ORM\OneToOne(inversedBy: 'personne', cascade: ['persist', 'remove'])]
+    #[Assert\Valid]
     private ?Etudiant $etudiant = null;
 
     #[ORM\OneToOne(inversedBy: 'personne', cascade: ['persist', 'remove'])]
+    #[Assert\Valid]
     private ?Enseignant $enseignant = null;
 
     #[ORM\Column(length: 255, nullable: true)]

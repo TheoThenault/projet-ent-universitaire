@@ -6,6 +6,8 @@ use App\Repository\FormationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 #[ORM\Entity(repositoryClass: FormationRepository::class)]
 class Formation
@@ -16,19 +18,35 @@ class Formation
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Le nom d'une Formation est obligatoire")]
+    #[Assert\Length(
+        min: 2,
+        max: 255,
+        minMessage: "Le nom d'une Formation doit comporter au moins {{ limit }} caractères.",
+        maxMessage: "Le nom d'une Formation ne peut pas comporter plus de {{ limite }} caractères.",
+    )]
     private ?string $nom = null;
 
     #[ORM\ManyToOne(inversedBy: 'formations')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\Valid]
     private ?Cursus $cursus = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message: "L'année de la formation est obligatoire")]
+    #[Assert\Range(
+        notInRangeMessage: "L'année de la formation doit être entre {{ min }} et {{ max }}",
+        min: 0,
+        max: 10,
+    )]
     private ?int $annee = null;
 
     #[ORM\OneToMany(mappedBy: 'formation', targetEntity: Etudiant::class)]
+    #[Assert\Valid]
     private Collection $etudiants;
 
     #[ORM\OneToMany(mappedBy: 'formation', targetEntity: UE::class)]
+    #[Assert\Valid]
     private Collection $ues;
 
     public function __construct()

@@ -16,10 +16,10 @@ To run the server :
 - `symfony serve` or `symfony serve -d`
 
 ## Interact with BDD
-### To do migrations :
-
-- `symfony console doctrine:migrations:diff`
+### To apply migrations : 
 - `symfony console doctrine:migrations:migrate`
+### To make migrations :
+- `symfony console doctrine:migrations:diff`
 
 ### To populate the BDD with fixtures
 - `symfony console doctrine:fixtures:load`

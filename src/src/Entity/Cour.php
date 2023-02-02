@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\CourRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CourRepository::class)]
 class Cour
@@ -14,21 +15,31 @@ class Cour
     private ?int $id = null;
 
     #[ORM\Column]
+    #[Assert\Range(
+        notInRangeMessage: 'Le créneau renseigné doit être entre {{ min }} et {{ max }}',
+        min: 0,
+        max: 600,
+    )]
+    #[Assert\NotBlank(message: "Le créneau d'un cour est obligatoire")]
     private ?int $creneau = null;
 
     #[ORM\ManyToOne(inversedBy: 'cours')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\Valid]
     private ?UE $ue = null;
 
     #[ORM\ManyToOne(inversedBy: 'cours')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\Valid]
     private ?Salle $salle = null;
 
     #[ORM\ManyToOne(inversedBy: 'cours')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\Valid]
     private ?Enseignant $enseignant = null;
 
     #[ORM\ManyToOne(inversedBy: 'cours')]
+    #[Assert\Valid]
     private ?Groupe $groupe = null;
 
     public function getId(): ?int
