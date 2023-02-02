@@ -32,7 +32,7 @@ class EtudiantFixtures
         // em = entity manager
         $etudiantUser = new Etudiant();
         $etudiantUser->setPersonne(
-            $manager->getRepository(Personne::class)->findOneBy(['email' => 'etudiant@univ-poitiers.fr'])
+            $manager->getRepository(Personne::class)->findOneBy(['email' => 'etudiant' . getenv('EMAIL')])
         );
         $etudiantUser->setFormation($list_formations[0]);
         $manager->persist($etudiantUser);
