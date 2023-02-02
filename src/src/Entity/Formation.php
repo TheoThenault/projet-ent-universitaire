@@ -50,6 +50,7 @@ class Formation
     private Collection $ues;
 
     #[ORM\OneToOne(mappedBy: 'ResponsableFormation', cascade: ['persist', 'remove'])]
+    #[Assert\Valid]
     private ?Enseignant $enseignant = null;
 
     public function __construct()

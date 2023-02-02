@@ -29,9 +29,11 @@ class Enseignant
     private Collection $cours;
 
     #[ORM\ManyToOne(inversedBy: 'enseignants')]
+    #[Assert\Valid]
     private ?Specialite $section = null;
 
     #[ORM\OneToOne(inversedBy: 'enseignant', cascade: ['persist', 'remove'])]
+    #[Assert\Valid]
     private ?Formation $ResponsableFormation = null;
 
     public function __construct()
