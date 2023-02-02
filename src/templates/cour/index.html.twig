@@ -3,6 +3,10 @@
 {% block title %}Liste des Cours{% endblock %}
 
 {% block body %}
+
+    {% if pasEtudiant is defined %}
+        <h2>Vous n'êtes pas un étudiant!!</h2>
+    {% else %}
     {% if not is_granted('ROLE_ETUDIANT') and is_granted('ROLE_ENDEIGNANT')%}
         <h2>Filtres:</h2>
         <nav>
@@ -270,5 +274,6 @@
 
         {{ form_end(form) }}
 
+    {% endif %}
     {% endif %}
 {% endblock %}

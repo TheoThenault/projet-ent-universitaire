@@ -39,6 +39,11 @@ class CourController extends AbstractController
     #[Route('', name: 'index')]
     public function index(Request $request, EntityManagerInterface $entityManagerInterface): Response
     {
+        if($this->getUser()->getEtudiant() == null and $this->getUser()->getEnseignant() == null)
+        {
+            return $this->render('cour/index.html.twig', ['pasEtudiant' => 42]);
+        }
+
         $etu = $this->isGranted('ROLE_ETUDIANT');
         $ens = $this->isGranted('ROLE_ENSEIGNANT');
         $ens_res = $this->isGranted('ROLE_ENSEIGNANT_RES');//Enseignant res est aussi un prof. Ordre pour les if etu, ens_res, ens
@@ -63,7 +68,6 @@ class CourController extends AbstractController
                     $liste_ue[$nom] = $liste_uetmp[$i]['nom'];
                 }
 
-                //todo rajouter nom des prof dans l'edt
                 $form = $this->createForm(EdtEnsRespFilterType::class, null,[
                     'ue' => $liste_ue,
                     'enseignant' => $liste_ens
