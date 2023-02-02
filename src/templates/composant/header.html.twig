@@ -1,4 +1,5 @@
 <header class="site-header sticky-top p-3">
+    {% set route_name = app.request.attributes.get('_route') %}
     <div class="container">
         <nav class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
             <a class="navbar-brand" href="#">
@@ -10,31 +11,76 @@
                 <li><a href="#" class="nav-link px-2">Home</a></li>
                 -->
                 {% if is_granted('ROLE_USER') %}
-                    <li><a href="{{ path('cour_index') }}" class="nav-link px-2">Cours</a></li>
+                    <li>
+                        <a href="{{ path('cour_index') }}"
+                        {% if route_name == "cour_index" %} class="nav-link active px-2" {% else %} class="nav-link px-2" {% endif %}>
+                            Cours
+                        </a>
+                    </li>
                 {% endif %}
                 {% if is_granted('ROLE_ENSEIGNANT') %}
-                    <li><a href="{{ path('heuresProf_index') }}" class="nav-link px-2">Heures</a></li>
+                    <li>
+                        <a href="{{ path('heuresProf_index') }}"
+                        {% if route_name == "heuresProf_index" %} class="nav-link active px-2" {% else %} class="nav-link px-2" {% endif %}>
+                            Heures
+                        </a>
+                    </li>
                 {% endif %}
                 {% if is_granted('ROLE_ETUDIANT') %}
-                    <li><a href="{{ path('ueValide_index') }}" class="nav-link px-2">Ues Validés</a></li>
+                    <li>
+                        <a href="{{ path('ueValide_index') }}"
+                        {% if route_name == "ueValide_index" %} class="nav-link active px-2" {% else %} class="nav-link px-2" {% endif %}>
+                            Ues Validés
+                        </a>
+                    </li>
                 {% endif %}
                 {% if is_granted('ROLE_SCOLARITE') %}
-                    <li><a href="{{ path('ue_index') }}" class="nav-link px-2">Ue</a></li>
+                    <li>
+                        <a href="{{ path('ue_index') }}"
+                        {% if route_name == "ue_index" %} class="nav-link active px-2" {% else %} class="nav-link px-2" {% endif %}>
+                            Ue
+                        </a>
+                    </li>
                 {% endif %}
                 {% if is_granted('ROLE_ADMIN') %}
-                    <li><a href="{{ path('salle_index') }}" class="nav-link px-2">Salles</a></li>
+                    <li>
+                        <a href="{{ path('salle_index') }}"
+                        {% if route_name == "salle_index" %} class="nav-link active px-2" {% else %} class="nav-link px-2" {% endif %}>
+                            Salles
+                        </a>
+                    </li>
                 {% endif %}
                 {% if is_granted('ROLE_SCOLARITE') %}
-                    <li><a href="{{ path('cursus_index') }}" class="nav-link px-2">Cursus</a></li>
+                    <li>
+                        <a href="{{ path('cursus_index') }}"
+                        {% if route_name == "cursus_index" %} class="nav-link active px-2" {% else %} class="nav-link px-2" {% endif %}>
+                            Cursus
+                        </a>
+                    </li>
                 {% endif %}
                 {% if is_granted('ROLE_SCOLARITE') %}
-                    <li><a href="{{ path('formation_index') }}" class="nav-link px-2">Formations</a></li>
+                    <li>
+                        <a href="{{ path('formation_index') }}"
+                        {% if route_name == "formation_index" %} class="nav-link active px-2" {% else %} class="nav-link px-2" {% endif %}>
+                            Formations
+                        </a>
+                    </li>
                 {% endif %}
                 {% if is_granted('ROLE_RH') %}
-                    <li><a href="{{ path('enseignant_list') }}" class="nav-link px-2">Enseignants</a></li>
+                    <li>
+                        <a href="{{ path('enseignant_list') }}"
+                        {% if route_name == "enseignant_list" %} class="nav-link active px-2" {% else %} class="nav-link px-2" {% endif %}>
+                            Enseignants
+                        </a>
+                    </li>
                 {% endif %}
                 {% if is_granted('ROLE_SCOLARITE') %}
-                    <li><a href="{{ path('etudiant_index') }}" class="nav-link px-2">Etudiants</a></li>
+                    <li>
+                        <a href="{{ path('etudiant_index') }}"
+                        {% if route_name == "etudiant_index" %} class="nav-link active px-2" {% else %} class="nav-link px-2" {% endif %}>
+                            Etudiants
+                        </a>
+                    </li>
                 {% endif %}
             </ul>
 
