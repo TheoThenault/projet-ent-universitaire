@@ -61,7 +61,7 @@ class PersonneFixtures
         // ========== CREATION ETUDIANT ==========
         $etudiantUser = new Personne();
         $etudiantUser->setRoles(['ROLE_ETUDIANT']);
-        $etudiantUser->setEmail("etudiant@" . $email);
+        $etudiantUser->setEmail("etudiant" . $email);
         $etudiantUser->setPassword('$2y$13$PQfkvYMxBXDalJ5hP9kilue8jeJarc3wGnCwvtzxg7noPPYOIZCv6');
         $etudiantUser->setPrenom('Etudiant');
         $etudiantUser->setNom('User');
@@ -70,7 +70,7 @@ class PersonneFixtures
         // ========== CREATION ENSEIGNANT ==========
         $enseignantUser = new Personne();
         $enseignantUser->setRoles(['ROLE_ENSEIGNANT']);
-        $enseignantUser->setEmail("enseignant@" . $email);
+        $enseignantUser->setEmail("enseignant" . $email);
         $enseignantUser->setPassword('$2y$13$PQfkvYMxBXDalJ5hP9kilue8jeJarc3wGnCwvtzxg7noPPYOIZCv6');
         $enseignantUser->setPrenom('Enseignant');
         $enseignantUser->setNom('User');
@@ -79,7 +79,7 @@ class PersonneFixtures
         // ========== CREATION ENSEIGNANT RES ==========
         $enseignantResUser = new Personne();
         $enseignantResUser->setRoles(['ROLE_ENSEIGNANT_RES']);
-        $enseignantResUser->setEmail("enseignant.res@" . $email);
+        $enseignantResUser->setEmail("enseignant.res" . $email);
         $enseignantResUser->setPassword('$2y$13$PQfkvYMxBXDalJ5hP9kilue8jeJarc3wGnCwvtzxg7noPPYOIZCv6');
         $enseignantResUser->setPrenom('EnseignantRes');
         $enseignantResUser->setNom('User');
@@ -88,7 +88,7 @@ class PersonneFixtures
         // ========== CREATION SCOLARITE ==========
         $scolariteUser = new Personne();
         $scolariteUser->setRoles(['ROLE_SCOLARITE']);
-        $scolariteUser->setEmail("scolarite@" . $email);
+        $scolariteUser->setEmail("scolarite" . $email);
         $scolariteUser->setPassword('$2y$13$PQfkvYMxBXDalJ5hP9kilue8jeJarc3wGnCwvtzxg7noPPYOIZCv6');
         $scolariteUser->setPrenom('Scolarité');
         $scolariteUser->setNom('User');
@@ -97,7 +97,7 @@ class PersonneFixtures
         // ========== CREATION RH ==========
         $rhUser = new Personne();
         $rhUser->setRoles(['ROLE_RH']);
-        $rhUser->setEmail("rh@" . $email);
+        $rhUser->setEmail("rh" . $email);
         $rhUser->setPassword('$2y$13$PQfkvYMxBXDalJ5hP9kilue8jeJarc3wGnCwvtzxg7noPPYOIZCv6');
         $rhUser->setPrenom('Rh');
         $rhUser->setNom('User');
@@ -106,7 +106,7 @@ class PersonneFixtures
         // ========== CREATION ADMIN ==========
         $adminUser = new Personne();
         $adminUser->setRoles(['ROLE_ADMIN']);
-        $adminUser->setEmail("admin@" . $email);
+        $adminUser->setEmail("admin" . $email);
         $adminUser->setPassword('$2y$13$PQfkvYMxBXDalJ5hP9kilue8jeJarc3wGnCwvtzxg7noPPYOIZCv6');
         $adminUser->setPrenom('Admin');
         $adminUser->setNom('User');

@@ -61,6 +61,7 @@ class Personne implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $entityManager = $args->getObjectManager();
         $liste_persone = $entityManager->getRepository(Personne::class)->findWhithSameMail($this->prenom, $this->nom);
+
         if(count($liste_persone) > 1){
             $this->setEmail($this->prenom . '.' . $this->nom . count($liste_persone) . getenv('EMAIL'));
         }
