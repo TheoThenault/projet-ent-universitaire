@@ -120,6 +120,18 @@ class UERepository extends ServiceEntityRepository
         return $queryBuilder->getQuery()->getArrayResult();
     }
 
+    public function findByFormation($formation): array{
+
+        $queryBuilder = $this->createQueryBuilder('u');
+        $queryBuilder->addSelect('u');
+        $queryBuilder->leftJoin('u.formation', 'f');
+        $queryBuilder->where('f = :formation');
+        $queryBuilder->setParameter('formation', $formation);
+        $queryBuilder->addSelect('f');
+
+        return $queryBuilder->getQuery()->getArrayResult();
+    }
+
 //    /**
 //     * @return UE[] Returns an array of UE objects
 //     */

@@ -36,6 +36,7 @@ class CourFixtures
             $cour->setEnseignant($list_enseignant[$prof]);
             $cour->setSalle($list_salles[$sall]);
             $cour->setUe($list_ues[$_ue]);
+            
             for($j = 0; $j < count($list_groupes); $j++)
             {
                 if($list_groupes[$j]->getFormation() == $list_ues[$_ue]->getFormation())

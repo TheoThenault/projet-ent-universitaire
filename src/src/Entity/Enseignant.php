@@ -24,6 +24,9 @@ class Enseignant
     #[ORM\OneToMany(mappedBy: 'enseignant', targetEntity: Cour::class)]
     private Collection $cours;
 
+    #[ORM\OneToOne(inversedBy: 'enseignant', cascade: ['persist', 'remove'])]
+    private ?Formation $ResponsableFormation = null;
+
     public function __construct()
     {
         $this->cours = new ArrayCollection();
@@ -94,6 +97,18 @@ class Enseignant
                 $cour->setEnseignant(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getResponsableFormation(): ?Formation
+    {
+        return $this->ResponsableFormation;
+    }
+
+    public function setResponsableFormation(?Formation $ResponsableFormation): self
+    {
+        $this->ResponsableFormation = $ResponsableFormation;
 
         return $this;
     }
