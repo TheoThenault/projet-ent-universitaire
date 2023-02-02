@@ -13,7 +13,7 @@ class EnseignantFixtures
 
     public function charger(ObjectManager $manager, array $list_personnes, array $list_statuts_enseignant): void
     {
-        $nb_enseignant = 5000;
+        $nb_enseignant = 2000;
 
         // ========== CREATION DES ENSEIGNANTS ==========
         for ($i=0; $i<$nb_enseignant; $i++){
