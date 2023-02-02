@@ -51,15 +51,23 @@ class AppFixtures extends Fixture
         $etudiant_fixtures = new EtudiantFixtures();
         $etudiant_fixtures->charger($manager, $personnes_fixture->list_personnes, 100, $formation_fixture->list_formations);
 
+        var_dump('Etudiants fini!');
+
         $ues = new UEFixtures();
         $ues->charger($manager, $specialite_fixtures->list_specialites, $formation_fixture->list_formations);
+
+        var_dump('UEs fini!');
 
         $uesValideFixtures = new UEValideFixtures();
         $uesValideFixtures->charger($manager, $etudiant_fixtures->list_etudiants, $ues->list_ues);
 
+        var_dump('UeValides fini!');
+
         $cours_fixtures = new CourFixtures();
         $cours_fixtures->charger($manager, $enseigants_fixture->list_enseignants, $salleFixture->list_salles,
                                 $ues->list_ues);
+
+        var_dump('Cours fini!');
 
         $manager->flush();
     }

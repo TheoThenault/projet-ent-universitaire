@@ -22,6 +22,7 @@ class EtudiantGroupeAutoAfterCreation
     // the entity instance and the lifecycle event
     public function postPersist(Etudiant $etudiant, LifecycleEventArgs $event): void
     {
+        var_dump($etudiant->getFormation()->getNom() . ' ' . $etudiant->getFormation()->getCursus()->getNom());
         // Récupérez tous groupes dont les étudiants ont la meme formation que le nouvel étudiant
         $groupesWithSameFormationTD = $this->entityManager->getRepository(Groupe::class)->findAllWithSameFormationAndType($etudiant->getFormation()->getId(), 'TD');
         $groupesWithSameFormationTP = $this->entityManager->getRepository(Groupe::class)->findAllWithSameFormationAndType($etudiant->getFormation()->getId(), 'TP');
