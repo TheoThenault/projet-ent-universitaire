@@ -4,11 +4,14 @@ namespace App\Entity;
 
 use App\Repository\PersonneRepository;
 use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: PersonneRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Personne implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -50,8 +53,18 @@ class Personne implements UserInterface, PasswordAuthenticatedUserInterface
     public function setEmail(string $email): self
     {
         $this->email = $email;
-
         return $this;
+    }
+
+    #[ORM\PostPersist]
+    public function setEmailSafe(LifecycleEventArgs $args): void
+    {
+        $entityManager = $args->getObjectManager();
+        $liste_persone = $entityManager->getRepository(Personne::class)->findWhithSameMail($this->prenom, $this->nom);
+
+        if(count($liste_persone) > 1){
+            $this->setEmail($this->prenom . '.' . $this->nom . count($liste_persone) . "@univ-poitiers.fr");
+        }
     }
 
     public function getNom(): ?string

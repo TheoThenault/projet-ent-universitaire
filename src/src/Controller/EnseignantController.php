@@ -4,65 +4,61 @@ namespace App\Controller;
 
 use App\Entity\Enseignant;
 use App\Form\enseignant\EnseignantFilterType;
+use App\Form\enseignant\RechercheProfType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 
 #[Route('/enseignant', name: 'enseignant_')]
 class EnseignantController extends AbstractController
 {
-    #[Route('/list', name: 'list')]
-    public function index(EntityManagerInterface $entityManager, Request $request): Response
+    #[Route('/list/{nPage}', name: 'list',
+        requirements:   ['nPage' => '\d+'],
+        defaults:       ['nPage' => 1]
+    )]
+    public function index($nPage, EntityManagerInterface $entityManager, Request $request): Response
     {
-        $enseignants =  $entityManager->getRepository(Enseignant::class)->findAll();
+        if($nPage <= 0)
+        {
+            throw new NotFoundHttpException('La page n\'existe pas');
+        }
 
-        $form = $this->createForm(EnseignantFilterType::class);
-        $form->add('send', SubmitType::class, ['label' => 'Filter']);
+        $form = $this->createForm(RechercheProfType::class);
+        $form->add('send', SubmitType::class, ['label' => 'Filtrer',
+                'attr' => [ 'formaction' => '/enseignant/list' ]
+            ]);
         $form->handleRequest($request);
-
 
         if ($form->isSubmitted() && $form->isValid()) {
             $responses = $form->getData();
-            dump($responses);
-            $choix_statut = $form->get("statut_enseignant")->getData()->getNom();
-            $enseignants = $entityManager->getRepository(Enseignant::class)->filterByStatut($choix_statut);
+            //dump($responses);
+            if(array_key_exists('Entry', $responses))
+            {
+                $perPage = $this->getParameter('lignes_par_page');
 
-            switch($responses["sort_asc_or_desc"]) {
-                case "email":
-                    $enseignants = $entityManager->getRepository(Enseignant::class)->sortByEmailAscOrDesc("ASC");
-                    break;
-                case "email_desc":
-                    $enseignants = $entityManager->getRepository(Enseignant::class)->sortByEmailAscOrDesc("DESC");
-                    break;
-                case "nom":
-                    $enseignants = $entityManager->getRepository(Enseignant::class)->sortByNameAscOrDesc("ASC");
-                    break;
-                case "nom_desc":
-                    $enseignants = $entityManager->getRepository(Enseignant::class)->sortByNameAscOrDesc("DESC");
-                    break;
-                case "prenom":
-                    $enseignants = $entityManager->getRepository(Enseignant::class)->sortByNameAscOrDesc("ASC");
-                    break;
-                case "prenom_desc":
-                    $enseignants = $entityManager->getRepository(Enseignant::class)->sortByNameAscOrDesc("DESC");
-                    break;
-                default:
-                    break;
+                $enseignants =  $entityManager->getRepository(Enseignant::class)
+                    ->findByNomOrPrenomArrayPaged(explode(' ', $responses['Entry']), $nPage, $perPage);
+
+
+
+                //dump($enseignants->getQuery()->getResult());
+                //dump(count($enseignants));
+                $pageMax = intval(ceil(count($enseignants)/$perPage));
+                if($nPage != 1 && $nPage > $pageMax)  // Différent de 1 car si la BDD est vide on veut quand même afficher une page basique pour l'utilisateur
+                {
+                    throw new NotFoundHttpException('La page n\'existe pas');
+                }
+
+                return $this->render('enseignant/list.twig', ['profForm' => $form->createView(), 'list' => $enseignants,
+                    'currPage' => $nPage, 'pageMax' => $pageMax]);
             }
-
-            return $this->render('enseignant/list.twig', [
-                'enseignants' => $enseignants,
-                'enseignantFilterForm' => $form->createView(),
-            ]);
         }
 
-        return $this->render('enseignant/list.twig', [
-            'enseignants' => $enseignants,
-            'enseignantFilterForm' => $form->createView(),
-        ]);
+        return $this->render('enseignant/list.twig', ['profForm' => $form->createView()]);
     }
 }

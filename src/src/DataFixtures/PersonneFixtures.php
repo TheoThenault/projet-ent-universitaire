@@ -10,44 +10,58 @@ class PersonneFixtures
 {
     public array $list_personnes = array();
 
-    public function charger(ObjectManager $manager): void
+    private function getNom(): string
     {
-        $email="univ-poitiers.fr";
+        $noms = [
+            'Martin', 'Simon', 'Morel', 'Legrand', 'Perrin', 'Bernard', 'Laurent', 'Girard', 'Garnier',
+            'Morin', 'Dubois', 'Lefebvre', 'Andre', 'Faure', 'Dupont', 'Fontaine', 'Lopez', 'Robin',
+            'Leroy', 'Durand', 'Petit', 'Bertrand', 'Richard', 'Poirier', 'Rideau', 'Merlu', 'Duval',
+            'Brun', 'Noel', 'Sins', 'Gourdin', 'Rhoades', 'Melon', 'Guerin', 'Nicolas', 'Leclerc',
+            'Laporte', 'Lemaitre', 'Langlois', 'Breton', 'Leroux', 'Charles', 'Bonnet', 'Dubois', 'Deschamps',
+            'Kenobi', 'Potter', 'Fujiwara', 'Usumaki', 'Willis', 'Cruise'
+        ];
+        $index =  rand(0, count($noms)-1);
+        return $noms[$index];
+    }
 
-        $nom_prenom = array(
-            array("Adèle", "Hiriome"),
-            array("Ahmed", "Epan"),
-            array("Archibald", "Hépompier"),
-            array("Bérénice", "Hafoy"),
-            array("Bob", "Hinard"),
-            array("Bruno", "Zieuvair"),
-            array("Carrie", "Danter"),
-            array("Célimène", "Kacraké"),
-            array("Daisy", "Meuble"),
-            array("Danielle", "Nimoit"),
-            array("David", "Poche"),
-            array("Eléonore", "Cessaint"),
-            array("Eugénie", "Desalpage"),
-            array("Gary", "Guette"),
-            array("Natacha", "Rivari"),
-        );
+    private function getPrenom(): string
+    {
+        $prenoms = [
+            'Mattieu', 'Jean', 'Pierre', 'Michel', 'Sasha', 'André', 'Philippe', 'Olivier', 'Bernard',
+            'Marie', 'Jeanne', 'Monique', 'Isabelle', 'Nathalie', 'Sylvie', 'Suzanne', 'Abella', 'Lana',
+            'Johnny', 'Camille', 'Roger', 'Paul', 'Daniel', 'Henri', 'Nicolas', 'Manuel', 'Jacques',
+            'Mia', 'Sarah', 'Rose', 'Jade', 'Emma', 'Angele', 'Léa', 'Manon', 'Lucie', 'Clara',
+            'Alexandre', 'Hugo', 'Lucas', 'Théo', 'Simon', 'Quentin', 'Mathis', 'Paul', 'Bastien',
+            'Amélie', 'Alicia', 'Carla', 'Elisa', 'Margaux', 'Mélissa', 'Léna', 'Elise', 'Ambre',
+            'Bruce', 'Takumi', 'Harry', 'Obiwan', 'Anakin', 'Qui-Gon', 'Tom'
+        ];
+        $index =  rand(0, count($prenoms)-1);
+        return $prenoms[$index];
+    }
+
+    public function charger(ObjectManager $manager, int $nbPersonnes): void
+    {
+        $email= "@univ-poitiers.fr";
 
         // ========== CREATION DE PERSONNE ==========
-        for ($i = 0; $i <count($nom_prenom); $i++){
+        for ($i = 0; $i < $nbPersonnes; $i++){
+            $prenom = $this->getPrenom();
+            $nom = $this->getNom();
             $this->list_personnes[$i] = new Personne();
             $this->list_personnes[$i]
-                ->setEmail($nom_prenom[$i][0].".".$nom_prenom[$i][1]."@".$email)
-                ->setPrenom($nom_prenom[$i][0])
-                ->setNom($nom_prenom[$i][1])
+                ->setEmail($prenom.".".$nom. $email)
+                ->setPrenom($prenom)
+                ->setNom($nom)
                 ->setPassword('$2y$13$PQfkvYMxBXDalJ5hP9kilue8jeJarc3wGnCwvtzxg7noPPYOIZCv6')
-                ->setRoles(['ROLE_ADMIN']);
+                ->setRoles(['ROLE_USER']);
             $manager->persist($this->list_personnes[$i]);
+            $manager->flush();
         }
 
         // ========== CREATION ETUDIANT ==========
         $etudiantUser = new Personne();
         $etudiantUser->setRoles(['ROLE_ETUDIANT']);
-        $etudiantUser->setEmail("etudiant@" . $email);
+        $etudiantUser->setEmail("etudiant" . $email);
         $etudiantUser->setPassword('$2y$13$PQfkvYMxBXDalJ5hP9kilue8jeJarc3wGnCwvtzxg7noPPYOIZCv6');
         $etudiantUser->setPrenom('Etudiant');
         $etudiantUser->setNom('User');
@@ -56,7 +70,7 @@ class PersonneFixtures
         // ========== CREATION ENSEIGNANT ==========
         $enseignantUser = new Personne();
         $enseignantUser->setRoles(['ROLE_ENSEIGNANT']);
-        $enseignantUser->setEmail("enseignant@" . $email);
+        $enseignantUser->setEmail("enseignant" . $email);
         $enseignantUser->setPassword('$2y$13$PQfkvYMxBXDalJ5hP9kilue8jeJarc3wGnCwvtzxg7noPPYOIZCv6');
         $enseignantUser->setPrenom('Enseignant');
         $enseignantUser->setNom('User');
@@ -65,7 +79,7 @@ class PersonneFixtures
         // ========== CREATION ENSEIGNANT RES ==========
         $enseignantResUser = new Personne();
         $enseignantResUser->setRoles(['ROLE_ENSEIGNANT_RES']);
-        $enseignantResUser->setEmail("enseignant.res@" . $email);
+        $enseignantResUser->setEmail("enseignant.res" . $email);
         $enseignantResUser->setPassword('$2y$13$PQfkvYMxBXDalJ5hP9kilue8jeJarc3wGnCwvtzxg7noPPYOIZCv6');
         $enseignantResUser->setPrenom('EnseignantRes');
         $enseignantResUser->setNom('User');
@@ -74,7 +88,7 @@ class PersonneFixtures
         // ========== CREATION SCOLARITE ==========
         $scolariteUser = new Personne();
         $scolariteUser->setRoles(['ROLE_SCOLARITE']);
-        $scolariteUser->setEmail("scolarite@" . $email);
+        $scolariteUser->setEmail("scolarite" . $email);
         $scolariteUser->setPassword('$2y$13$PQfkvYMxBXDalJ5hP9kilue8jeJarc3wGnCwvtzxg7noPPYOIZCv6');
         $scolariteUser->setPrenom('Scolarité');
         $scolariteUser->setNom('User');
@@ -83,7 +97,7 @@ class PersonneFixtures
         // ========== CREATION RH ==========
         $rhUser = new Personne();
         $rhUser->setRoles(['ROLE_RH']);
-        $rhUser->setEmail("rh@" . $email);
+        $rhUser->setEmail("rh" . $email);
         $rhUser->setPassword('$2y$13$PQfkvYMxBXDalJ5hP9kilue8jeJarc3wGnCwvtzxg7noPPYOIZCv6');
         $rhUser->setPrenom('Rh');
         $rhUser->setNom('User');
@@ -92,7 +106,7 @@ class PersonneFixtures
         // ========== CREATION ADMIN ==========
         $adminUser = new Personne();
         $adminUser->setRoles(['ROLE_ADMIN']);
-        $adminUser->setEmail("admin@" . $email);
+        $adminUser->setEmail("admin" . $email);
         $adminUser->setPassword('$2y$13$PQfkvYMxBXDalJ5hP9kilue8jeJarc3wGnCwvtzxg7noPPYOIZCv6');
         $adminUser->setPrenom('Admin');
         $adminUser->setNom('User');
