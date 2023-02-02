@@ -149,6 +149,8 @@ class EnseignantRepository extends ServiceEntityRepository
             $queryBuilder->setParameter('format'.$i, $entry . '%');
         }
 
+        $queryBuilder->orderBy('pers.nom', 'ASC');
+
         return $queryBuilder->getQuery()->getResult();
     }
 
