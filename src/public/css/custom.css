@@ -15,7 +15,10 @@
 .text-end a {
     color: white;
 }
-
+.active{
+    color: #B0413E !important;
+    font-weight: bold;
+}
 .site-header a:hover {
     color: rgb(240,3,64);
     text-decoration: none;
