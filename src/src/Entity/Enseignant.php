@@ -117,6 +117,8 @@ class Enseignant
     public function setSection(?Specialite $section): self
     {
         $this->section = $section;
+        return $this;
+    }
 
     public function getResponsableFormation(): ?Formation
     {
