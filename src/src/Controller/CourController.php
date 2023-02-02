@@ -219,6 +219,8 @@ class CourController extends AbstractController
                 $liste_edt[$indexEDT][4] = $liste_cours[$indexCours]['ue']['formation']['nom'];
 
                 // Au cas où deux cours ont le même créneaux (ne dervrait pas arriver)
+                /** @noinspection PhpConditionAlreadyCheckedInspection */
+                /** PHPStorm dit qu'il y a pas besoin de la boucle en dessous, mais PHPStorm est con */
                 while($indexCours < count($liste_cours) && $liste_cours[$indexCours]['creneau'] == $creneau)
                     $indexCours++;
             }else{
