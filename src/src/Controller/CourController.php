@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Cour;
 use App\Entity\Cursus;
+use App\Entity\Etudiant;
 use App\Entity\Formation;
 use App\Entity\Enseignant;
+use App\Entity\Personne;
 use App\Form\cour\CourFilterType;
 use App\Form\cour\CourEtuDateFilterType;
 use DateTime;
@@ -35,7 +37,10 @@ class CourController extends AbstractController
     #[Route('', name: 'index')]
     public function index(Request $request, EntityManagerInterface $entityManagerInterface): Response
     {
-        if($this->isGranted('ROLE_ETUDIANT')){
+        $etu = $this->isGranted('ROLE_ETUDIANT');
+        $ens = $this->isGranted('ROLE_ENSEIGNANT');
+        if($etu || $ens){
+
             $form = $this->createForm(CourEtuDateFilterType::class);
             $form->add('Valider', SubmitType::class);
             $form->add("Date_du_jour", SubmitType::class, ['label' => "Aujourd'hui"]);
@@ -43,29 +48,46 @@ class CourController extends AbstractController
             $form->handleRequest($request);
             $liste_cours = array();
 
-            $formation = $this->getUser()->getEtudiant()->getFormation()->getNom();
-            $cursus = $this->getUser()->getEtudiant()->getFormation()->getCursus()->getNom();
 
+            if($etu){
+                $formation = $this->getUser()->getEtudiant()->getFormation()->getNom();
+                $cursus = $this->getUser()->getEtudiant()->getFormation()->getCursus()->getNom();
+
+            }
             if($form->isSubmitted() && $form->isValid() && $form->getClickedButton()->getName() == 'Date_du_jour') {
-                dump("zob");
-                $liste_cours = $entityManagerInterface->getRepository(Cour::class)->findAllByChoicesCreneau($cursus, $formation, $this->getNow());
+                if($etu) {
+                    $liste_cours = $entityManagerInterface->getRepository(Cour::class)->findAllByChoicesCreneau($cursus, $formation, $this->getNow());
+
+                }else{
+                    $liste_cours = $entityManagerInterface->getRepository(Cour::class)->findAllByChoicesCreneauByProf($this->getNow(), $this->getUser()->getEnseignant());
+                }
+
             }elseif($form->isSubmitted() && $form->isValid())
             {
                 $date_choisis = $form->get('Semaine')->getData();
-                $liste_cours = $entityManagerInterface->getRepository(Cour::class)->findAllByChoicesCreneau($cursus, $formation, $date_choisis);
+                if($etu) {
+                    $liste_cours = $entityManagerInterface->getRepository(Cour::class)->findAllByChoicesCreneau($cursus, $formation, $date_choisis);
+
+                }else{
+                    $liste_cours = $entityManagerInterface->getRepository(Cour::class)->findAllByChoicesCreneauByProf($date_choisis, $this->getUser()->getEnseignant());
+
+                }
             }else{
                 //La premiere fois que la page est chargée
-                $liste_cours = $entityManagerInterface->getRepository(Cour::class)->findAllByChoicesCreneau($cursus, $formation, $this->getNow());
+                if($etu) {
+                    $liste_cours = $entityManagerInterface->getRepository(Cour::class)->findAllByChoicesCreneau($cursus, $formation, $this->getNow());
+                }else{
+                    $liste_cours = $entityManagerInterface->getRepository(Cour::class)->findAllByChoicesCreneauByProf($this->getNow(), $this->getUser()->getEnseignant());
+                }
             }
-
             $liste_edt = $this->listeEdtPourPlanning($liste_cours);
-            dump($liste_cours);
-            dump($liste_edt);
+
             return $this->render('cour/index.html.twig', [
                 'liste_cours' => $liste_cours,
                 'liste_edt' => $liste_edt,
                 'form' => $form->createView()
             ]);
+
 
         }
         else{
@@ -123,6 +145,7 @@ class CourController extends AbstractController
                 $liste_edt[$j-1][1] = [];
                 $liste_edt[$j-1][2] = [];
                 $liste_edt[$j-1][3] = $creneau;
+                $liste_edt[$j-1][4] = [];
                 $creneau++;
                 $j++;
             }
@@ -131,11 +154,12 @@ class CourController extends AbstractController
             $liste_edt[$j-1][1] = $liste_cours[$i]['ue']['nom'];
             $liste_edt[$j-1][2] = $liste_cours[$i]['salle']['nom'];
             $liste_edt[$j-1][3] = $liste_cours[$i]['creneau'];
+            $liste_edt[$j-1][4] = $liste_cours[$i]['ue']['formation']['nom'];
             $j++;
             $creneau++;
         }
 
-        while($i < 20){//Permet de mettre des créneaux vides si pas cours en fin de semaine
+        while($i < 20 and $j-1 != 20 ){//Permet de mettre des créneaux vides si pas cours en fin de semaine
             $liste_edt[$j-1][0] = [];
             $liste_edt[$j-1][1] = [];
             $liste_edt[$j-1][2] = [];

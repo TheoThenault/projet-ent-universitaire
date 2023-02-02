@@ -215,15 +215,53 @@ class CourRepository extends ServiceEntityRepository
         $queryBuilder->orderBy('cour.creneau');
         $result = $queryBuilder->getQuery()->getArrayResult();
 
-        //dump(count($result));
-        /*for($i = 0; $i < count($result); $i++)
+        return $result;
+    }
+
+    public function findAllByChoicesCreneauByProf($date, $prof): array{
+
+        try {
+            $debut_annee = $this->getDebutAnnee();
+        } catch (Exception $e) {
+            return [];
+        }
+
+        if($date < $debut_annee)
         {
-            $curr = $result[$i]['creneau'] - 1;
-            //dump($result[$i]);
-            $res = $this->creneauToDate($curr);
-            if($res != null)
-                $result[$i]['creneau'] = $res;
-        }*/
+            return [];
+        }
+
+
+        $datediff = $date->diff($debut_annee);
+        $numeroSemaine = floor($datediff->days / 7);
+        $creneauMin = 20 * $numeroSemaine + 1;  // 20 creneaux par semaines
+        $creneauMax = $creneauMin + 19;
+
+        $queryBuilder = $this->createQueryBuilder('cour');
+        $queryBuilder->addSelect('cour');
+        $queryBuilder->leftJoin('cour.salle', 's');
+        $queryBuilder->addSelect('s');
+        $queryBuilder->leftJoin('cour.enseignant', 'ens');
+
+        $queryBuilder->where('cour.enseignant = :prof');
+        $queryBuilder->setParameter('prof', $prof);
+
+        $queryBuilder->addSelect('ens');
+        $queryBuilder->leftJoin('ens.personne', 'pers');
+        $queryBuilder->addSelect('pers');
+        $queryBuilder->leftJoin('cour.ue', 'ue');
+        $queryBuilder->addSelect('ue');
+        $queryBuilder->leftJoin('ue.formation', 'f');
+        $queryBuilder->addSelect('f');
+        $queryBuilder->leftJoin('f.cursus', 'c');
+        $queryBuilder->addSelect('c');
+
+        $queryBuilder->andWhere('cour.creneau BETWEEN :cmin AND :cmax');
+        $queryBuilder->setParameter('cmin', $creneauMin);
+        $queryBuilder->setParameter('cmax', $creneauMax);
+
+        $queryBuilder->orderBy('cour.creneau');
+        $result = $queryBuilder->getQuery()->getArrayResult();
 
         return $result;
     }
