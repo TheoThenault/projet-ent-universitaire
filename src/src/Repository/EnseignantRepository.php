@@ -138,10 +138,11 @@ class EnseignantRepository extends ServiceEntityRepository
         $queryBuilder->addSelect('status');
         $queryBuilder->leftJoin('prof.personne', 'pers');
         $queryBuilder->addSelect('pers');
+        $queryBuilder->where('pers.id = -1');   // C'est de toute beauté
 
         for($i = 0; $i < count($entries); $i++)
         {
-            $entry = $entries[$i];
+            $entry = trim($entries[$i]);
             if(strlen($entry) < 3)
                 continue;
 

@@ -29,9 +29,10 @@ class EnseignantController extends AbstractController
         }
 
         $form = $this->createForm(RechercheProfType::class);
-        $form->add('send', SubmitType::class, ['label' => 'Filtrer']);
+        $form->add('send', SubmitType::class, ['label' => 'Filtrer',
+                'attr' => [ 'formaction' => '/enseignant/list' ]
+            ]);
         $form->handleRequest($request);
-
 
         if ($form->isSubmitted() && $form->isValid()) {
             $responses = $form->getData();
@@ -42,6 +43,8 @@ class EnseignantController extends AbstractController
 
                 $enseignants =  $entityManager->getRepository(Enseignant::class)
                     ->findByNomOrPrenomArrayPaged(explode(' ', $responses['Entry']), $nPage, $perPage);
+
+
 
                 //dump($enseignants->getQuery()->getResult());
                 //dump(count($enseignants));
