@@ -152,6 +152,7 @@ class EnseignantRepository extends ServiceEntityRepository
         }
 
         $queryBuilder->orderBy('pers.nom', 'ASC');
+        $queryBuilder->orderBy('pers.prenom', 'ASC');
 
         $query = $queryBuilder->getQuery();
         $query->setFirstResult(($nPage - 1) * $perPage);
