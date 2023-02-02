@@ -13,9 +13,19 @@
     {{ form_row(profForm.send) }}
 
     {% if list is not defined or list is empty%}
-        <h3>Aucun résultat!</h3>
+        <div class="d-flex flex-row mb-3 align-items-center">
+            <h3>Aucun résultat!</h3>
+            {% if is_granted('ROLE_RH') %}
+                <a class="btn btn-primary ms-5" href="{{ path('etudiant_add') }}" role="button"><i class="fa-solid fa-plus"></i> Enseignants</a>
+            {% endif%}
+        </div>
     {% else %}
-        <h2>Enseignants:</h2>
+        <div class="d-flex flex-row mb-3 align-items-center">
+            <h3>Enseignants: </h3>
+            {% if is_granted('ROLE_RH') %}
+                <a class="btn btn-primary ms-5" href="{{ path('etudiant_add') }}" role="button"><i class="fa-solid fa-plus"></i> Enseignants</a>
+            {% endif%}
+        </div>
         <table class="table table-hover table-striped">
             <tr>
                 <th>Nom</th>
