@@ -76,6 +76,7 @@ class EtudiantController extends AbstractController
     #[Route('/add', name: 'add')]
     public function addAction(EntityManagerInterface $entityManager, Request $request, ValidatorInterface $validator): Response
     {
+        // Create new etudiant an the associate form
         $etudiant = new Etudiant();
         $form = $this->createForm(EtudiantAddType::class, $etudiant);
         $form->add('send', SubmitType::class, ['label' => 'Ajouter un nouvel étudiant']);
@@ -84,24 +85,25 @@ class EtudiantController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $entityManager->persist($etudiant);
-
+            // attach a new personne to the student
             $personne = new Personne();
             $personne->setNom($form->get('nom')->getData());
             $personne->setPrenom($form->get('prenom')->getData());
-
             $personne->setEmail($personne->getPrenom() . '.' . $personne->getNom() . "@univ-poitiers.fr");
-
             $personne->setRoles(['ROLE_ETUDIANT']);
             $personne->setEtudiant($etudiant);
 
+            // Personne Validation
             $errors = $validator->validate($personne);
             if(count($errors) <= 0){
+                // No errors :
                 $entityManager->persist($personne);
 
                 $entityManager->flush();
                 $this->addFlash('crud', "L'étudiant : {$form->get('prenom')->getData()} {$form->get('nom')->getData()}, a été créé avec succès.");
                 return $this->redirectToRoute('etudiant_index');
             } else {
+                // Error
                 $errorsString = (string) $errors;
                 return $this->render('etudiant/add.html.twig', [
                     'addEtudiantForm' => $form->createView(),
@@ -117,10 +119,14 @@ class EtudiantController extends AbstractController
     }
 
     #[Route('/edit/{id}', name: 'edit')]
-    public function editAction(EntityManagerInterface $em, Request $request, int $id, ): Response
+    public function editAction(EntityManagerInterface $em, Request $request, int $id, ValidatorInterface $validator): Response
     {
+        // get etudiant you want to edit
         $etudiant = $em->getRepository(Etudiant::class)->find($id);
+
         $form = $this->createForm(EtudiantEditType::class, $etudiant);
+
+        // feed the form
         $form->get('nom')->setData($etudiant->getPersonne()->getNom());
         $form->get('prenom')->setData($etudiant->getPersonne()->getPrenom());
         $form->add('send', SubmitType::class, ['label' => "Modifier l'étudiant"]);
@@ -133,15 +139,28 @@ class EtudiantController extends AbstractController
             $personne->setNom($form->get('nom')->getData());
             $personne->setPrenom($form->get('prenom')->getData());
 
-            $em->persist($personne);
-            $em->flush();
-
-            $this->addFlash('crud', "L'étudiant : {$form->get('prenom')->getData()} {$form->get('nom')->getData()}, a été modifié avec succès.");
-            return $this->redirectToRoute('etudiant_index');
+            // Personne Validation
+            $errors = $validator->validate($personne);
+            if (count($errors) <= 0) {
+                // No errors :
+                $em->persist($personne);
+                $em->flush();
+                $this->addFlash('crud', "L'étudiant : {$form->get('prenom')->getData()} {$form->get('nom')->getData()}, a été modifié avec succès.");
+                return $this->redirectToRoute('etudiant_index');
+            } else {
+                // errors :
+                $errorsString = (string)$errors;
+                return $this->render('etudiant/edit.html.twig', [
+                    'editEtudiantForm' => $form->createView(),
+                    'errors' => $errors,
+                ]);
+            }
         }
 
         return $this->render('etudiant/edit.html.twig', [
             'editEtudiantForm' => $form->createView(),
+            'errors' => [],
         ]);
     }
+
 }
