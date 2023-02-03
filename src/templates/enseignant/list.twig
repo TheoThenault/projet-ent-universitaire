@@ -42,42 +42,7 @@
                 </tr>
             {% endfor %}
         </table>
-        <style>
-            div.pagination {
-                width:100%;
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: center;
-                margin-bottom: 20px;
-            }
 
-            div.pagination > a, button {
-                text-align: center;
-                margin: 0 5px;
-                padding: 4px 12px;
-                border: 1px solid white;
-                border-radius: 50%;
-                font-size: 20px;
-                /* rgb(220, 53, 69) */
-            }
-
-            div.pagination > a#clicker {
-                background-color: rgb(220, 53, 69);
-                color: white;
-            }
-
-            div.pagination > button {
-                background-color: WHITE;
-                color: BLACK;
-                transition: 200ms linear;
-            }
-            div.pagination > button:hover {
-                background-color: rgb(223, 157, 164);
-                color: BLACK;
-            }
-
-
-        </style>
         <div class="pagination">
         {% if pageMax > 1 %}
             {% for page in 1..pageMax %}

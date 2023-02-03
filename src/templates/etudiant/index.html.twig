@@ -14,10 +14,7 @@
 
     {# on n'affiche cette parite que si la liste est défini est pas vide #}
     {% if liste_etudiants is defined and liste_etudiants is not empty %}
-        <div class="d-flex flex-row mb-3 align-items-center">
-            <h2>Résultats:</h2>
-            <a class="btn btn-primary ms-5" href="{{ path('etudiant_add') }}" role="button"><i class="fa-solid fa-plus"></i> Étudiant</a>
-        </div>
+
         
         <div class="d-flex flex-row mb-3 align-items-center">
             <h3>Etudiants: </h3>
