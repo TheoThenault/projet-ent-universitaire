@@ -22,10 +22,10 @@ class AppFixtures extends Fixture
     private int $nbPersonnes;
     private int $nbSalles;
     function __construct() {
-        $this->nbPersonnes = 2000;
-        $this->nbEtudiants = 1500;
-        $this->nbEnseignants = 500;
-        $this->nbSalles = 200;
+        $this->nbPersonnes = 300;
+        $this->nbEtudiants = 150;
+        $this->nbEnseignants = 50;
+        $this->nbSalles = 20;
     }
     public function load(ObjectManager $manager): void
     {
