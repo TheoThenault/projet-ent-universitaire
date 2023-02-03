@@ -70,9 +70,11 @@ class EnseignantController extends AbstractController
     #[Route('/add', name: 'add')]
     public function add(EntityManagerInterface $entityManager, Request $request,  ValidatorInterface $validator): Response
     {
+        // Get all the Entity in the repos.
         $listeStatus = $entityManager->getRepository(StatutEnseignant::class)->getAllForm();
         $listeSpecialites = $entityManager->getRepository(Specialite::class)->getAllForm();
         $listeFormations = $entityManager->getRepository(Formation::class)->getAllForm();
+
         $form = $this->createForm(EnseignantType::class, null,[
             'status' => $listeStatus,
             'specialites' => $listeSpecialites,
@@ -82,7 +84,7 @@ class EnseignantController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
+            // Update the personne and enseignant
             $newPersonne = new Personne();
             $newPersonne->setNom($form->get('Nom')->getData());
             $newPersonne->setPrenom($form->get('Prenom')->getData());
@@ -100,14 +102,18 @@ class EnseignantController extends AbstractController
                 // Prof responsable
                 $newEnseignant->setResponsableFormation($formationres);
             }
+
+            // Personne Validation
             $errors = $validator->validate($newPersonne);
             if(count($errors) <= 0){
+                // No error :
                 $entityManager->persist($newEnseignant);
                 $entityManager->flush();
 
                 $this->addFlash('crud', "L'enseignant : {$form->get('Nom')->getData()} {$form->get('Prenom')->getData()}, a été créé avec succès.");
                 return $this->redirectToRoute('enseignant_list');
             } else {
+                // Error
                 return $this->render('enseignant/add.html.twig', [
                     'profForm' => $form->createView(),
                     'errors' => $errors,
@@ -161,7 +167,7 @@ class EnseignantController extends AbstractController
                 $enseignant->setResponsableFormation($formationres);
             }
 
-            // Validation
+            // Personne Validation
             $errors = $validator->validate($personne);
             if(count($errors) <= 0) {
                 // No error :
