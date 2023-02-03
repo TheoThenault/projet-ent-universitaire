@@ -117,10 +117,10 @@ class CourController extends AbstractController
 
                 }elseif($ens_res){
 
-                $ue_choisis = $form->get('Ue')->getData();
-                $prof_choisis = $form->get('Enseignant')->getData();
-                $formation =$this->getUser()->getEnseignant()->getResponsableFormation()->getNom();
-                $liste_cours = $entityManagerInterface->getRepository(Cour::class)->findAllByChoicesCreneauProfResp($ue_choisis, $prof_choisis, $formation, $date_choisis);
+                    $ue_choisis = $form->get('Ue')->getData();
+                    $prof_choisis = $form->get('Enseignant')->getData();
+                    $formation =$this->getUser()->getEnseignant()->getResponsableFormation()->getNom();
+                    $liste_cours = $entityManagerInterface->getRepository(Cour::class)->findAllByChoicesCreneauProfResp($ue_choisis, $prof_choisis, $formation, $date_choisis);
 
                 }else{
                     $liste_cours = $entityManagerInterface->getRepository(Cour::class)->findAllByChoicesCreneauByProf($date_choisis, $this->getUser()->getEnseignant());
@@ -141,12 +141,14 @@ class CourController extends AbstractController
                 }
             }
             $liste_edt = $this->listeEdtPourPlanning($liste_cours);
+            //dump($liste_edt);
 
             return $this->render('cour/index.html.twig', [
                 'liste_cours' => $liste_cours,
                 'liste_edt' => $liste_edt,
                 'form' => $form->createView()
             ]);
+
 
         }
         else{
@@ -181,53 +183,57 @@ class CourController extends AbstractController
                 $liste_cours = $entityManagerInterface->getRepository(Cour::class)->findAllByChoices($cursus_choisis, $formation_choisis, $date_choisis, $prof_choisis);
             }
 
+
+
             return $this->render('cour/index.html.twig', [
                 'liste_cours' => $liste_cours,
                 'form' => $form->createView()
             ]);
+
 
         }
     }
 
     private function listeEdtPourPlanning($liste_cours):array{
         $liste_edt = array();
-        $j = 1;
         $nbPremierCreneaux = -33;
         if(count($liste_cours) != 0){
             $nbPremierCreneaux = $liste_cours[0]['creneau'];
         }
 
+        // trouver le premier créneau de la semaine
         $creneau = ($nbPremierCreneaux - $nbPremierCreneaux % 20) + 1;
-        for($i = 0; $i < count($liste_cours) ; $i++){
 
-            while($liste_cours[$i]['creneau'] != $creneau){//permet de repérer les cours manquants de la liste de départ et de mettre des créneaux vide dans la liste
-                $liste_edt[$j-1][0] = [];
-                $liste_edt[$j-1][1] = [];
-                $liste_edt[$j-1][2] = [];
-                $liste_edt[$j-1][3] = $creneau;
-                $liste_edt[$j-1][4] = [];
-                $creneau++;
-                $j++;
+        // index cours est un curseur sur la liste_cours
+        $indexCours = 0;
+        // index edt est un curseur sur la liste_edt
+        for($indexEDT = 0; $indexEDT < 20; $indexEDT++)
+        {
+            // si on n'a pas encore parcourue list_cours et que les creneaux correpondent
+            if($indexCours < count($liste_cours) && $liste_cours[$indexCours]['creneau'] == $creneau)
+            {
+                $liste_edt[$indexEDT][0] = $liste_cours[$indexCours]['enseignant']['personne']['nom'];
+                $liste_edt[$indexEDT][1] = $liste_cours[$indexCours]['ue']['nom'];
+                $liste_edt[$indexEDT][2] = $liste_cours[$indexCours]['salle']['nom'];
+                $liste_edt[$indexEDT][3] = $liste_cours[$indexCours]['creneau'];
+                $liste_edt[$indexEDT][4] = $liste_cours[$indexCours]['ue']['formation']['nom'];
+
+                // Au cas où deux cours ont le même créneaux (ne dervrait pas arriver)
+                /** @noinspection PhpConditionAlreadyCheckedInspection */
+                /** PHPStorm dit qu'il y a pas besoin de la boucle en dessous, mais PHPStorm est con */
+                while($indexCours < count($liste_cours) && $liste_cours[$indexCours]['creneau'] == $creneau)
+                    $indexCours++;
+            }else{
+                // Si aucun cours
+                $liste_edt[$indexEDT][0] = [];
+                $liste_edt[$indexEDT][1] = [];
+                $liste_edt[$indexEDT][2] = [];
+                $liste_edt[$indexEDT][3] = $creneau;
+                $liste_edt[$indexEDT][4] = [];
             }
-
-            $liste_edt[$j-1][0] = $liste_cours[$i]['enseignant']['personne']['nom'];
-            $liste_edt[$j-1][1] = $liste_cours[$i]['ue']['nom'];
-            $liste_edt[$j-1][2] = $liste_cours[$i]['salle']['nom'];
-            $liste_edt[$j-1][3] = $liste_cours[$i]['creneau'];
-            $liste_edt[$j-1][4] = $liste_cours[$i]['ue']['formation']['nom'];
-            $j++;
             $creneau++;
         }
 
-        while($i < 20 and $j-1 != 20 ){//Permet de mettre des créneaux vides si pas cours en fin de semaine
-            $liste_edt[$j-1][0] = [];
-            $liste_edt[$j-1][1] = [];
-            $liste_edt[$j-1][2] = [];
-            $liste_edt[$j-1][3] = $creneau;
-            $creneau++;
-            $j++;
-            $i++;
-        }
         return $liste_edt;
     }
 }
