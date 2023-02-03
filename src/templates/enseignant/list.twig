@@ -32,6 +32,7 @@
                 <th>Prenom</th>
                 <th>Email</th>
                 <th>Status</th>
+                <th></th>
             </tr>
             {% for prof in list %}
                 <tr>
@@ -39,6 +40,10 @@
                     <td>{{ prof.personne.prenom }}</td>
                     <td>{{ prof.personne.email }}</td>
                     <td>{{ prof.StatutEnseignant.nom }}</td>
+                    <td>
+                        <a class="btn btn-primary" href="{{ path('enseignant_edit', {'id': prof.id}) }}" role="button"><i class="fa-solid fa-pen-to-square"></i></a>
+                        {#                        <a class="btn btn-primary ms-2" href="{{ path('etudiant_add') }}" role="button"><i class="fa-solid fa-trash"></i></a>#}
+                    </td>
                 </tr>
             {% endfor %}
         </table>
