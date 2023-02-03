@@ -50,17 +50,6 @@ class AppFixtures extends Fixture
 
         var_dump('specialités fini');
 
-        $enseigants_fixture = new EnseignantFixtures();
-        $enseigants_fixture->charger(
-            $manager,
-            $personnes_fixture->list_personnes,
-            $statuts_enseignant_fixture->list_statuts_enseignant,
-            $specialite_fixtures->list_specialites,
-            $this->nbEnseignants
-        );
-
-        var_dump('enseignant fini');
-
         $cursus_fixture = new CursusFixtures();
         $cursus_fixture->charger($manager);
 
@@ -73,6 +62,19 @@ class AppFixtures extends Fixture
         }
 
         var_dump('formations fini');
+
+        $enseigants_fixture = new EnseignantFixtures();
+        $enseigants_fixture->charger(
+            $manager,
+            $personnes_fixture->list_personnes,
+            $statuts_enseignant_fixture->list_statuts_enseignant,
+            $specialite_fixtures->list_specialites,
+            $this->nbEnseignants,
+            $formation_fixture->list_formations
+        );
+
+        var_dump('enseignant fini');
+
 
         $etudiant_fixtures = new EtudiantFixtures();
         $etudiant_fixtures->charger($manager, $personnes_fixture->list_personnes, $this->nbEtudiants, $formation_fixture->list_formations);
