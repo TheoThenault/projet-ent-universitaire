@@ -54,15 +54,18 @@ class EtudiantController extends AbstractController
 	     // récupérer ses choix
             $cursus_chosis = $form->get('Cursus')->getData();
             $formation_choisis = $form->get('Formation')->getData();
-            $liste_etudiants = $entityManagerInterface->getRepository(Etudiant::class)
-             ->findAllByCursusAndFormationPaged($cursus_chosis, $formation_choisis, $nPage, $perPage);
-            $pageMax = intval(ceil(count($liste_etudiants)/$perPage));
-            if($nPage != 1 && $nPage > $pageMax)  // Différent de 1 car si la BDD est vide on veut quand même afficher une page basique pour l'utilisateur
+            $entries = $form->get('Entry')->getData();
+            $arrayEntries = explode(' ', $entries);
+            if(!($arrayEntries[0]=='' && $cursus_chosis == 'Tous' && $formation_choisis == 'Tous'))
             {
-                throw new NotFoundHttpException('La page n\'existe pas');
+                $liste_etudiants = $entityManagerInterface->getRepository(Etudiant::class)
+                ->findAllByCursusAndFormationPaged($arrayEntries,$cursus_chosis, $formation_choisis, $nPage, $perPage);
+               $pageMax = intval(ceil(count($liste_etudiants)/$perPage));
+               if($nPage != 1 && $nPage > $pageMax)  // Différent de 1 car si la BDD est vide on veut quand même afficher une page basique pour l'utilisateur
+               {
+                   throw new NotFoundHttpException('La page n\'existe pas');
+               }
             }
-
-
         }
 
         return $this->render('etudiant/index.html.twig', [
