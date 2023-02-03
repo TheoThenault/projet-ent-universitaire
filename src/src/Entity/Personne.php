@@ -48,11 +48,9 @@ class Personne implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $prenom = null;
 
     #[ORM\OneToOne(inversedBy: 'personne', cascade: ['persist', 'remove'])]
-    #[Assert\Valid]
     private ?Etudiant $etudiant = null;
 
     #[ORM\OneToOne(inversedBy: 'personne', cascade: ['persist', 'remove'])]
-    #[Assert\Valid]
     private ?Enseignant $enseignant = null;
 
     #[ORM\Column(length: 255, nullable: true)]

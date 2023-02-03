@@ -34,7 +34,6 @@ class Cursus
     private ?string $niveau = null;
 
     #[ORM\OneToMany(mappedBy: 'cursus', targetEntity: Formation::class, orphanRemoval: true)]
-    #[Assert\Valid]
     private Collection $formations;
 
     public function __construct()

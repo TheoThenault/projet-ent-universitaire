@@ -55,7 +55,6 @@ class Salle
     private ?int $capacite = null;
 
     #[ORM\OneToMany(mappedBy: 'salle', targetEntity: Cour::class)]
-    #[Assert\Valid]
     private Collection $cours;
 
     public function __construct()

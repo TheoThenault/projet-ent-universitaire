@@ -29,7 +29,6 @@ class Formation
 
     #[ORM\ManyToOne(inversedBy: 'formations')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Assert\Valid]
     private ?Cursus $cursus = null;
 
     #[ORM\Column]
@@ -42,15 +41,12 @@ class Formation
     private ?int $annee = null;
 
     #[ORM\OneToMany(mappedBy: 'formation', targetEntity: Etudiant::class)]
-    #[Assert\Valid]
     private Collection $etudiants;
 
     #[ORM\OneToMany(mappedBy: 'formation', targetEntity: UE::class)]
-    #[Assert\Valid]
     private Collection $ues;
 
     #[ORM\OneToOne(mappedBy: 'ResponsableFormation', cascade: ['persist', 'remove'])]
-    #[Assert\Valid]
     private ?Enseignant $enseignant = null;
 
     public function __construct()

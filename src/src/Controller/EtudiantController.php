@@ -13,6 +13,8 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 #[Route('/etudiant', name: 'etudiant_')]
 class EtudiantController extends AbstractController
@@ -51,7 +53,7 @@ class EtudiantController extends AbstractController
     }
 
     #[Route('/add', name: 'add')]
-    public function addAction(EntityManagerInterface $entityManager, Request $request): Response
+    public function addAction(EntityManagerInterface $entityManager, Request $request, ValidatorInterface $validator): Response
     {
         $etudiant = new Etudiant();
         $form = $this->createForm(EtudiantAddType::class, $etudiant);
@@ -70,15 +72,26 @@ class EtudiantController extends AbstractController
 
             $personne->setRoles(['ROLE_ETUDIANT']);
             $personne->setEtudiant($etudiant);
-            $entityManager->persist($personne);
 
-            $entityManager->flush();
-            $this->addFlash('crud', "L'étudiant : {$form->get('prenom')->getData()} {$form->get('nom')->getData()}, a été créé avec succès.");
-            return $this->redirectToRoute('etudiant_index');
+            $errors = $validator->validate($personne);
+            if(count($errors) <= 0){
+                $entityManager->persist($personne);
+
+                $entityManager->flush();
+                $this->addFlash('crud', "L'étudiant : {$form->get('prenom')->getData()} {$form->get('nom')->getData()}, a été créé avec succès.");
+                return $this->redirectToRoute('etudiant_index');
+            } else {
+                $errorsString = (string) $errors;
+                return $this->render('etudiant/add.html.twig', [
+                    'addEtudiantForm' => $form->createView(),
+                    'errors' => $errors,
+                ]);
+            }
         }
 
         return $this->render('etudiant/add.html.twig', [
             'addEtudiantForm' => $form->createView(),
+            'errors' => [],
         ]);
     }
 

@@ -31,15 +31,12 @@ class Specialite
     private ?int $section = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\Valid]
     private ?string $groupe = null;
 
     #[ORM\OneToMany(mappedBy: 'specialite', targetEntity: UE::class)]
-    #[Assert\Valid]
     private Collection $ue;
 
     #[ORM\OneToMany(mappedBy: 'section', targetEntity: Enseignant::class)]
-    #[Assert\Valid]
     private Collection $enseignants;
 
     public function __construct()
