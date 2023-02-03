@@ -117,10 +117,10 @@ class CourController extends AbstractController
 
                 }elseif($ens_res){
 
-                $ue_choisis = $form->get('Ue')->getData();
-                $prof_choisis = $form->get('Enseignant')->getData();
-                $formation =$this->getUser()->getEnseignant()->getResponsableFormation()->getNom();
-                $liste_cours = $entityManagerInterface->getRepository(Cour::class)->findAllByChoicesCreneauProfResp($ue_choisis, $prof_choisis, $formation, $date_choisis);
+                    $ue_choisis = $form->get('Ue')->getData();
+                    $prof_choisis = $form->get('Enseignant')->getData();
+                    $formation =$this->getUser()->getEnseignant()->getResponsableFormation()->getNom();
+                    $liste_cours = $entityManagerInterface->getRepository(Cour::class)->findAllByChoicesCreneauProfResp($ue_choisis, $prof_choisis, $formation, $date_choisis);
 
                 }else{
                     $liste_cours = $entityManagerInterface->getRepository(Cour::class)->findAllByChoicesCreneauByProf($date_choisis, $this->getUser()->getEnseignant());
@@ -236,4 +236,5 @@ class CourController extends AbstractController
 
         return $liste_edt;
     }
+
 }
