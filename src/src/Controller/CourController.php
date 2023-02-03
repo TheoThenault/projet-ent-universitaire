@@ -236,4 +236,5 @@ class CourController extends AbstractController
 
         return $liste_edt;
     }
+
 }
