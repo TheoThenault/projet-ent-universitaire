@@ -94,7 +94,7 @@ class UEController extends AbstractController
             $entityManager->persist($ue);
             $entityManager->flush();
 
-            $this->addFlash('crud', "L'UE : {$ue->getNom()}, a été modifiée avec succès.");
+            $this->addFlash('crud', "L'UE : {$ue->getNom()} a été modifiée avec succès.");
             return $this->redirectToRoute('ue_index');
         }
         return $this->render('ue/edit.html.twig',
@@ -112,7 +112,7 @@ class UEController extends AbstractController
         $entityManager->remove($ue);
         $entityManager->flush();
 
-        $this->addFlash('crud', "L'UE : {$ue->getNom()}, a été supprimée avec succès.");
+        $this->addFlash('crud', "L'UE : {$ue->getNom()} a été supprimée avec succès.");
         return $this->redirectToRoute('ue_index');
     }
 }
