@@ -10,6 +10,7 @@
 
     {{ form_row(formationFormulaire.Cursus) }}
     {{ form_row(formationFormulaire.Formation) }}
+    {{ form_row(formationFormulaire.Entry) }}
     {{ form_row(formationFormulaire.Filtrer) }}
 
     {# on n'affiche cette parite que si la liste est défini est pas vide #}
@@ -26,15 +27,15 @@
             <tr>
                 <th>Nom</th>
                 <th>Prenom</th>
-                <th>Email</th>
-                <th>Status</th>
+                <th>Formation</th>
+                <th>Cursus</th>
             </tr>
             {% for etu in liste_etudiants %}
                 <tr>
                     <td>{{ etu.personne.nom }}</td>
                     <td>{{ etu.personne.prenom }}</td>
-                    <td>{{ etu.personne.nom }}</td>
-                    <td>{{ etu.personne.nom }}</td>
+                    <td>{{ etu.formation.nom }}</td>
+                    <td>{{ etu.formation.cursus.nom }}</td>
                 </tr>
             {% endfor %}
         </table>
@@ -55,7 +56,7 @@
         <div class="d-flex flex-row mb-3 align-items-center">
             <h3>Aucun résultat!</h3>
             {% if is_granted('ROLE_SCOLARITE') or is_granted('ROLE_ENSEIGNANT') %}
-                <a class="btn btn-primary ms-5" href="{{ path('etudiant_index') }}" role="button"><i class="fa-solid fa-plus"></i> Enseignants</a>
+                <a class="btn btn-primary ms-5" href="{{ path('etudiant_index') }}" role="button"><i class="fa-solid fa-plus"></i> Étudiant</a>
             {% endif%}
         </div>
     {% endif %}

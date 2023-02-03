@@ -67,7 +67,7 @@ class EtudiantRepository extends ServiceEntityRepository
         return $result;
     }
 
-    public function findAllByCursusAndFormationPaged($cursus, $formation, $nPage, $perPage): Paginator
+    public function findAllByCursusAndFormationPaged(array $entries, $cursus, $formation, $nPage, $perPage): Paginator
     {
         $queryBuilder = $this->createQueryBuilder('e');
         $queryBuilder->Select('e');
@@ -87,6 +87,20 @@ class EtudiantRepository extends ServiceEntityRepository
             $queryBuilder->andWhere('f.nom = :for');
             $queryBuilder->setParameter(':for', $formation);
         }
+
+        $orWhereList = $queryBuilder->expr()->orX();
+        for($i = 0; $i < count($entries); $i++)
+        {
+            $entry = trim($entries[$i]);
+            if(strlen($entry) < 3)
+                continue;
+
+            
+            $orWhereList->add('p.nom LIKE \''.$entry.'%\'');
+            $orWhereList->add('p.prenom LIKE \''.$entry.'%\'');
+        }
+        $queryBuilder->andWhere($orWhereList);
+
         $queryBuilder->addOrderBy('p.nom', 'ASC');
         $queryBuilder->addOrderBy('p.prenom', 'ASC');
 
