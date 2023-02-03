@@ -99,6 +99,20 @@ class UEController extends AbstractController
         }
         return $this->render('ue/edit.html.twig',
             ['editUeForm'=>$form->createView(), 'id'=>$id]);
+    }
 
+    #[Route('/delete/{id}', name: 'delete')]
+    public function deleteAction($id, EntityManagerInterface $entityManager, Request $request): Response
+    {
+        $ue = $entityManager->getRepository(UE::class)->find($id);
+        if($ue == null){
+            $this->addFlash('crud', "L'UE n'existe pas.");
+            return $this->redirectToRoute('ue_index');
+        }
+        $entityManager->remove($ue);
+        $entityManager->flush();
+
+        $this->addFlash('crud', "L'UE : {$ue->getNom()}, a été supprimée avec succès.");
+        return $this->redirectToRoute('ue_index');
     }
 }

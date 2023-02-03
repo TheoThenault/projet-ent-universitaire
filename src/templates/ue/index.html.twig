@@ -31,7 +31,7 @@
                     <td>{{ ue.formation.nom }}</td>
                     <td>
                         <a class="btn btn-primary" href="{{ path('ue_edit', {'id':ue.id}) }}" role="button"><i class="fa-solid fa-pen-to-square"></i></a>
-                        {#<a class="btn btn-primary ms-2" href="{{ path('ue_add') }}" role="button"><i class="fa-solid fa-trash"></i></a>#}
+                        <a class="btn btn-primary ms-2" href="{{ path('ue_delete', {'id':ue.id}) }}" role="button"><i class="fa-solid fa-trash"></i></a>
                     </td>
                 </tr>
             {% endfor %}
