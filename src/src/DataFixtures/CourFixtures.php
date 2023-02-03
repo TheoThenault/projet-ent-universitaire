@@ -37,14 +37,22 @@ class CourFixtures
             $cour->setSalle($list_salles[$sall]);
             $cour->setUe($list_ues[$_ue]);
             
+            $found = 0;
+            $grps = [];
             for($j = 0; $j < count($list_groupes); $j++)
             {
                 if($list_groupes[$j]->getFormation() == $list_ues[$_ue]->getFormation())
                 {
-                    $cour->setGroupe($list_groupes[$j]);
-                    break;
+                    $found++;
+                    $grps[] = $list_groupes[$j];                  
                 }
             }
+            if($found == 0)
+            {
+                $i--;
+                continue;
+            }
+            $cour->setGroupe($grps[array_rand($grps)]);
             //$cour->setUe($list_ues[$i % $nU]);
             $this->list_cours[] = $cour;
             $manager->persist($cour);

@@ -26,24 +26,26 @@ class EnseignantFixtures
 
         $manager->flush();
 
+        $formationsDejaPrise = [];
         // ========== CREATION DES ENSEIGNANTS ==========
         for ($i=0; $i<$nbEnseignants && $i < count($list_personnes); $i++){
             $this->list_enseignants[$i] = new Enseignant();
 
             $formation = $list_formation[array_rand($list_formation)];
-            if($formation->getEnseignant() != null)
-            {
-                $formation = null;
-            }
+            $formationClear = array_key_exists($formation->getId(), $formationsDejaPrise);
+
             var_dump($formation->getId());
             $list_personnes[$i]->setRoles(['ROLE_ENSEIGNANT']);
             $this->list_enseignants[$i]
                 ->setPersonne($list_personnes[$i])
                 ->setStatutEnseignant($list_statuts_enseignant[array_rand($list_statuts_enseignant)])
                 ->setSection($sections[array_rand($sections)]);
-            if($formation != null){
+            dump($formationClear);
+            if($formationClear){
+                dump($formation->getEnseignant());
                 $list_personnes[$i]->setRoles(['ROLE_ENSEIGNANT_RES']);
                 $this->list_enseignants[$i]->setResponsableFormation($formation);
+                $formationsDejaPrise[$formation['id']] = 0;
             }
 
             $manager->persist($this->list_enseignants[$i]);
