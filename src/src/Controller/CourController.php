@@ -46,7 +46,12 @@ class CourController extends AbstractController
 
         $etu = $this->isGranted('ROLE_ETUDIANT');
         $ens = $this->isGranted('ROLE_ENSEIGNANT');
-        $ens_res = $this->isGranted('ROLE_ENSEIGNANT_RES');//Enseignant res est aussi un prof. Ordre pour les if etu, ens_res, ens
+        $formation_ref = $this->getUser()->getEnseignant()->getResponsableFormation();
+        $ens_res = false;
+        if(!is_null($formation_ref) && $this->isGranted('ROLE_ENSEIGNANT_RES'))
+        {
+            $ens_res = true;
+        }
 
         if($etu or $ens){
 
