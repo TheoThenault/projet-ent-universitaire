@@ -5,5 +5,9 @@
 {% block body %}
 
     {{ form(profForm) }}
-
+    {% for error in errors %}
+        <div class="alert alert-warning" role="alert">
+            {{ error.message }}
+        </div>
+    {% endfor %}
 {% endblock %}
