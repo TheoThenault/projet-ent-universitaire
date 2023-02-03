@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 
 #[Route('/enseignant', name: 'enseignant_')]
@@ -66,7 +67,7 @@ class EnseignantController extends AbstractController
     }
 
     #[Route('/add', name: 'add')]
-    public function add(EntityManagerInterface $entityManager, Request $request): Response
+    public function add(EntityManagerInterface $entityManager, Request $request,  ValidatorInterface $validator): Response
     {
         $listeStatus = $entityManager->getRepository(StatutEnseignant::class)->getAllForm();
         $listeSpecialites = $entityManager->getRepository(Specialite::class)->getAllForm();
@@ -92,20 +93,34 @@ class EnseignantController extends AbstractController
             $newEnseignant->setStatutEnseignant($entityManager->getRepository(StatutEnseignant::class)->findOneBy(['id' => $form->get('Status')->getData()]));
             $newEnseignant->setSection($entityManager->getRepository(Specialite::class)->findOneBy(['id' => $form->get('SectionDenseignement')->getData()]));
             $formationres = $form->get('FormationRes')->getData();
+
             if($formationres != 'non')
             {
                 // Prof responsable
                 dump("prof responsable");
             }
-            $entityManager->persist($newEnseignant);
-            $entityManager->flush();
+            $errors = $validator->validate($newPersonne);
+            if(count($errors) <= 0){
+                $entityManager->persist($newEnseignant);
+                $entityManager->flush();
 
-            $this->addFlash('crud', "L'enseignant : {$form->get('Nom')->getData()} {$form->get('Prenom')->getData()}, a été créé avec succès.");
-            return $this->redirectToRoute('enseignant_list');
+                $this->addFlash('crud', "L'enseignant : {$form->get('Nom')->getData()} {$form->get('Prenom')->getData()}, a été créé avec succès.");
+                return $this->redirectToRoute('enseignant_list');
+            } else {
+                $errorsString = (string) $errors;
+                return $this->render('enseignant/add.html.twig', [
+                    'profForm' => $form->createView(),
+                    'errors' => $errors,
+                ]);
+            }
+
         }
 
 
-        return $this->render('enseignant/add.html.twig', ['profForm' => $form->createView()]);
+        return $this->render('enseignant/add.html.twig', [
+            'profForm' => $form->createView(),
+            'errors' => [],
+        ]);
     }
 
 
