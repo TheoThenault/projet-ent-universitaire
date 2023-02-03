@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Etudiant;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -66,6 +67,36 @@ class EtudiantRepository extends ServiceEntityRepository
         return $result;
     }
 
+    public function findAllByCursusAndFormationPaged($cursus, $formation, $nPage, $perPage): Paginator
+    {
+        $queryBuilder = $this->createQueryBuilder('e');
+        $queryBuilder->Select('e');
+        $queryBuilder->leftJoin('e.personne', 'p');
+        $queryBuilder->addSelect('p');
+        $queryBuilder->leftJoin('e.formation', 'f');
+        $queryBuilder->addSelect('f');
+        $queryBuilder->leftJoin('f.cursus', 'c');
+        $queryBuilder->addSelect('c');
+        if($cursus != 'Tous')
+        {
+            $queryBuilder->where('c.nom = :name');
+            $queryBuilder->setParameter(':name', $cursus);
+        }
+        if($formation != 'Tous')
+        {
+            $queryBuilder->andWhere('f.nom = :for');
+            $queryBuilder->setParameter(':for', $formation);
+        }
+        $queryBuilder->addOrderBy('p.nom', 'ASC');
+        $queryBuilder->addOrderBy('p.prenom', 'ASC');
+
+        $query = $queryBuilder->getQuery();
+        $query->setFirstResult(($nPage -1) * $perPage);
+        $query->setMaxResults($perPage);
+
+        return new Paginator($query);
+    }
+    
     public function findAllCursus(): array
     {
         $queryBuilder = $this->createQueryBuilder('e');

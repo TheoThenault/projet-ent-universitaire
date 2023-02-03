@@ -19,9 +19,17 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 #[Route('/etudiant', name: 'etudiant_')]
 class EtudiantController extends AbstractController
 {
-    #[Route('', name: 'index')]
-    public function index(Request $request, EntityManagerInterface $entityManagerInterface): Response
+	#[Route('/{nPage}', name: 'index',
+		requirements: ['nPage' => '\d+'],
+		defaults:     ['nPage' => 1]
+	)]
+    public function index($nPage, Request $request, EntityManagerInterface $entityManagerInterface): Response
     {
+        if($nPage <= 0)
+	{
+		throw new NotFoundHttpException('La Page n\'existe pas');
+	}
+
         // récupère la liste des cursus et les niveaux
         $liste_cursus = $entityManagerInterface->getRepository(Etudiant::class)->findAllCursus();
         $liste_formations = $entityManagerInterface->getRepository(Etudiant::class)->findAllFormation();
@@ -35,20 +43,33 @@ class EtudiantController extends AbstractController
 
         // par défaut la liste est vide
         $liste_etudiants = array();
+        
+        $pageMax = 0;
 
         // si par contre, l'utilisateur à déjà remplit un formulaire
         if($form->isSubmitted() && $form->isValid())
         {
-            // récupérer ses choix
+            $perPage = $this->getParameter('lignes_par_page');  
+     
+	     // récupérer ses choix
             $cursus_chosis = $form->get('Cursus')->getData();
             $formation_choisis = $form->get('Formation')->getData();
             $liste_etudiants = $entityManagerInterface->getRepository(Etudiant::class)
-                ->findAllByCursusAndFormation($cursus_chosis, $formation_choisis);
+             ->findAllByCursusAndFormationPaged($cursus_chosis, $formation_choisis, $nPage, $perPage);
+            $pageMax = intval(ceil(count($liste_etudiants)/$perPage));
+            if($nPage != 1 && $nPage > $pageMax)  // Différent de 1 car si la BDD est vide on veut quand même afficher une page basique pour l'utilisateur
+            {
+                throw new NotFoundHttpException('La page n\'existe pas');
+            }
+
+
         }
 
         return $this->render('etudiant/index.html.twig', [
             'formationFormulaire' => $form->createView(),
-            'liste_etudiants' => $liste_etudiants
+            'liste_etudiants' => $liste_etudiants,
+            'currPage' => $nPage,
+            'pageMax' => $pageMax
         ]);
     }
 

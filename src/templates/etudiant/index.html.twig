@@ -3,41 +3,65 @@
 {% block title %}Liste des étudiants{% endblock %}
 
 {% block body %}
-    <h2>Filtres:</h2>
-    <nav>
-        {{ form(formationFormulaire) }}
-    </nav>
+    <h2>Recherche d'etudiants:</h2>
+
+    {{ form_start(formationFormulaire) }}
+    {{ form_errors(formationFormulaire) }}
+
+    {{ form_row(formationFormulaire.Cursus) }}
+    {{ form_row(formationFormulaire.Formation) }}
+    {{ form_row(formationFormulaire.Filtrer) }}
+
     {# on n'affiche cette parite que si la liste est défini est pas vide #}
     {% if liste_etudiants is defined and liste_etudiants is not empty %}
         <div class="d-flex flex-row mb-3 align-items-center">
             <h2>Résultats:</h2>
             <a class="btn btn-primary ms-5" href="{{ path('etudiant_add') }}" role="button"><i class="fa-solid fa-plus"></i> Étudiant</a>
         </div>
+        
+        <div class="d-flex flex-row mb-3 align-items-center">
+            <h3>Etudiants: </h3>
+            {% if is_granted('ROLE_RH') %}
+                <a class="btn btn-primary ms-5" href="{{ path('etudiant_add') }}" role="button"><i class="fa-solid fa-plus"></i> Étudiant</a>
+            {% endif%}
+        </div>
         <table class="table table-hover table-striped">
             <tr>
                 <th>Nom</th>
-                <th>Prénom</th>
-                <th>Cursus</th>
-                <th>Formation</th>
-                  <th></th>
+                <th>Prenom</th>
+                <th>Email</th>
+                <th>Status</th>
             </tr>
-            {% for etudiant in liste_etudiants %}
+            {% for etu in liste_etudiants %}
                 <tr>
-                    <td>{{ etudiant.personne.nom }}</td>
-                    <td>{{ etudiant.personne.prenom }}</td>
-                    <td>{{ etudiant.formation.cursus.nom }}</td>
-                    <td>{{ etudiant.formation.nom }}</td>
-                    <td>
-                        <a class="btn btn-primary" href="{{ path('etudiant_edit', {'id': etudiant.id}) }}" role="button"><i class="fa-solid fa-pen-to-square"></i></a>
-{#                        <a class="btn btn-primary ms-2" href="{{ path('etudiant_add') }}" role="button"><i class="fa-solid fa-trash"></i></a>#}
-                    </td>
+                    <td>{{ etu.personne.nom }}</td>
+                    <td>{{ etu.personne.prenom }}</td>
+                    <td>{{ etu.personne.nom }}</td>
+                    <td>{{ etu.personne.nom }}</td>
                 </tr>
             {% endfor %}
         </table>
+
+        <div class="pagination">
+        {% if pageMax > 1 %}
+            {% for page in 1..pageMax %}
+                {% if page != currPage %}
+                    <button type="submit" name="submit{{ page }}" formaction="{{ path('etudiant_index', {'nPage': page}) }}">{{ page }}</button>
+                {% else %}
+                    <a id="clicker">{{ page }}</a>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+        </div>
+
     {% else %}
         <div class="d-flex flex-row mb-3 align-items-center">
-            <h2>Aucun résultat !</h2>
-            <a class="btn btn-primary ms-5" href="{{ path('etudiant_add') }}" role="button"><i class="fa-solid fa-plus"></i> Étudiant</a>
+            <h3>Aucun résultat!</h3>
+            {% if is_granted('ROLE_SCOLARITE') or is_granted('ROLE_ENSEIGNANT') %}
+                <a class="btn btn-primary ms-5" href="{{ path('etudiant_index') }}" role="button"><i class="fa-solid fa-plus"></i> Enseignants</a>
+            {% endif%}
         </div>
     {% endif %}
+
+    {{ form_end(formationFormulaire) }}
 {% endblock %}
