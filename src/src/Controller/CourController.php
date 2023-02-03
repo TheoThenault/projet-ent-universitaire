@@ -55,7 +55,6 @@ class CourController extends AbstractController
             }
         }
 
-
         if($etu or $ens){
 
             if($ens_res){
