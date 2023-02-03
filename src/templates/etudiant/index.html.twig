@@ -20,7 +20,7 @@
         </div>
         
         <div class="d-flex flex-row mb-3 align-items-center">
-            <h3>Enseignants: </h3>
+            <h3>Etudiants: </h3>
             {% if is_granted('ROLE_RH') %}
                 <a class="btn btn-primary ms-5" href="{{ path('etudiant_add') }}" role="button"><i class="fa-solid fa-plus"></i> Étudiant</a>
             {% endif%}
@@ -32,12 +32,12 @@
                 <th>Email</th>
                 <th>Status</th>
             </tr>
-            {% for prof in liste_etudiants %}
+            {% for etu in liste_etudiants %}
                 <tr>
-                    <td>{{ prof.personne.nom }}</td>
-                    <td>{{ prof.personne.prenom }}</td>
-                    <td>{{ prof.personne.nom }}</td>
-                    <td>{{ prof.personne.nom }}</td>
+                    <td>{{ etu.personne.nom }}</td>
+                    <td>{{ etu.personne.prenom }}</td>
+                    <td>{{ etu.personne.nom }}</td>
+                    <td>{{ etu.personne.nom }}</td>
                 </tr>
             {% endfor %}
         </table>
