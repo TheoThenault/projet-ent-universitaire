@@ -15,10 +15,10 @@ class SalleFixtures{
     public function charger(ObjectManager $manager, int $nbSalles): void
     {
         $batiment = array(
-            "a",
-            "b",
-            "j",
-            "cremi",
+            "H01",
+            "B02",
+            "G03",
+            "H02",
         );
 
         $capacite = array(
