@@ -21,7 +21,7 @@ CHECK (type IN ('TD', 'TP', 'CM'));
 
 ALTER TABLE personne
 ADD CONSTRAINT email_format
-CHECK (email REGEXP '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$');
+CHECK (email REGEXP '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
 
 ALTER TABLE personne
 ADD CONSTRAINT personne_nom_length_check CHECK (char_length(nom) >= 2 AND char_length(nom) <= 64);
