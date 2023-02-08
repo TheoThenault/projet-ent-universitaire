@@ -1,4 +1,4 @@
-ALTER TABLE cours
+ALTER TABLE cour
 ADD CONSTRAINT check_creneau CHECK (creneau >= 0 AND creneau <= 600);
 
 ALTER TABLE cursus
