@@ -8,7 +8,7 @@ ADD CONSTRAINT cursus_nom_length_check CHECK (char_length(nom) >= 2 AND char_len
 
 ALTER TABLE cursus DROP CONSTRAINT IF EXISTS chk_cursus_level;
 ALTER TABLE cursus
-ADD CONSTRAINT chk_cursus_level CHECK (niveau IN ('Master', 'License'));
+ADD CONSTRAINT chk_cursus_level CHECK (niveau IN ('Master', 'Licence'));
 
 ALTER TABLE formation DROP CONSTRAINT IF EXISTS formation_nom_length_check;
 ALTER TABLE formation
