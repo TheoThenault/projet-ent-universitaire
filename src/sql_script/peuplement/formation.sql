@@ -11,7 +11,9 @@ BEGIN
     -- Insert rows to the formation table for each cursus row
     SELECT COUNT(*) INTO length FROM cursus ;
     WHILE counter < length DO
+        -- Find the cursus id for each row
         SELECT cursus.id INTO cursusId FROM cursus LIMIT counter, 1;
+        -- Check if the current cursus is a master or not
         SELECT COUNT(*) INTO isMaster FROM cursus WHERE cursus.niveau = "Master" AND cursus.id = cursusId;
         IF isMaster > 0 THEN -- Master found
             INSERT INTO formation(nom, annee, cursus_id) VALUES ('Master 1', 1, cursusId);
