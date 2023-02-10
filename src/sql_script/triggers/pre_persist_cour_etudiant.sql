@@ -10,7 +10,7 @@ BEGIN
     SELECT COUNT(*) INTO etuFound FROM etudiant e
         LEFT JOIN groupe_etudiant ge ON e.id = ge.etudiant_id
         LEFT JOIN cour c ON ge.groupe_id = c.groupe_id
-    WHERE c.creneau = NEW.creneau
+    WHERE c.creneau = NEW.creneau;
 
     IF etuFound > 0 THEN -- drop error
         SIGNAL SQLSTATE '46001'
