@@ -6,7 +6,7 @@ CREATE TRIGGER pre_persist_cour_etudiant BEFORE INSERT ON cour
 BEGIN
     DECLARE etuFound INT DEFAULT -1;
 
-    -- récupérer tt les cours des édudiant
+    -- récupérer tout les cours des étudiant qui ont le meme créneau que le nouveau cour
     SELECT COUNT(*) INTO etuFound FROM etudiant e
         LEFT JOIN groupe_etudiant ge ON e.id = ge.etudiant_id
         LEFT JOIN cour c ON ge.groupe_id = c.groupe_id
