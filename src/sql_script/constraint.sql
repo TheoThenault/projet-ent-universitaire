@@ -2,6 +2,10 @@ ALTER TABLE cour DROP CONSTRAINT IF EXISTS check_creneau;
 ALTER TABLE cour
 ADD CONSTRAINT check_creneau CHECK (creneau >= 0 AND creneau <= 600);
 
+ALTER TABLE ue DROP CONSTRAINT IF EXISTS check_ue_volume_horaire;
+ALTER TABLE ue
+ADD CONSTRAINT check_ue_volume_horaire CHECK (volume_horaire >= 0 AND volume_horaire <= 600);
+
 ALTER TABLE cursus DROP CONSTRAINT IF EXISTS cursus_nom_length_check;
 ALTER TABLE cursus
 ADD CONSTRAINT cursus_nom_length_check CHECK (char_length(nom) >= 2 AND char_length(nom) <= 128);
