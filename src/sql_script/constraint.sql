@@ -26,8 +26,7 @@ CHECK (type IN ('TD', 'TP', 'CM'));
 
 ALTER TABLE personne DROP CONSTRAINT IF EXISTS email_format;
 ALTER TABLE personne
-ADD CONSTRAINT email_format
-CHECK (email REGEXP '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+ADD CONSTRAINT email_format CHECK (email LIKE '%@univ-poitiers.fr');
 
 ALTER TABLE personne DROP CONSTRAINT IF EXISTS personne_nom_length_check;
 ALTER TABLE personne
