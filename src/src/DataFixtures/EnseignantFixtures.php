@@ -34,13 +34,13 @@ class EnseignantFixtures
             $formation = $list_formation[array_rand($list_formation)];
             $formationClear = array_key_exists($formation->getId(), $formationsDejaPrise);
 
-            var_dump($formation->getId());
+            //var_dump($formation->getId());
             $list_personnes[$i]->setRoles(['ROLE_ENSEIGNANT']);
             $this->list_enseignants[$i]
                 ->setPersonne($list_personnes[$i])
                 ->setStatutEnseignant($list_statuts_enseignant[array_rand($list_statuts_enseignant)])
                 ->setSection($sections[array_rand($sections)]);
-            dump($formationClear);
+            //dump($formationClear);
             if($formationClear){
                 dump($formation->getEnseignant());
                 $list_personnes[$i]->setRoles(['ROLE_ENSEIGNANT_RES']);

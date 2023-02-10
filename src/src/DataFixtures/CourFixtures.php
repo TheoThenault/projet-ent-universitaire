@@ -16,6 +16,8 @@ class CourFixtures
 
     public function charger(ObjectManager $manager, array $list_enseignant, array $list_salles, array $list_ues): void
     {
+        $listHeuresProf = array();
+
         $manager->flush();
         $list_groupes = $manager->getRepository(Groupe::class)->findAll();
 
@@ -27,13 +29,27 @@ class CourFixtures
 
         for($i = 0; $i < $nombre_cours; $i++)
         {
-            $prof = rand(0, $nE-1);
+            $profINDEX = rand(0, $nE-1);
+            $prof = $list_enseignant[$profINDEX];
+
+            if(array_key_exists($profINDEX, $listHeuresProf))
+            {
+                if($listHeuresProf[$profINDEX] >= $prof->getStatutEnseignant()->getNbHeureMax())
+                {
+                    continue;
+                }else{
+                    $listHeuresProf[$profINDEX]+=2;
+                }
+            }else{
+                $listHeuresProf[$profINDEX] = 2;
+            }
+
             $sall = rand(0, $nS-1);
             $_ue = rand(0, $nU-1);
 
             $cour = new Cour();
             $cour->setCreneau(($i % 600) + 1);
-            $cour->setEnseignant($list_enseignant[$prof]);
+            $cour->setEnseignant($prof);
             $cour->setSalle($list_salles[$sall]);
             $cour->setUe($list_ues[$_ue]);
             
