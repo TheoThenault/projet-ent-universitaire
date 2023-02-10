@@ -21,11 +21,13 @@ class AppFixtures extends Fixture
     private int $nbEnseignants;
     private int $nbPersonnes;
     private int $nbSalles;
+    private int $nbUeValide;
     function __construct() {
         $this->nbPersonnes = 300;
         $this->nbEtudiants = 150;
         $this->nbEnseignants = 50;
         $this->nbSalles = 20;
+        $this->nbUeValide = 50;
     }
     public function load(ObjectManager $manager): void
     {
@@ -87,7 +89,7 @@ class AppFixtures extends Fixture
         var_dump('ues fini');
 
         $uesValideFixtures = new UEValideFixtures();
-        $uesValideFixtures->charger($manager, $etudiant_fixtures->list_etudiants, $ues->list_ues);
+        $uesValideFixtures->charger($manager, $etudiant_fixtures->list_etudiants, $ues->list_ues, $this->nbUeValide);
 
         var_dump('ues valides fini');
 
