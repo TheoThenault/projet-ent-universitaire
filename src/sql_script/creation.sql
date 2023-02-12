@@ -1,4 +1,6 @@
 
+-- Script de creation pour une base de données MYSQL
+
 drop table if exists cour;
 drop table if exists salle;
 drop table if exists personne;
@@ -67,12 +69,6 @@ create table groupe_etudiant
             on delete cascade
 );
 
-create index IDX_ge_groupe_id
-    on groupe_etudiant (groupe_id);
-
-create index IDX_ge_etudiant_id
-    on groupe_etudiant (etudiant_id);
-
 create table salle
 (
     id int auto_increment
@@ -117,12 +113,6 @@ create table enseignant
     constraint FK_section_id_section_id
         foreign key (section_id) references specialite (id)
 );
-
-create index IDX_enseignant_statut_enseignant_id
-    on enseignant (statut_enseignant_id);
-
-create index IDX_enseignant_section_id
-    on enseignant (section_id);
 
 create table personne
 (
@@ -178,17 +168,7 @@ create table cour
         foreign key (enseignant_id) references enseignant (id)
 );
 
-create index IDX_cour_ue_id
-    on cour (ue_id);
 
-create index IDX_cour_groupe_id
-    on cour (groupe_id);
-
-create index IDX_cour_salle_id
-    on cour (salle_id);
-
-create index IDX_cour_enseignant_id
-    on cour (enseignant_id);
 
 create table etudiant_ue
 (
@@ -203,6 +183,11 @@ create table etudiant_ue
             on delete cascade
 );
 
+-- Index optionnelle servant à rechercher les données plus rapidement
+
+-- Ralentie l’insertion de données
+-- Accelère des clauses comme WHERE, GROUP BY ou ORDER BY pour un grand nombre d’enregistrements
+
 create index IDX_etudiant_ue_ue_id
     on etudiant_ue (ue_id);
 
@@ -215,3 +200,26 @@ create index IDX_ue_specialite_id
 create index IDX_ue_formation_id
     on ue (formation_id);
 
+create index IDX_ge_groupe_id
+    on groupe_etudiant (groupe_id);
+
+create index IDX_ge_etudiant_id
+    on groupe_etudiant (etudiant_id);
+
+create index IDX_enseignant_statut_enseignant_id
+    on enseignant (statut_enseignant_id);
+
+create index IDX_enseignant_section_id
+    on enseignant (section_id);
+
+create index IDX_cour_ue_id
+    on cour (ue_id);
+
+create index IDX_cour_groupe_id
+    on cour (groupe_id);
+
+create index IDX_cour_salle_id
+    on cour (salle_id);
+
+create index IDX_cour_enseignant_id
+    on cour (enseignant_id);
