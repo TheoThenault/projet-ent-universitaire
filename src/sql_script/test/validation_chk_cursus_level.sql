@@ -14,7 +14,7 @@ BEGIN
 			VALUES('test', _nom);
     END;
 
-    -- Vérifier si un message d'erreur a été capturé avec deux cours ayant le meme enseignant_id et creneau
+    -- Vérifier que le niveau d'un cursus vaut soit 'Master' soit 'Licence'
     IF errorMessage IS NOT NULL THEN
         INSERT INTO test (nom, resultat)
         VALUES (errorMessage, 'OK');

@@ -17,7 +17,7 @@ BEGIN
 					
     END;
 
-    -- Vérifier si un message d'erreur a été capturé avec deux cours ayant le meme enseignant_id et creneau
+    -- Vérifier que le type d'un groupe puisse être seulement 'TD', 'TP' ou 'CM'
     IF errorMessage IS NOT NULL THEN
         INSERT INTO test (nom, resultat)
         VALUES (errorMessage, 'OK');

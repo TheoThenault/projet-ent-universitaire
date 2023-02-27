@@ -16,7 +16,7 @@ BEGIN
 
     END;
 
-    -- Vérifier si un message d'erreur a été capturé avec deux cours ayant le meme enseignant_id et creneau
+    -- Vérifier si un message d'erreur a été capturé avec le créneau d'un cours non compris entre 0 et 600
     IF errorMessage IS NOT NULL THEN
         INSERT INTO test (nom, resultat)
         VALUES (errorMessage, 'OK');

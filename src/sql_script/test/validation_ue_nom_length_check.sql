@@ -14,7 +14,7 @@ BEGIN
 			VALUES(1, 1, _nom, 10);
     END;
 
-    -- Vérifier si un message d'erreur a été capturé avec deux cours ayant le meme enseignant_id et creneau
+    -- Vérifier que le nom d'une Ue est compris entre 2 et 255 caractères
     IF errorMessage IS NOT NULL THEN
         INSERT INTO test (nom, resultat)
         VALUES (errorMessage, 'OK');
