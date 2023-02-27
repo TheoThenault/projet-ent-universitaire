@@ -16,7 +16,7 @@ BEGIN
 
     END;
 
-    -- Vérifier si un message d'erreur a été capturé avec deux cours ayant le meme enseignant_id et creneau
+    -- Vérifier si un message d'erreur a été capturé quand on insere une salle avec une capacité non comprise entre 0 et 999
     IF errorMessage IS NOT NULL THEN
         INSERT INTO test (nom, resultat)
         VALUES (errorMessage, 'OK');

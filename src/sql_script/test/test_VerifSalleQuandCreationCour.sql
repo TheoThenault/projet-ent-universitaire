@@ -16,7 +16,7 @@ BEGIN
         VALUES (1, 99999999, 1, 1, 599);
     END;
 
-    -- Vérifier si un message d'erreur a été capturé un cours dans une salle déjà pleine
+    -- Vérifier si un message d'erreur a été capturé avec un cours dans une salle déjà pleine
     IF errorMessage IS NOT NULL THEN
         INSERT INTO test (nom, resultat)
         VALUES (errorMessage, 'OK');

@@ -15,7 +15,7 @@ BEGIN
 
     END;
 
-    -- Vérifier si un message d'erreur a été capturé avec deux cours ayant le meme enseignant_id et creneau
+    -- Tester qu'on ne peux pas insérer un statut enseignant avec un nombre d'heures min non compris entre 0 et 9999
     IF errorMessage IS NOT NULL THEN
         INSERT INTO test (nom, resultat)
         VALUES (errorMessage, 'OK');

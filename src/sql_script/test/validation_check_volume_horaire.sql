@@ -14,7 +14,7 @@ BEGIN
 			VALUES(1, 1, 'test', _vol);
     END;
 
-    -- Vérifier si un message d'erreur a été capturé avec deux cours ayant le meme enseignant_id et creneau
+    -- Un ue doit avoir un volume horaire entre 0 et 9999, erreur sinon
     IF errorMessage IS NOT NULL THEN
         INSERT INTO test (nom, resultat)
         VALUES (errorMessage, 'OK');
