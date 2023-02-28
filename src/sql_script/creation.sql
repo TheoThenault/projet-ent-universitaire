@@ -1,5 +1,5 @@
 
--- Script de creation pour une base de données MYSQL
+-- Script de creation pour une base de données MYSQL utf8mb_unicode_ci
 
 drop table if exists cour;
 drop table if exists salle;
