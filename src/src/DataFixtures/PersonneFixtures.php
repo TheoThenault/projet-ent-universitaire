@@ -54,7 +54,8 @@ class PersonneFixtures
                 ->setNom($nom)
                 ->setPassword('$2y$13$PQfkvYMxBXDalJ5hP9kilue8jeJarc3wGnCwvtzxg7noPPYOIZCv6')
                 ->setRoles(['ROLE_USER']);
-            $manager->persist($this->list_personnes[$i]);
+	    //var_dump($this->list_personnes[$i]->getEmail());
+	    $manager->persist($this->list_personnes[$i]);
             $manager->flush();
         }
 

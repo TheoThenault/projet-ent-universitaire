@@ -11,18 +11,19 @@ use App\Entity\UE;
 class UEValideFixtures
 {
 
-    public function charger(ObjectManager $manager, array $eleves, array $list_ues): void
+    public function charger(ObjectManager $manager, array $eleves, array $list_ues, int $nombreUEVALIDE): void
     {
         $ueRepo = $manager->getRepository(UE::class);
         $manager->flush();
-        foreach ($eleves as $e)
+
+        for($i = 0; $i < $nombreUEVALIDE; $i++)
         {
-            $ues = $e->getFormation()->getUes();
-            if(count($ues) > 0)
-            {
-                $index = rand(0, count($ues)-1);
-                $e->addUesValide($ues[$index]);
-            }
+            $eIndex = array_rand($eleves);
+            $e = $eleves[$eIndex];
+            $ues = $ueRepo->findAllByFormation($e->getFormation()->getId());
+            $ueIndex = array_rand($ues);
+            $e->addUesValide($ues[$ueIndex]);
+            //var_dump($i . '/' . $nombreUEVALIDE);
         }
         $manager->flush();
     }
