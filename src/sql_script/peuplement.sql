@@ -189,16 +189,16 @@ BEGIN
             ("III", 12, "Langues et littératures germanique et scandinaves"),
             ("III", 13, "Langues et littérature slaves"),
             ("III", 14, "Langues et littératures romanes : espagnol, italien, portugais, autres langues romanes"),
-            ("III", 15, "Langues et littératures arabes, chinoises, japonaises, hébraïques, d\"autres domaines linguistiques"),
+            ("III", 15, "Langues et littératures arabes, chinoises, japonaises, hébraïques, d\'autres domaines linguistiques"),
             ("IV",  16, "Psychologie, psychologie clinique, psychologie sociale"),
             ("IV",  17, "Philosophie"),
-            ("IV",  18, "Architecture (ses théories et ses pratiques), art appliqués, arts plastiques, arts du spectacle, épistémologie des enseignements artistiques, esthétique, musicologie, musique, science de l\"art"),
+            ("IV",  18, "Architecture (ses théories et ses pratiques), art appliqués, arts plastiques, arts du spectacle, épistémologie des enseignements artistiques, esthétique, musicologie, musique, science de l\'art"),
             ("IV",  19, "Sociologie, démographie"),
             ("IV",  20, "Anthropologie biologique, ethnologie, préhistoire"),
             ("IV",  21, "Histoire, civilisation, archéologie et art des mondes anciens et médiévaux"),
-            ("IV",  22, "Histoire et civilisations : histoire des mondes modernes, histoire des mondes modernes, histoire du monde contemporain, de l\"art, de la musique"),
+            ("IV",  22, "Histoire et civilisations : histoire des mondes modernes, histoire des mondes modernes, histoire du monde contemporain, de l\'art, de la musique"),
             ("IV",  23, "Géographie physique, humaine, économique et régionale"),
-            ("IV",  24, "Aménagement de l\"espace, urbanisme"),
+            ("IV",  24, "Aménagement de l\'espace, urbanisme"),
             ("V",   25, "Mathématiques"),
             ("V",   26, "Mathématiques appliqués et applications des mathématiques"),
             ("V",   27, "Informatique"),
@@ -211,7 +211,7 @@ BEGIN
             ("VIII",34, "Astronomie, astrophysique"),
             ("VIII",35, "Structure et évolution de la Terre et des autres planètes"),
             ("VIII",36, "Terre solide : géodynamique des enveloppes supérieures, paléo-blosphère"),
-            ("VIII",37, "Méteorologie, océanographie physique et physique de l\"environnement"),
+            ("VIII",37, "Méteorologie, océanographie physique et physique de l\'environnement"),
             ("IX",  60, "Mécanique, génie mécanique, génie civil"),
             ("IX",  61, "Génie informatique, automatique et traitement du signal"),
             ("IX",  62, "Energétique, génie des procédés"),
@@ -222,8 +222,8 @@ BEGIN
             ("X",   67, "Biologie des populations et écologie"),
             ("X",   68, "Biologie des organismes"),
             ("X",   69, "Neurosciences"),
-            ("XII", 70, "Sciences de l\"éducation"),
-            ("XII", 71, "Sciences de l\"information et de la communication"),
+            ("XII", 70, "Sciences de l\'éducation"),
+            ("XII", 71, "Sciences de l\'information et de la communication"),
             ("XII", 72, "Épistémologie, histoire des sciences et des techniques"),
             ("XII", 73, "Cultures et langues régionales"),
             ("XII", 74, "Sciences et technique des activités physiques et sportives"),
@@ -235,6 +235,7 @@ BEGIN
 END; //
 
 DELIMITER ;
+
 CALL peupleSpecialite();
 
 -- =============================
@@ -366,6 +367,107 @@ CALL peupleEtudiant();
 -- 9) peupleUE
 -- =============================
 
+DROP PROCEDURE IF EXISTS peupleUe;
+
+DELIMITER //
+CREATE PROCEDURE peupleUe()
+BEGIN
+    DECLARE lengthFormation  INT DEFAULT 0;
+    DECLARE counterFormation  INT DEFAULT 0;
+    DECLARE counterUe  INT DEFAULT 0;
+
+    DECLARE current_specialite_id INT DEFAULT 0;
+    DECLARE current_formation_id INT DEFAULT 0;
+    DECLARE current_name VARCHAR(255);
+    DECLARE current_volume_horaire INT DEFAULT 0;
+
+    -- Temporary table creation for ue name
+    CREATE TEMPORARY TABLE nomUe(nom VARCHAR(255));
+    -- Insert rows to the temp nomUe table
+    INSERT INTO nomUe(nom)
+    VALUES("POO"),
+          ("Algorithmes"),
+          ("Anglais"),
+          ("Droits"),
+          ("Web"),
+          ("Web avancé"),
+          ("Math"),
+          ("Geo"),
+          ("Histoire"),
+          ("physique"),
+          ("Enseignement civique"),
+          ("Arts plastiques"),
+          ("Histoire des arts"),
+          ("Education physique et sportive"),
+          ("Bases de données et web"),
+          ("Programmation des systèmes mobiles"),
+          ("Connaissance de l\'entreprise"),
+          ("Anglais pour les métiers de l\'informatique"),
+          ("Génie mécanique"),
+          ("Génie électrique"),
+          ("Robotique"),
+          ("Systèmes automatisés"),
+          ("Systèmes automatisés"),
+          ("Capteurs"),
+          ("Industrie 4.0"),
+          ("Electricité industrielle"),
+          ("Economie de filière"),
+          ("Oenologie - Analyse sensorielle"),
+          ("Logistique"),
+          ("Méthodologie"),
+          ("Géographie viticole"),
+          ("Marketing stratégique"),
+          ("Marketing digital"),
+          ("Etudes de marché"),
+          ("Négociation"),
+          ("Prospection internationale"),
+          ("Anglais technique"),
+          ("Projets tutoré"),
+          ("Droit"),
+          ("Sécurité des système"),
+          ("Psychologie ");
+
+    -- Temporary table creation for ue volume horaire
+    CREATE TEMPORARY TABLE volumeHoraireUe(h INT);
+    -- Insert rows to the temp volumeHoraireUe table
+    INSERT INTO volumeHoraireUe(h)
+    VALUES(16),
+          (32),
+          (64),
+          (128),
+          (256);
+
+    SELECT COUNT(*) INTO lengthFormation FROM formation ;
+    -- ADD 15ue per formation
+    WHILE counterFormation < lengthFormation DO
+        -- Get the current_formation_id for the current ue ( offset = counter, limit = 1 )
+        SELECT id INTO current_formation_id FROM formation LIMIT counterFormation, 1;
+
+        SET counterUe = 0;
+        WHILE counterUe < 15 DO
+            -- get a random specialite
+            SELECT id INTO current_specialite_id FROM specialite ORDER BY RAND() LIMIT 1;
+            -- get the current name
+            SELECT nom INTO current_name FROM nomUe ORDER BY RAND() LIMIT 1;
+            -- get a random volume horaire
+            SELECT h INTO current_volume_horaire FROM volumeHoraireUe ORDER BY RAND() LIMIT 1;
+
+            INSERT INTO ue(specialite_id, formation_id, nom, volume_horaire)
+                VALUES(
+                    current_specialite_id,
+                    current_formation_id,
+                    current_name,
+                    current_volume_horaire
+                );
+            SET counterUe = counterUe + 1;
+        END WHILE;
+        SET counterFormation = counterFormation + 1;
+    END WHILE;
+END; //
+
+DELIMITER ;
+
+CALL peupleUe();
 
 
 -- =============================
