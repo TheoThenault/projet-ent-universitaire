@@ -102,7 +102,7 @@ class EnseignantRepository extends ServiceEntityRepository
     public function filterByStatut($choix_statut): mixed
     {
         $qb = $this->createQueryBuilder("enseignant");
-        dump($choix_statut);
+//        dump($choix_statut);
         $qb
             ->select("enseignant")
             ->leftJoin('enseignant.personne', 'personne')

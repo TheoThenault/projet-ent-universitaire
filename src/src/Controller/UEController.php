@@ -47,7 +47,7 @@ class UEController extends AbstractController
             //$liste_ues = $entityManagerInterface->getRepository(UE::class)->findAllOrdered();
         }
 
-        dump($liste_ues);
+//        dump($liste_ues);
 
         return $this->render('ue/index.html.twig', [
             'liste_ues' => $liste_ues,

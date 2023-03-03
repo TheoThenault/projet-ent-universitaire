@@ -23,7 +23,7 @@ class FormationController extends AbstractController
         // récupère la liste des cursus
         $liste_cursus = $entityManagerInterface->getRepository(Cursus::class)->findAllNomEtNiveau();
 
-        dump($liste_cursus);
+//        dump($liste_cursus);
 
         $form = $this->createForm(FormationFilterType::class, null, [
                 'cursus_name' => $liste_cursus['noms'],

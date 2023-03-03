@@ -42,7 +42,7 @@ class EnseignantFixtures
                 ->setSection($sections[array_rand($sections)]);
             //dump($formationClear);
             if($formationClear){
-                dump($formation->getEnseignant());
+//                dump($formation->getEnseignant());
                 $list_personnes[$i]->setRoles(['ROLE_ENSEIGNANT_RES']);
                 $this->list_enseignants[$i]->setResponsableFormation($formation);
                 $formationsDejaPrise[$formation['id']] = 0;
