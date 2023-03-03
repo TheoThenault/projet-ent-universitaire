@@ -176,11 +176,14 @@ CREATE TRIGGER pre_persist_cour_etudiant BEFORE INSERT ON cour
 BEGIN
     DECLARE etuFound INT DEFAULT -1;
 
-    -- récupérer tout les cours des étudiant qui ont le meme créneau que le nouveau cour
-    SELECT COUNT(*) INTO etuFound FROM etudiant e
-        LEFT JOIN groupe_etudiant ge ON e.id = ge.etudiant_id
-        LEFT JOIN cour c ON ge.groupe_id = c.groupe_id
-    WHERE c.creneau = NEW.creneau;
+    -- récupérer tout les cours des étudiant qui sont dans le groupe du nouveau cour au même creneau
+	SELECT count(*) into etuFound from cour c 
+		where c.groupe_id IN 
+			(SELECT groupe_id  from groupe_etudiant ge 
+				where ge.etudiant_id IN 
+					(SELECT etudiant_id from cour c left join groupe_etudiant ge2 on ge2.groupe_id = NEW.groupe_id) 
+				group by groupe_id) 
+		and c.creneau = NEW.creneau;
 
     IF etuFound > 0 THEN -- drop error
         SIGNAL SQLSTATE '46001'
