@@ -1,4 +1,4 @@
--- CREATIION TABLE TEST
+-- CREATION TABLE TEST
 -- Faire peuplement avant
 DROP TABLE IF EXISTS test;
 
@@ -847,7 +847,7 @@ BEGIN
                 SET errorMessage := 'Test ue_nom_length_check';
             END;
         INSERT INTO ue (specialite_id, formation_id, nom, volume_horaire)
-			VALUES(1, 1, _nom, 10);
+			VALUES(1, 1, _nom, 10);g
     END;
 
     -- Vérifier que le nom d'une Ue est compris entre 2 et 255 caractères

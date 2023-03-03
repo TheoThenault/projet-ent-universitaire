@@ -26,7 +26,7 @@ BEGIN
 
         UPDATE personne
         SET enseignant_id = LAST_INSERT_ID(),
-            roles = 'a:1:{i:0;s:9:"ROLE_ENSEIGNANT_RES";}'
+            roles = 'a:1:{i:0;s:19:"ROLE_ENSEIGNANT_RES";}'
         WHERE id = counter;
 
         SET counter = counter + 1;
@@ -49,7 +49,7 @@ BEGIN
 
         UPDATE personne
         SET enseignant_id = LAST_INSERT_ID(),
-            roles = 'a:1:{i:0;s:9:"ROLE_ENSEIGNANT";}'
+            roles = 'a:1:{i:0;s:15:"ROLE_ENSEIGNANT";}'
         WHERE id = counter;
 
         SET counter = counter + 1;

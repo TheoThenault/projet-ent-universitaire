@@ -30,7 +30,7 @@ BEGIN
         -- Update personne
         UPDATE personne
         SET etudiant_id = LAST_INSERT_ID(),
-            roles = 'a:1:{i:0;s:9:"ROLE_ETUDIANT";}'
+            roles = 'a:1:{i:0;s:13:"ROLE_ETUDIANT";}'
         WHERE id = current_personne_id;
 
         -- Increment the counter

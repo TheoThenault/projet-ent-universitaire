@@ -326,7 +326,7 @@ BEGIN
 
         UPDATE personne
         SET enseignant_id = LAST_INSERT_ID(),
-            roles = 'a:1:{i:0;s:9:"ROLE_ENSEIGNANT_RES";}'
+            roles = 'a:1:{i:0;s:19:"ROLE_ENSEIGNANT_RES";}'
         WHERE id = counter;
 
         SET counter = counter + 1;
@@ -349,7 +349,7 @@ BEGIN
 
         UPDATE personne
         SET enseignant_id = LAST_INSERT_ID(),
-            roles = 'a:1:{i:0;s:9:"ROLE_ENSEIGNANT";}'
+            roles = 'a:1:{i:0;s:15:"ROLE_ENSEIGNANT";}'
         WHERE id = counter;
 
         SET counter = counter + 1;
@@ -396,7 +396,7 @@ BEGIN
         -- Update personne
         UPDATE personne
         SET etudiant_id = LAST_INSERT_ID(),
-            roles = 'a:1:{i:0;s:9:"ROLE_ETUDIANT";}'
+            roles = 'a:1:{i:0;s:13:"ROLE_ETUDIANT";}'
         WHERE id = current_personne_id;
 
         -- Increment the counter
@@ -532,28 +532,28 @@ VALUES
     -- création scolarité
     (NULL, NULL, 'scolarite@univ-poitiers.fr', 'User', 'Scolarité', '$2y$13$PQfkvYMxBXDalJ5hP9kilue8jeJarc3wGnCwvtzxg7noPPYOIZCv6', 'a:1:{i:0;s:9:"ROLE_Scolarite";}'),
     -- création rh
-    (NULL, NULL, 'rh@univ-poitiers.fr', 'User', 'Rh', '$2y$13$PQfkvYMxBXDalJ5hP9kilue8jeJarc3wGnCwvtzxg7noPPYOIZCv6', 'a:1:{i:0;s:9:"ROLE_RH";}'),
+    (NULL, NULL, 'rh@univ-poitiers.fr', 'User', 'Rh', '$2y$13$PQfkvYMxBXDalJ5hP9kilue8jeJarc3wGnCwvtzxg7noPPYOIZCv6', 'a:1:{i:0;s:7:"ROLE_RH";}'),
     -- création admin
-    (NULL, NULL, 'admin@univ-poitiers.fr', 'User', 'Admin', '$2y$13$PQfkvYMxBXDalJ5hP9kilue8jeJarc3wGnCwvtzxg7noPPYOIZCv6', 'a:1:{i:0;s:9:"ROLE_Admin";}');
+    (NULL, NULL, 'admin@univ-poitiers.fr', 'User', 'Admin', '$2y$13$PQfkvYMxBXDalJ5hP9kilue8jeJarc3wGnCwvtzxg7noPPYOIZCv6', 'a:1:{i:0;s:10:"ROLE_Admin";}');
 
 -- Update personne
 UPDATE personne
 SET email = 'etudiant@univ-poitiers.fr',
     prenom = 'Etudiant',
     nom = 'User'
-WHERE roles = 'a:1:{i:0;s:9:"ROLE_ETUDIANT";}'
+WHERE roles = 'a:1:{i:0;s:13:"ROLE_ETUDIANT";}'
 LIMIT 1;
 
 UPDATE personne
 SET email = 'enseignant@univ-poitiers.fr',
     prenom = 'Enseignant',
     nom = 'User'
-WHERE roles = 'a:1:{i:0;s:9:"ROLE_ENSEIGNANT";}'
+WHERE roles = 'a:1:{i:0;s:15:"ROLE_ENSEIGNANT";}'
 LIMIT 1;
 
 UPDATE personne
 SET email = 'enseignant.res@univ-poitiers.fr',
     prenom = 'EnseignantRes',
     nom = 'User'
-WHERE roles = 'a:1:{i:0;s:9:"ROLE_ENSEIGNANT_RES";}'
+WHERE roles = 'a:1:{i:0;s:19:"ROLE_ENSEIGNANT_RES";}'
 LIMIT 1;
