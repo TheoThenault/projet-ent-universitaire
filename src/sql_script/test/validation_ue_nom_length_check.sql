@@ -10,7 +10,7 @@ BEGIN
             BEGIN
                 SET errorMessage := 'Test ue_nom_length_check';
             END;         
-        INSERT INTO projet_ent_universitaire.ue (specialite_id, formation_id, nom, volume_horaire)
+        INSERT INTO ue (specialite_id, formation_id, nom, volume_horaire)
 			VALUES(1, 1, _nom, 10);
     END;
 

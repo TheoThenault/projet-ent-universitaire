@@ -1,5 +1,5 @@
 DELIMITER //
-DROP TRIGGER IF EXISTS projet_ent_universitaire.pre_persist_cour_etudiant //
+DROP TRIGGER IF EXISTS pre_persist_cour_etudiant //
 
 CREATE TRIGGER pre_persist_cour_etudiant BEFORE INSERT ON cour
     FOR EACH ROW

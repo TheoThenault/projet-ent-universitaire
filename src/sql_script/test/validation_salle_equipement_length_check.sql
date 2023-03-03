@@ -11,7 +11,7 @@ BEGIN
                 SET errorMessage := 'Test salle_equipement_length_check';
             END;         
 
-           INSERT INTO projet_ent_universitaire.salle (nom, batiment, equipement, capacite)
+           INSERT INTO salle (nom, batiment, equipement, capacite)
           		VALUES('test', 'test', _nom, 10);
 
            

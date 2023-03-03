@@ -11,7 +11,7 @@ BEGIN
                 SET errorMessage := 'Test email_format';
             END;         
            
-		INSERT INTO projet_ent_universitaire.personne(etudiant_id, enseignant_id, email, nom, prenom, password, roles)
+		INSERT INTO personne(etudiant_id, enseignant_id, email, nom, prenom, password, roles)
 			VALUES(NULL, NULL, _email, 'nom', 'prenom',
 			'$2y$13$PQfkvYMxBXDalJ5hP9kilue8jeJarc3wGnCwvtzxg7noPPYOIZCv6', 
 						'a:1:{i:0;s:9:"ROLE_USER";}');

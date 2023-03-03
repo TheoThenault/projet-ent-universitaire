@@ -1,5 +1,5 @@
 DELIMITER //
-DROP TRIGGER IF EXISTS projet_ent_universitaire.pre_persist_salle_occupe //
+DROP TRIGGER IF EXISTS pre_persist_salle_occupe //
 
 CREATE TRIGGER pre_persist_salle_occupe BEFORE INSERT ON cour -- verifier si deja un cour dans cette salle avant insert
     FOR EACH ROW

@@ -10,7 +10,7 @@ BEGIN
             BEGIN
                 SET errorMessage := 'Test check_creneau';
             END;         
-		INSERT INTO projet_ent_universitaire.cour(ue_id, salle_id, enseignant_id, groupe_id, creneau)
+		INSERT INTO cour(ue_id, salle_id, enseignant_id, groupe_id, creneau)
 			VALUES(1, 1, 1, NULL, _num);
 
 

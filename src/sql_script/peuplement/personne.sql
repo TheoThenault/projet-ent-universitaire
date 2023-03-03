@@ -41,7 +41,7 @@ BEGIN
 		    	SELECT nom INTO _nom    FROM tableNom    LIMIT counterNOMS,    1;
 		    	SELECT nom INTO _prenom FROM tablePrenom LIMIT counterPRENOMS, 1;
 		    
-				INSERT INTO projet_ent_universitaire.personne (etudiant_id, enseignant_id, email, nom, prenom, password, roles) 
+				INSERT INTO personne (etudiant_id, enseignant_id, email, nom, prenom, password, roles)
 					VALUES(
 						NULL,
 						NULL, 

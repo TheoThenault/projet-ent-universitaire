@@ -1,5 +1,5 @@
 DELIMITER //
-DROP TRIGGER IF EXISTS projet_ent_universitaire.verifAffectationMaxProf //
+DROP TRIGGER IF EXISTS verifAffectationMaxProf //
 
 CREATE TRIGGER verifAffectationMaxProf BEFORE INSERT ON cour
     FOR EACH ROW

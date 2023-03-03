@@ -1,5 +1,5 @@
 DELIMITER //
-DROP TRIGGER IF EXISTS projet_ent_universitaire.VerifUEQuandValidation //
+DROP TRIGGER IF EXISTS VerifUEQuandValidation //
 
 CREATE TRIGGER VerifUEQuandValidation BEFORE INSERT ON etudiant_ue
     FOR EACH ROW
