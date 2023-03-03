@@ -10,7 +10,7 @@ BEGIN
             BEGIN
                 SET errorMessage := 'Test formation_nom_length_check';
             END;         
-		INSERT INTO projet_ent_universitaire.formation(cursus_id, nom, annee)
+		INSERT INTO formation(cursus_id, nom, annee)
 			VALUES(1, _nom, 1);
 
     END;

@@ -1,5 +1,5 @@
 DELIMITER //
-DROP TRIGGER IF EXISTS projet_ent_universitaire.post_persist_etudiant //
+DROP TRIGGER IF EXISTS post_persist_etudiant //
 
 CREATE TRIGGER post_persist_etudiant AFTER INSERT ON etudiant
     FOR EACH ROW

@@ -1,5 +1,5 @@
 DELIMITER //
-DROP TRIGGER IF EXISTS projet_ent_universitaire.VerifSalleQuandCreationCour //
+DROP TRIGGER IF EXISTS VerifSalleQuandCreationCour //
 
 CREATE TRIGGER VerifSalleQuandCreationCour BEFORE INSERT ON cour
     FOR EACH ROW

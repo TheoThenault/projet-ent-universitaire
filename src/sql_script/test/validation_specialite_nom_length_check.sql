@@ -11,7 +11,7 @@ BEGIN
                 SET errorMessage := 'Test specialite_nom_length_check';
             END;         
 
-           INSERT INTO projet_ent_universitaire.specialite (nom, `section`, groupe)
+           INSERT INTO specialite (nom, `section`, groupe)
 			VALUES(_nom, 1, 'I');
 
 

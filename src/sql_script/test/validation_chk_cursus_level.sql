@@ -10,7 +10,7 @@ BEGIN
             BEGIN
                 SET errorMessage := 'Test chk_cursus_level';
             END;         
-		INSERT INTO projet_ent_universitaire.cursus(nom, niveau)
+		INSERT INTO cursus(nom, niveau)
 			VALUES('test', _nom);
     END;
 

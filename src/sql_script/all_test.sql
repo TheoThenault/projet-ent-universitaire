@@ -222,7 +222,7 @@ BEGIN
                 SET errorMessage := 'Test check_capacite';
             END;
 
-		INSERT INTO projet_ent_universitaire.salle (nom, batiment, equipement, capacite)
+		INSERT INTO salle (nom, batiment, equipement, capacite)
 			VALUES('test', 'test', 'langue', _cap);
 
     END;
@@ -257,7 +257,7 @@ BEGIN
             BEGIN
                 SET errorMessage := 'Test check_creneau';
             END;
-		INSERT INTO projet_ent_universitaire.cour(ue_id, salle_id, enseignant_id, groupe_id, creneau)
+		INSERT INTO cour(ue_id, salle_id, enseignant_id, groupe_id, creneau)
 			VALUES(1, 1, 1, NULL, _num);
 
 
@@ -293,7 +293,7 @@ BEGIN
             BEGIN
                 SET errorMessage := 'Test check_nb_heure_max';
             END;
-        INSERT INTO projet_ent_universitaire.statut_enseignant (nom, nb_heure_min, nb_heure_max)
+        INSERT INTO statut_enseignant (nom, nb_heure_min, nb_heure_max)
 			VALUES('test', 0, _nbHeure);
 
     END;
@@ -328,7 +328,7 @@ BEGIN
             BEGIN
                 SET errorMessage := 'Test check_nb_heure_min';
             END;
-        INSERT INTO projet_ent_universitaire.statut_enseignant (nom, nb_heure_min, nb_heure_max)
+        INSERT INTO statut_enseignant (nom, nb_heure_min, nb_heure_max)
 			VALUES('test', 0, _nbHeure);
 
     END;
@@ -363,7 +363,7 @@ BEGIN
             BEGIN
                 SET errorMessage := 'Test check_volume_horaire';
             END;
-        INSERT INTO projet_ent_universitaire.ue (specialite_id, formation_id, nom, volume_horaire)
+        INSERT INTO ue (specialite_id, formation_id, nom, volume_horaire)
 			VALUES(1, 1, 'test', _vol);
     END;
 
@@ -397,7 +397,7 @@ BEGIN
             BEGIN
                 SET errorMessage := 'Test chk_cursus_level';
             END;
-        INSERT INTO projet_ent_universitaire.cursus(nom, niveau)
+        INSERT INTO cursus(nom, niveau)
         VALUES('test', _nom);
     END;
 
@@ -436,7 +436,7 @@ BEGIN
                 SET errorMessage := 'Test chk_groupe_type';
             END;
 
-        INSERT INTO projet_ent_universitaire.groupe(`type`)
+        INSERT INTO groupe(`type`)
         VALUES(_nom);
 
 
@@ -473,7 +473,7 @@ BEGIN
             BEGIN
                 SET errorMessage := 'Test cursus_nom_length_check';
             END;
-        INSERT INTO projet_ent_universitaire.cursus(nom, niveau)
+        INSERT INTO cursus(nom, niveau)
         VALUES(_nom, 'Licence');
     END;
 
@@ -508,7 +508,7 @@ BEGIN
                 SET errorMessage := 'Test email_format';
             END;
 
-		INSERT INTO projet_ent_universitaire.personne(etudiant_id, enseignant_id, email, nom, prenom, password, roles)
+		INSERT INTO personne(etudiant_id, enseignant_id, email, nom, prenom, password, roles)
 			VALUES(NULL, NULL, _email, 'nom', 'prenom',
 			'$2y$13$PQfkvYMxBXDalJ5hP9kilue8jeJarc3wGnCwvtzxg7noPPYOIZCv6',
 						'a:1:{i:0;s:9:"ROLE_USER";}');
@@ -552,7 +552,7 @@ BEGIN
             BEGIN
                 SET errorMessage := 'Test formation_annee_check';
             END;
-		INSERT INTO projet_ent_universitaire.formation(cursus_id, nom, annee)
+		INSERT INTO formation(cursus_id, nom, annee)
 			VALUES(1, 'test', _num);
 
     END;
@@ -587,7 +587,7 @@ BEGIN
             BEGIN
                 SET errorMessage := 'Test formation_nom_length_check';
             END;
-		INSERT INTO projet_ent_universitaire.formation(cursus_id, nom, annee)
+		INSERT INTO formation(cursus_id, nom, annee)
 			VALUES(1, _nom, 1);
 
     END;
@@ -623,7 +623,7 @@ BEGIN
                 SET errorMessage := 'Test personne_nom_length_check';
             END;
 
-		INSERT INTO projet_ent_universitaire.personne(etudiant_id, enseignant_id, email, nom, prenom, password, roles)
+		INSERT INTO personne(etudiant_id, enseignant_id, email, nom, prenom, password, roles)
 			VALUES(NULL, NULL, 'email@internet.com', _nom, 'prenom',
 			'$2y$13$PQfkvYMxBXDalJ5hP9kilue8jeJarc3wGnCwvtzxg7noPPYOIZCv6',
 						'a:1:{i:0;s:9:"ROLE_USER";}');
@@ -662,7 +662,7 @@ BEGIN
                 SET errorMessage := 'Test personne_prenom_length_check';
             END;
 
-        INSERT INTO projet_ent_universitaire.personne(etudiant_id, enseignant_id, email, nom, prenom, password, roles)
+        INSERT INTO personne(etudiant_id, enseignant_id, email, nom, prenom, password, roles)
         VALUES(NULL, NULL, 'email@internet.com', 'nom', _prenom,
                '$2y$13$PQfkvYMxBXDalJ5hP9kilue8jeJarc3wGnCwvtzxg7noPPYOIZCv6',
                'a:1:{i:0;s:9:"ROLE_USER";}');
@@ -701,7 +701,7 @@ BEGIN
                 SET errorMessage := 'Test salle_batiment_length_check';
             END;
 
-           INSERT INTO projet_ent_universitaire.salle (nom, batiment, equipement, capacite)
+           INSERT INTO salle (nom, batiment, equipement, capacite)
           		VALUES('test', _nom, 'langue', 10);
 
 
@@ -738,7 +738,7 @@ BEGIN
                 SET errorMessage := 'Test salle_equipement_length_check';
             END;
 
-           INSERT INTO projet_ent_universitaire.salle (nom, batiment, equipement, capacite)
+           INSERT INTO salle (nom, batiment, equipement, capacite)
           		VALUES('test', 'test', _nom, 10);
 
 
@@ -775,7 +775,7 @@ BEGIN
                 SET errorMessage := 'Test specialite_nom_length_check';
             END;
 
-           INSERT INTO projet_ent_universitaire.specialite (nom, `section`, groupe)
+           INSERT INTO specialite (nom, `section`, groupe)
 			VALUES(_nom, 1, 'I');
 
 
@@ -811,7 +811,7 @@ BEGIN
             BEGIN
                 SET errorMessage := 'Test statut_enseignant_nom_length_check';
             END;
-		INSERT INTO projet_ent_universitaire.statut_enseignant(nom, nb_heure_min, nb_heure_max)
+		INSERT INTO statut_enseignant(nom, nb_heure_min, nb_heure_max)
 			VALUES(_nom, 1, 2);
 
     END;
@@ -846,7 +846,7 @@ BEGIN
             BEGIN
                 SET errorMessage := 'Test ue_nom_length_check';
             END;
-        INSERT INTO projet_ent_universitaire.ue (specialite_id, formation_id, nom, volume_horaire)
+        INSERT INTO ue (specialite_id, formation_id, nom, volume_horaire)
 			VALUES(1, 1, _nom, 10);
     END;
 

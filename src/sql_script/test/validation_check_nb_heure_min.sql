@@ -10,7 +10,7 @@ BEGIN
             BEGIN
                 SET errorMessage := 'Test check_nb_heure_min';
             END;         
-        INSERT INTO projet_ent_universitaire.statut_enseignant (nom, nb_heure_min, nb_heure_max)
+        INSERT INTO statut_enseignant (nom, nb_heure_min, nb_heure_max)
 			VALUES('test', 0, _nbHeure);
 
     END;

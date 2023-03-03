@@ -10,7 +10,7 @@ BEGIN
             BEGIN
                 SET errorMessage := 'Test check_volume_horaire';
             END;         
-        INSERT INTO projet_ent_universitaire.ue (specialite_id, formation_id, nom, volume_horaire)
+        INSERT INTO ue (specialite_id, formation_id, nom, volume_horaire)
 			VALUES(1, 1, 'test', _vol);
     END;
 

@@ -11,7 +11,7 @@ BEGIN
                 SET errorMessage := 'Test chk_groupe_type';
             END;         
            
-		INSERT INTO projet_ent_universitaire.groupe(`type`)
+		INSERT INTO groupe(`type`)
 			VALUES(_nom);
 
 					
