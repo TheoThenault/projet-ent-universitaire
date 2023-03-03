@@ -1,6 +1,6 @@
-DELIMITER //
-DROP PROCEDURE IF EXISTS peupleFormation; //
+DROP PROCEDURE IF EXISTS peupleFormation;
 
+DELIMITER //
 CREATE PROCEDURE peupleFormation()
 BEGIN
     DECLARE length INT DEFAULT 0;
@@ -29,7 +29,6 @@ BEGIN
     END WHILE;
 END; //
 
-CALL peupleFormation();//
-
 DELIMITER ;
+CALL peupleFormation();
 

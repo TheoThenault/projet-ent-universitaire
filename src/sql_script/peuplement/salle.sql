@@ -1,10 +1,9 @@
+DROP PROCEDURE IF EXISTS peupleSalle;
+DROP TEMPORARY TABLE IF EXISTS nomBatTemp;
+DROP TEMPORARY TABLE IF EXISTS equipementTemp;
+DROP TEMPORARY TABLE IF EXISTS capaciteTemp;
+
 DELIMITER //
-
-DROP PROCEDURE IF EXISTS peupleSalle; //
-DROP TEMPORARY TABLE IF EXISTS nomBatTemp;//
-DROP TEMPORARY TABLE IF EXISTS equipementTemp;//
-DROP TEMPORARY TABLE IF EXISTS capaciteTemp;//
-
 CREATE PROCEDURE peupleSalle()
 BEGIN
 	DECLARE i INT default 1; -- index pour la boucle
@@ -53,12 +52,7 @@ BEGIN
         SET i = i + 1;
 
     END WHILE;
-
-    INSERT INTO salle(id, nom, batiment, equipement, capacite)
-    VALUES(99999999,'salleForTests', 'batimentTest', null, 0 );
 END; //
 
-
 DELIMITER ;
-
 CALL peupleSalle();

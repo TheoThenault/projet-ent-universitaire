@@ -1,6 +1,7 @@
+DROP PROCEDURE IF EXISTS peupleEtudiant;
+DROP TEMPORARY TABLE IF EXISTS temp_personne_not_enseignant;
+DROP TEMPORARY TABLE IF EXISTS temp_personne_not_enseignant;
 DELIMITER //
-DROP PROCEDURE IF EXISTS peupleEtudiant; //
-
 CREATE PROCEDURE peupleEtudiant()
 BEGIN
     DECLARE length  INT DEFAULT 0;
@@ -36,8 +37,5 @@ BEGIN
         SET counter = counter + 1;
     END WHILE;
 END; //
-
-CALL peupleEtudiant();//
-
-
 DELIMITER ;
+CALL peupleEtudiant();

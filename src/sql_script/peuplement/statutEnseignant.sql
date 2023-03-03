@@ -1,6 +1,5 @@
+DROP PROCEDURE IF EXISTS peupleStatutEnseignant;
 DELIMITER //
-
-DROP PROCEDURE IF EXISTS peupleStatutEnseignant //
 
 CREATE PROCEDURE peupleStatutEnseignant()
 BEGIN
@@ -12,5 +11,4 @@ BEGIN
 END; //
 
 DELIMITER ;
-
 CALL peupleStatutEnseignant();

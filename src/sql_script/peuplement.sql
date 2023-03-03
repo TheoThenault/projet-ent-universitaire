@@ -7,19 +7,19 @@ DROP PROCEDURE IF EXISTS peupleSalle;
 DROP TEMPORARY TABLE IF EXISTS nomBatTemp;
 DROP TEMPORARY TABLE IF EXISTS equipementTemp;
 DROP TEMPORARY TABLE IF EXISTS capaciteTemp;
-DELIMITER //
 
+DELIMITER //
 CREATE PROCEDURE peupleSalle()
 BEGIN
-    DECLARE i INT default 1; -- index pour la boucle
-    DECLARE nbSalle INT default 51; -- nombre de salle
-    DECLARE nomBat VARCHAR(255);
-    DECLARE nom VARCHAR(255);
-    DECLARE equipement VARCHAR(255);
-    DECLARE capacite INT;
+	DECLARE i INT default 1; -- index pour la boucle
+	DECLARE nbSalle INT default 51; -- nombre de salle
+	DECLARE nomBat VARCHAR(255);
+	DECLARE nom VARCHAR(255);
+	DECLARE equipement VARCHAR(255);
+	DECLARE capacite INT;
 
     CREATE TEMPORARY TABLE nomBatTemp(nom VARCHAR(255));
-    -- insert rows to the table nomBat
+        -- insert rows to the table nomBat
     INSERT INTO nomBatTemp(nom)
     VALUES ("H01"),
            ("B02"),
@@ -28,7 +28,7 @@ BEGIN
            ("J05");
 
     CREATE TEMPORARY TABLE equipementTemp(nom VARCHAR(255));
-    -- insert rows to the table equipement
+            -- insert rows to the table equipement
     INSERT INTO equipementTemp(nom)
     VALUES ("Informatique"),
            ("Langue"),
@@ -55,10 +55,8 @@ BEGIN
         VALUES(nom, nomBat, equipement, capacite );
 
         SET i = i + 1;
-    END WHILE;
 
-    INSERT INTO salle(id, nom, batiment, equipement, capacite)
-    VALUES(99999999,'salleForTests', 'batimentTest', null, 0 );
+    END WHILE;
 END; //
 
 DELIMITER ;
@@ -69,7 +67,6 @@ CALL peupleSalle();
 -- =============================
 
 DROP PROCEDURE IF EXISTS peuplePersonne;
-
 DROP TEMPORARY TABLE IF EXISTS tableNom;
 DROP TEMPORARY TABLE IF EXISTS tablePrenom;
 
@@ -126,21 +123,6 @@ BEGIN
 		    END WHILE;
         SET counterNOMS = counterNOMS + 1;
     END WHILE;
-
-    INSERT INTO projet_ent_universitaire.personne (etudiant_id, enseignant_id, email, nom, prenom, password, roles)
-        VALUES
-            -- enseignant responsable
-            (NULL, NULL, 'enseignant.res@univ-poitiers.fr', 'User', 'EnseignantRes', '$2y$13$PQfkvYMxBXDalJ5hP9kilue8jeJarc3wGnCwvtzxg7noPPYOIZCv6', 'a:1:{i:0;s:9:"ROLE_ENSEIGNANT_RES";}'),
-            -- création étudiant
-            (NULL, NULL, 'etudiant@univ-poitiers.fr', 'User', 'Etudiant', '$2y$13$PQfkvYMxBXDalJ5hP9kilue8jeJarc3wGnCwvtzxg7noPPYOIZCv6', 'a:1:{i:0;s:9:"ROLE_ETUDIANT";}'),
-            -- création enseignant
-            (NULL, NULL, 'enseignant@univ-poitiers.fr', 'User', 'Enseignant', '$2y$13$PQfkvYMxBXDalJ5hP9kilue8jeJarc3wGnCwvtzxg7noPPYOIZCv6', 'a:1:{i:0;s:9:"ROLE_ENSEIGNANT";}'),
-            -- création scolarité
-            (NULL, NULL, 'scolarite@univ-poitiers.fr', 'User', 'Scolarité', '$2y$13$PQfkvYMxBXDalJ5hP9kilue8jeJarc3wGnCwvtzxg7noPPYOIZCv6', 'a:1:{i:0;s:9:"ROLE_Scolarite";}'),
-            -- création rh
-            (NULL, NULL, 'rh@univ-poitiers.fr', 'User', 'Rh', '$2y$13$PQfkvYMxBXDalJ5hP9kilue8jeJarc3wGnCwvtzxg7noPPYOIZCv6', 'a:1:{i:0;s:9:"ROLE_RH";}'),
-            -- création admin
-            (NULL, NULL, 'admin@univ-poitiers.fr', 'User', 'Admin', '$2y$13$PQfkvYMxBXDalJ5hP9kilue8jeJarc3wGnCwvtzxg7noPPYOIZCv6', 'a:1:{i:0;s:9:"ROLE_Admin";}');
 END; //
 
 DELIMITER ;
@@ -235,7 +217,6 @@ BEGIN
 END; //
 
 DELIMITER ;
-
 CALL peupleSpecialite();
 
 -- =============================
@@ -243,8 +224,9 @@ CALL peupleSpecialite();
 -- =============================
 
 DROP PROCEDURE IF EXISTS peupleCursus;
-DELIMITER //
+DROP TEMPORARY TABLE IF EXISTS nomCursus;
 
+DELIMITER //
 CREATE PROCEDURE peupleCursus()
 BEGIN
     DECLARE length INT DEFAULT 0;
@@ -322,9 +304,11 @@ CALL peupleFormation();
 -- =============================
 -- 8) peupleEtudiant
 -- =============================
-DELIMITER //
-DROP PROCEDURE IF EXISTS peupleEtudiant; //
 
+DROP PROCEDURE IF EXISTS peupleEtudiant;
+DROP TEMPORARY TABLE IF EXISTS temp_personne_not_enseignant;
+DROP TEMPORARY TABLE IF EXISTS temp_personne_not_enseignant;
+DELIMITER //
 CREATE PROCEDURE peupleEtudiant()
 BEGIN
     DECLARE length  INT DEFAULT 0;
@@ -360,7 +344,6 @@ BEGIN
         SET counter = counter + 1;
     END WHILE;
 END; //
-
 DELIMITER ;
 CALL peupleEtudiant();
 
@@ -369,6 +352,8 @@ CALL peupleEtudiant();
 -- =============================
 
 DROP PROCEDURE IF EXISTS peupleUe;
+DROP TEMPORARY TABLE IF EXISTS nomUe;
+DROP TEMPORARY TABLE IF EXISTS volumeHoraireUe;
 
 DELIMITER //
 CREATE PROCEDURE peupleUe()
@@ -467,9 +452,7 @@ BEGIN
 END; //
 
 DELIMITER ;
-
 CALL peupleUe();
-
 
 -- =============================
 -- 10) peupleUeValide

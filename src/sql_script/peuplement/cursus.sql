@@ -1,6 +1,7 @@
-DELIMITER //
-DROP PROCEDURE IF EXISTS peupleCursus; //
+DROP PROCEDURE IF EXISTS peupleCursus;
+DROP TEMPORARY TABLE IF EXISTS nomCursus;
 
+DELIMITER //
 CREATE PROCEDURE peupleCursus()
 BEGIN
     DECLARE length INT DEFAULT 0;
@@ -28,7 +29,6 @@ BEGIN
     END WHILE;
 END; //
 
-CALL peupleCursus();//
-
 DELIMITER ;
+CALL peupleCursus();
 
