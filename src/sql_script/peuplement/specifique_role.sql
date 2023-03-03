@@ -10,21 +10,21 @@ VALUES
 -- Update personne
 UPDATE personne
 SET email = 'etudiant@univ-poitiers.fr',
-    prenom = 'User',
-    nom = 'Etudiant'
+    prenom = 'Etudiant',
+    nom = 'User'
 WHERE roles = 'a:1:{i:0;s:9:"ROLE_ETUDIANT";}'
-LIMIT 1;
+    LIMIT 1;
 
 UPDATE personne
 SET email = 'enseignant@univ-poitiers.fr',
-    prenom = 'User',
-    nom = 'Enseignant'
+    prenom = 'Enseignant',
+    nom = 'User'
 WHERE roles = 'a:1:{i:0;s:9:"ROLE_ENSEIGNANT";}'
-LIMIT 1;
+    LIMIT 1;
 
 UPDATE personne
-SET email = 'enseignant@univ-poitiers.fr',
-    prenom = 'User',
-    nom = 'EnseignantRes'
+SET email = 'enseignant.res@univ-poitiers.fr',
+    prenom = 'EnseignantRes',
+    nom = 'User'
 WHERE roles = 'a:1:{i:0;s:9:"ROLE_ENSEIGNANT_RES";}'
-LIMIT 1;
+    LIMIT 1;
