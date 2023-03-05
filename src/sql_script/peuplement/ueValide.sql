@@ -8,7 +8,7 @@ BEGIN
     DECLARE etuId INT;
     DECLARE ueId INT;
 
-    WHILE counter < 20 DO -- 20 est le nombre d'ue valide
+    WHILE counter < 1250 DO -- 1250 est le nombre d'ue valide
 
         -- prend 1 random dans la liste des étudiants
         SELECT id INTO etuId FROM etudiant ORDER BY RAND() LIMIT 1;
@@ -17,10 +17,10 @@ BEGIN
         CREATE TEMPORARY TABLE ueTmp(id INT) AS
         SELECT u.id
         FROM ue u
-             LEFT JOIN formation f
-                       ON f.id = u.formation_id
-             LEFT JOIN etudiant e
-                       ON e.formation_id = f.id
+            LEFT JOIN formation f
+                ON f.id = u.formation_id
+            LEFT JOIN etudiant e
+                ON e.formation_id = f.id
         WHERE e.id = etuId;
 
         -- prend 1 ue random
