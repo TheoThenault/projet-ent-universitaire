@@ -104,7 +104,7 @@ BEGIN
 					SELECT COUNT(*) INTO salleCoursAtCreneau FROM cour c WHERE c.salle_id = salleID AND c.creneau = creneau;
 					SELECT capacite INTO salleTaille FROM salle s WHERE s.id = salleID;
 					SET tries = tries + 1;
-					IF tries >= 10 THEN
+					IF tries >= maxTries THEN
 						-- SELECT 'findSalle' AS '';
 						LEAVE `findSalle`;
 					END IF;
