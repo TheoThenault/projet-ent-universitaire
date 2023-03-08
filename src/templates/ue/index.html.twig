@@ -31,7 +31,7 @@
                     <td>{{ ue.formation.nom }}</td>
                     <td>
                         <a class="btn btn-primary" href="{{ path('ue_edit', {'id':ue.id}) }}" role="button"><i class="fa-solid fa-pen-to-square"></i></a>
-                        <a class="btn btn-primary ms-2" href="{{ path('ue_delete', {'id':ue.id}) }}" role="button" onclick="return confirm('Êtes-vous sûr de vouloir supprimer l\'UE {{ ue.nom}} ?');"><i class="fa-solid fa-trash"></i></a>
+                        <a class="btn btn-primary ms-2" id="delete" role="button" onclick="deleteModal('l\'ue', {{ ue.id }}, '{{ ue.nom }}')"><i class="fa-solid fa-trash"></i></a>
                     </td>
                 </tr>
             {% endfor %}
@@ -42,5 +42,25 @@
             <a class="btn btn-primary ms-5" href="{{ path('ue_add') }}" role="button"><i class="fa-solid fa-plus"></i> UE</a>
         </div>
     {% endif %}
-
+    <!-- Modal -->
+    <div class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Modal body text goes here.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
+
