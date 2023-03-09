@@ -19,7 +19,7 @@
         
         <div class="d-flex flex-row mb-3 align-items-center">
             <h3>Etudiants: </h3>
-            {% if is_granted('ROLE_RH') %}
+            {% if is_granted('ROLE_SCOLARITE') %}
                 <a class="btn btn-primary ms-5" href="{{ path('etudiant_add') }}" role="button"><i class="fa-solid fa-plus"></i> Étudiant</a>
             {% endif%}
         </div>
@@ -52,13 +52,34 @@
         {% endif %}
         </div>
 
-    {% else %}
+    {% elseif etudiant_juste_creer is null %}
         <div class="d-flex flex-row mb-3 align-items-center">
             <h3>Aucun résultat!</h3>
-            {% if is_granted('ROLE_SCOLARITE') or is_granted('ROLE_ENSEIGNANT') %}
-                <a class="btn btn-primary ms-5" href="{{ path('etudiant_index') }}" role="button"><i class="fa-solid fa-plus"></i> Étudiant</a>
+            {% if is_granted('ROLE_SCOLARITE') %}
+                <a class="btn btn-primary ms-5" href="{{ path('etudiant_add') }}" role="button"><i class="fa-solid fa-plus"></i> Étudiant</a>
             {% endif%}
         </div>
+    {% else %}
+        <div class="d-flex flex-row mb-3 align-items-center">
+            <h3>Etudiant: </h3>
+            {% if is_granted('ROLE_SCOLARITE') %}
+                <a class="btn btn-primary ms-5" href="{{ path('etudiant_add') }}" role="button"><i class="fa-solid fa-plus"></i> Étudiant</a>
+            {% endif%}
+        </div>
+        <table class="table table-hover table-striped">
+            <tr>
+                <th>Nom</th>
+                <th>Prenom</th>
+                <th>Formation</th>
+                <th>Cursus</th>
+            </tr>
+            <tr>
+                <td>{{ etudiant_juste_creer.personne.nom }}</td>
+                <td>{{ etudiant_juste_creer.personne.prenom }}</td>
+                <td>{{ etudiant_juste_creer.formation.nom }}</td>
+                <td>{{ etudiant_juste_creer.formation.cursus.nom }}</td>
+            </tr>
+        </table>
     {% endif %}
 
     {{ form_end(formationFormulaire) }}
