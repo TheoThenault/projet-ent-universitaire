@@ -4,8 +4,12 @@
 
 {% block body %}
 
-    <h1>Ajouter un cour pour la formation : {{ formation_nom }}</h1>
+    {% if formation_nom is defined %}
+        <h1>Ajouter un cour pour la formation : {{ formation_nom }}</h1>
 
-     {{ form(formulaire) }}
+        {{ form(formulaire) }}
+    {% else %}
+        <h1>Vous n'êtes pas enseignant responsable!</h1>
+    {% endif %}
 
 {% endblock %}

@@ -30,7 +30,7 @@ class EtudiantController extends AbstractController
 		throw new NotFoundHttpException('La Page n\'existe pas');
 	}
 
-        dump(is_numeric($etu_id));
+//        dump(is_numeric($etu_id));
         $etudiant_juste_creer = null;
         if(is_numeric($etu_id))
         {

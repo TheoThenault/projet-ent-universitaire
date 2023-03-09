@@ -30,6 +30,16 @@ class AddCourController extends AbstractController
         $courRepo = $entityManagerInterface->getRepository(Cour::class);
         $groupesRepo = $entityManagerInterface->getRepository(Groupe::class);
 
+        $user = $this->getUser();
+        if(is_null($user->getEnseignant()))
+        {
+            return $this->render('add_cour/index.html.twig');
+        }
+        if(is_null($user->getEnseignant()->getResponsableFormation()))
+        {
+            return $this->render('add_cour/index.html.twig');
+        }
+
         $formation = $this->getUser()->getEnseignant()->getResponsableFormation();
         $formation_nom = $formation->getNom() . ' ' . $formation->getCursus()->getNom();
 
