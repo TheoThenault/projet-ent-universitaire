@@ -27,7 +27,8 @@
                     <td>{{ salle.equipement }}</td>
                     <td>{{ salle.capacite }}</td>
                     <td>
-                        <a class="btn btn-primary ms-2" id="delete" role="button" onclick="deleteModal('la salle', {{ salle.id }}, '{{ salle.nom }}')"><i class="fa-solid fa-trash"></i></a>                    </td>
+                        <a class="btn btn-primary ms-2" id="delete" role="button" onclick="deleteModal('la salle', {{ salle.id }}, '{{ salle.nom }}')"><i class="fa-solid fa-trash"></i></a>
+                    </td>
                 </tr>
             {% endfor %}
         </table>
