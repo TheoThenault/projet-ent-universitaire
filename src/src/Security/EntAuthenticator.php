@@ -47,7 +47,7 @@ class EntAuthenticator extends AbstractLoginFormAuthenticator
             return new RedirectResponse($targetPath);
         }
 
-        return new RedirectResponse($this->urlGenerator->generate('cour_index'));
+        return new RedirectResponse($this->urlGenerator->generate('profile_index'));
     }
 
     protected function getLoginUrl(Request $request): string

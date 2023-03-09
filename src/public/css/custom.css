@@ -23,7 +23,9 @@
     color: rgb(240,3,64);
     text-decoration: none;
 }
-
+main {
+    margin-top: 25px;
+}
 
 div.pagination {
     width:100%;

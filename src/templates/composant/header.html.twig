@@ -10,7 +10,7 @@
                 <!--
                 <li><a href="#" class="nav-link px-2">Home</a></li>
                 -->
-                {% if is_granted('ROLE_USER') %}
+                {% if is_granted('ROLE_ETUDIANT') or is_granted('ROLE_ENSEIGNANT_RES') or is_granted('ROLE_ENSEIGNANT') %}
                     <li>
                         <a href="{{ path('cour_index') }}"
                         {% if route_name == "cour_index" %} class="nav-link active px-2" {% else %} class="nav-link px-2" {% endif %}>
