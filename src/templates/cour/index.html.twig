@@ -52,43 +52,65 @@
         </nav>
         {# on n'affiche cette parite que si la liste est défini est pas vide #}
         <style>
+            .col {
+                padding: 10px;
+            }
             .row > div {
                 flex: 1;
-                background: lightgrey;
-                border: 1px solid grey;
+            }
+            .courActif {
+                border-radius: 10px;
+                padding: 20px 10px;
+                }
+            .container > .row {
+                border-bottom: 1px solid lightgray;
+                border-top: 1px solid lightgray;
+            }
+            .container > .row:first-of-type {
+                border-top: 0px transparent;
+            }
+            .container > .row:last-of-type {
+                border-bottom: 0px transparent;
+            }
+            .title {
+                padding: 25px;
+            }
+            .row > .col {
+                border-right: 1px solid lightgray;
             }
         </style>
 
         {% if liste_edt is defined and liste_edt is not empty %}
             <div class="container text-center mb-5" >
-                <div class="row" style="background-color:lavender;">
-                    <div class="col">
+                <div class="row">
+                    <div class="col title">
 
                     </div>
-                    <div class="col">
+                    <div class="col title">
                         Lundi
                     </div>
-                    <div class="col">
+                    <div class="col title">
                         Mardi
                     </div>
-                    <div class="col">
+                    <div class="col title">
                         Mercredi
                     </div>
-                    <div class="col">
+                    <div class="col title">
                         Jeudi
                     </div>
-                    <div class="col">
+                    <div class="col title">
                         Vendredi
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="col" style="background-color:lavender;">
+                    <div class="col">
                         8h - 10h
                     </div>
                     {% for i in 0..4 %}
                         {% if liste_edt[i*4][0] != [] %}
                             <div class="col">
+                                <div class="courActif">
                             {% if is_granted('ROLE_ETUDAINT') %}
                                 Prof:
                                 {{liste_edt[i*4][0]}} <br>
@@ -113,10 +135,11 @@
                                 Salle:
                                 {{liste_edt[i*4][2]}} <br>
                             {% endif %}
+                                </div>
                             </div>
                         {% else %}
                             <div class="col">
-                                Pas de cours <br>
+{#                                Pas de cours <br>#}
                             </div>
                         {% endif %}
                     {% endfor %}
@@ -124,12 +147,13 @@
 
 
                 <div class="row">
-                    <div class="col" style="background-color:lavender;">
+                    <div class="col">
                         10h - 12h
                     </div>
                     {% for i in 0..4 %}
                         {% if liste_edt[i*4 + 1][0] != [] %}
                             <div class="col">
+                                <div class="courActif">
                                 {% if is_granted('ROLE_ETUDAINT') %}
                                     Prof:
                                     {{liste_edt[i*4 + 1][0]}} <br>
@@ -154,16 +178,17 @@
                                     Salle:
                                     {{liste_edt[i*4 + 1][2]}} <br>
                                 {% endif %}
+                                </div>
                             </div>
                         {% else %}
                             <div class="col">
-                                Pas de cours <br>
+{#                                Pas de cours <br>#}
                             </div>
                         {% endif %}
                     {% endfor %}
                 </div>
 
-                <div class="row" style="background-color:lavender;">
+                <div class="row">
                     <div class="col">
                         MIDI
                     </div>
@@ -185,12 +210,13 @@
                 </div>
 
                 <div class="row">
-                    <div class="col" style="background-color:lavender;">
+                    <div class="col">
                         14h - 16h
                     </div>
                     {% for i in 0..4 %}
                         {% if liste_edt[i*4 + 2][0] != [] %}
                             <div class="col">
+                                <div class="courActif">
                                 {% if is_granted('ROLE_ETUDAINT') %}
                                     Prof:
                                     {{liste_edt[i*4 + 2][0]}} <br>
@@ -215,22 +241,24 @@
                                     Salle:
                                     {{liste_edt[i*4 + 2][2]}} <br>
                                 {% endif %}
+                                </div>
                             </div>
                         {% else %}
                             <div class="col">
-                                Pas de cours <br>
+{#                                Pas de cours <br>#}
                             </div>
                         {% endif %}
                     {% endfor %}
                 </div>
 
                 <div class="row">
-                    <div class="col" style="background-color:lavender;">
+                    <div class="col">
                         16h - 18h
                     </div>
                     {% for i in 0..4 %}
                         {% if liste_edt[i*4 + 3][0] != [] %}
                             <div class="col">
+                                <div class="courActif">
                                 {% if is_granted('ROLE_ETUDAINT') %}
                                     Prof:
                                     {{liste_edt[i*4 + 3][0]}} <br>
@@ -255,10 +283,11 @@
                                     Salle:
                                     {{liste_edt[i*4 + 3][2]}} <br>
                                 {% endif %}
+                                </div>
                             </div>
                         {% else %}
                             <div class="col">
-                                Pas de cours <br>
+{#                                Pas de cours <br>#}
                             </div>
                         {% endif %}
                     {% endfor %}
@@ -276,4 +305,22 @@
 
     {% endif %}
     {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        const couleurs = ["#F5AC70", "#3E4F51", "#D9F4C8", "#FFC7FB"]; // Tableau de couleurs
+
+        const elems = document.querySelectorAll(".courActif"); // Sélectionne tous les éléments avec la classe "courActif"
+
+        for (let i = 0; i < elems.length; i++) { // Boucle à travers tous les éléments sélectionnés
+            const randomCouleur = couleurs[Math.floor(Math.random() * couleurs.length)]; // Sélectionne une couleur de fond aléatoire du tableau
+            elems[i].style.backgroundColor = randomCouleur; // Attribue la couleur de fond aléatoire à l'élément actuel
+
+            if(randomCouleur === "#3E4F51") {
+                elems[i].style.color = "white";
+            }
+
+        }
+    </script>
 {% endblock %}
