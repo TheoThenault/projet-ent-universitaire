@@ -1224,7 +1224,7 @@ DELIMITER ;
 INSERT INTO personne (etudiant_id, enseignant_id, email, nom, prenom, password, roles)
 VALUES
     -- création scolarité
-    (NULL, NULL, 'scolarite@univ-poitiers.fr', 'User', 'Scolarité', '$2y$13$PQfkvYMxBXDalJ5hP9kilue8jeJarc3wGnCwvtzxg7noPPYOIZCv6', 'a:1:{i:0;s:9:"ROLE_SCOLARITE";}'),
+    (NULL, NULL, 'scolarite@univ-poitiers.fr', 'User', 'Scolarité', '$2y$13$PQfkvYMxBXDalJ5hP9kilue8jeJarc3wGnCwvtzxg7noPPYOIZCv6', 'a:1:{i:0;s:14:"ROLE_SCOLARITE";}'),
     -- création rh
     (NULL, NULL, 'rh@univ-poitiers.fr', 'User', 'Rh', '$2y$13$PQfkvYMxBXDalJ5hP9kilue8jeJarc3wGnCwvtzxg7noPPYOIZCv6', 'a:1:{i:0;s:7:"ROLE_RH";}'),
     -- création admin
