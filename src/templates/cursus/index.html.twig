@@ -26,7 +26,8 @@
                     <td>{{ cursus.nom }}</td>
                     <td>
                         <a class="btn btn-primary" href="{{ path('cursus_edit', {'id':cursus.id}) }}" role="button"><i class="fa-solid fa-pen-to-square"></i></a>
-                        <a class="btn btn-primary ms-2" id="delete" role="button" onclick="deleteModal('le cursus', {{ cursus.id }}, '{{ cursus.nom }}')"><i class="fa-solid fa-trash"></i></a>                    </td>
+                        <a class="btn btn-primary ms-2" id="delete" role="button" onclick="deleteModal('le cursus', {{ cursus.id }}, '{{ cursus.nom }}')"><i class="fa-solid fa-trash"></i></a>
+                    </td>
                 </tr>
             {% endfor %}
         </table>
