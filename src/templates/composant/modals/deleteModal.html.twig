@@ -1,0 +1,43 @@
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Suppression</h5>
+            </div>
+            <div class="modal-body">
+                <p id="eltDelete"></p> {# Texte pour demander la confirmation de suppression  #}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Non</button>
+                <button type="button" class="btn btn-primary" onclick="deletePage()">Oui</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    let idGlo;// Pour pouvoir retrouver l'id dans deletePage
+
+    function deleteModal(elt, id, nom){// type avec le pronom (pour la salle ou l'ue par exemple)
+
+        const myModal = new bootstrap.Modal(document.getElementById('exampleModal'))
+
+        // Créer le texte de confirmation
+        document.getElementById("eltDelete").innerHTML = "Êtes-vous sûr de vouloir supprimer " + elt + " " + nom + "?";
+
+        idGlo = id;
+
+        // Afficher la modale
+        myModal.show()
+
+    }
+
+    function deletePage(){
+        window.location= window.location.href + "/delete/" + idGlo ;// Permet de faire comme un path('ue_delete', {'id':ue.id})
+        //windows.location.href permet de prendre l'url actuel
+    }
+
+</script>

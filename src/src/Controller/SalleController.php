@@ -67,4 +67,19 @@ class SalleController extends AbstractController{
         ]);
     }
 
+    #[Route('/delete/{id}', name: 'delete')]
+    public function deleteAction($id, EntityManagerInterface $entityManager): Response
+    {
+        $salle = $entityManager->getRepository(Salle::class)->find($id);
+        if($salle == null){
+            $this->addFlash('crud', "La salle n'existe pas.");
+            return $this->redirectToRoute('salle_index');
+        }
+        $entityManager->remove($salle);
+        $entityManager->flush();
+
+        $this->addFlash('crud', "La salle : {$salle->getNom()} a été supprimée avec succès.");
+        return $this->redirectToRoute('salle_index');
+    }
+
 }
