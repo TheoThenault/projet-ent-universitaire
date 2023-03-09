@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Enseignant;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
 
@@ -101,7 +102,7 @@ class EnseignantRepository extends ServiceEntityRepository
     public function filterByStatut($choix_statut): mixed
     {
         $qb = $this->createQueryBuilder("enseignant");
-        dump($choix_statut);
+//        dump($choix_statut);
         $qb
             ->select("enseignant")
             ->leftJoin('enseignant.personne', 'personne')
@@ -110,6 +111,54 @@ class EnseignantRepository extends ServiceEntityRepository
             ->setParameter(':name', $choix_statut);
 
         return $qb->getQuery()->getResult();
+    }
+
+    public function findByNomOrPrenom($entry): mixed
+    {
+        $queryBuilder = $this->createQueryBuilder('prof');
+        $queryBuilder->addSelect('prof');
+        $queryBuilder->leftJoin('prof.StatutEnseignant', 'status');
+        $queryBuilder->addSelect('status');
+        $queryBuilder->leftJoin('prof.personne', 'pers');
+        $queryBuilder->addSelect('pers');
+
+        $queryBuilder->where('pers.nom LIKE :format');
+        $queryBuilder->orWhere('pers.prenom LIKE :format');
+
+        $queryBuilder->setParameter('format', $entry . '%');
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+
+    public function findByNomOrPrenomArrayPaged(array $entries, $nPage, $perPage): Paginator
+    {
+        $queryBuilder = $this->createQueryBuilder('prof');
+        $queryBuilder->addSelect('prof');
+        $queryBuilder->leftJoin('prof.StatutEnseignant', 'status');
+        $queryBuilder->addSelect('status');
+        $queryBuilder->leftJoin('prof.personne', 'pers');
+        $queryBuilder->addSelect('pers');
+        $queryBuilder->where('pers.id = -1');   // C'est de toute beauté
+
+        for($i = 0; $i < count($entries); $i++)
+        {
+            $entry = trim($entries[$i]);
+            if(strlen($entry) < 3)
+                continue;
+
+            $queryBuilder->orWhere('pers.nom LIKE :format'.$i);
+            $queryBuilder->orWhere('pers.prenom LIKE :format'.$i);
+            $queryBuilder->setParameter('format'.$i, $entry . '%');
+        }
+
+        $queryBuilder->orderBy('pers.nom', 'ASC');
+        $queryBuilder->addOrderBy('pers.prenom', 'ASC');
+
+        $query = $queryBuilder->getQuery();
+        $query->setFirstResult(($nPage - 1) * $perPage);
+        $query->setMaxResults($perPage);
+
+        return new Paginator($query);
     }
 
 //    /**

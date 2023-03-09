@@ -6,6 +6,7 @@ use App\Repository\StatutEnseignantRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: StatutEnseignantRepository::class)]
 class StatutEnseignant
@@ -16,12 +17,31 @@ class StatutEnseignant
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Le nom d'un statut enseignant est obligatoire")]
+    #[Assert\Length(
+        min: 2,
+        max: 64,
+        minMessage: "Le nom d'un statut enseignant doit comporter au moins {{ limit }} caractères.",
+        maxMessage: "Le nom d'un statut enseignant ne peut pas comporter plus de {{ limite }} caractères.",
+    )]
     private ?string $nom = null;
 
     #[ORM\Column]
+    #[Assert\Range(
+        notInRangeMessage: "Heure min d'un statut enseignant doit être entre {{ min }} et {{ max }}",
+        min: 0,
+        max: 9999,
+    )]
+    #[Assert\NotBlank(message: "Heure min d'un statut enseignant est obligatoire")]
     private ?int $nbHeureMin = null;
 
     #[ORM\Column]
+    #[Assert\Range(
+        notInRangeMessage: "Heure max d'un statut enseignant doit être entre {{ min }} et {{ max }}",
+        min: 0,
+        max: 9999,
+    )]
+    #[Assert\NotBlank(message: "Heure max d'un statut enseignant est obligatoire")]
     private ?int $nbHeureMax = null;
 
     #[ORM\OneToMany(mappedBy: 'StatutEnseignant', targetEntity: Enseignant::class)]

@@ -46,7 +46,7 @@ class UERepository extends ServiceEntityRepository
         $queryBuilder->addSelect('s.nom');
         $queryBuilder->groupBy('s.nom');
         $queryBuilder->orderBy('s.nom');
-        dump($queryBuilder);
+//        dump($queryBuilder);
         $queryResult = $queryBuilder->getQuery()->getArrayResult();
 
         $result = array();
@@ -88,6 +88,23 @@ class UERepository extends ServiceEntityRepository
         return $queryBuilder->getQuery()->getArrayResult();;
     }
 
+    public function findAllByFormation($formationID): array
+    {
+        $queryBuilder = $this->createQueryBuilder('u');
+        $queryBuilder->addSelect('u');
+        $queryBuilder->leftJoin('u.specialite', 's');
+        $queryBuilder->addSelect('s');
+        $queryBuilder->leftJoin('u.formation', 'f');
+        $queryBuilder->addSelect('f');
+        $queryBuilder->leftJoin('f.cursus', 'c');
+        $queryBuilder->addSelect('c');
+        $queryBuilder->andWhere('f.id = :id');
+        $queryBuilder->setParameter('id', $formationID);
+
+
+        return $queryBuilder->getQuery()->getResult();;
+    }
+
     public function findAllOrdered(): array
     {
         $queryBuilder = $this->createQueryBuilder('u');
@@ -99,6 +116,18 @@ class UERepository extends ServiceEntityRepository
         $queryBuilder->leftJoin('f.cursus', 'c');
         $queryBuilder->addSelect('c');
         $queryBuilder->orderBy('c.nom');
+
+        return $queryBuilder->getQuery()->getArrayResult();
+    }
+
+    public function findByFormation($formation): array{
+
+        $queryBuilder = $this->createQueryBuilder('u');
+        $queryBuilder->addSelect('u');
+        $queryBuilder->leftJoin('u.formation', 'f');
+        $queryBuilder->where('f = :formation');
+        $queryBuilder->setParameter('formation', $formation);
+        $queryBuilder->addSelect('f');
 
         return $queryBuilder->getQuery()->getArrayResult();
     }

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Cursus;
 use App\Form\cursus\CursusAddType;
+use App\Form\cursus\CursusEditType;
 use App\Form\cursus\CursusFilterType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -63,12 +64,51 @@ class CursusController extends AbstractController
 
             $entityManager->persist($cursus);
             $entityManager->flush();
-
+            $this->addFlash('crud', "Le cursus : {$form->get('nom')->getData()}, a été créé avec succès.");
             return $this->redirectToRoute('cursus_index');
         }
 
         return $this->render('cursus/add.html.twig', [
             'addCursusForm' => $form->createView(),
         ]);
+    }
+
+    #[Route('/edit/{id}', name: 'edit')]
+    public function editAction($id, EntityManagerInterface $entityManager, Request $request): Response
+    {
+        $cursus = $entityManager->getRepository(Cursus::class)->find($id);
+        if($cursus == null){
+            $this->addFlash('crud', "Le cursus n'existe pas.");
+            return $this->redirectToRoute('ue_index');
+        }
+        $form = $this->createForm(CursusEditType::class, $cursus);
+        $form->add('send',SubmitType::class,['label'=>'Modifier']);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+
+            $entityManager->persist($cursus);
+            $entityManager->flush();
+
+            $this->addFlash('crud', "Le cursus : {$cursus->getNom()} a été modifiée avec succès.");
+            return $this->redirectToRoute('cursus_index');
+        }
+        return $this->render('cursus/edit.html.twig',
+            ['editCursusForm'=>$form->createView(), 'id'=>$id]);
+    }
+
+    #[Route('/delete/{id}', name: 'delete')]
+    public function deleteAction($id, EntityManagerInterface $entityManager, Request $request): Response
+    {
+        $cursus = $entityManager->getRepository(Cursus::class)->find($id);
+        if($cursus == null){
+            $this->addFlash('crud', "Le cursus n'existe pas.");
+            return $this->redirectToRoute('cursus_index');
+        }
+        $entityManager->remove($cursus);
+        $entityManager->flush();
+
+        $this->addFlash('crud', "Le cursus : {$cursus->getNom()} a été supprimée avec succès.");
+        return $this->redirectToRoute('cursus_index');
     }
 }

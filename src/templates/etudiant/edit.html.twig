@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier un étudiant{% endblock %}
+
+{% block body %}
+    {{ form(editEtudiantForm) }}
+    {% for error in errors %}
+        <div class="alert alert-warning" role="alert">
+            {{ error.message }}
+        </div>
+    {% endfor %}
+{% endblock %}

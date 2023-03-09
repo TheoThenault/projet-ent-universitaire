@@ -20,7 +20,7 @@
                     <th>Spécialité</th>
                     <th>Cursus</th>
                     <th>Formation</th>
-{#                    <th></th>#}
+                    <th></th>
                 </tr>
             {% for ue in liste_ues %}
                 <tr>
@@ -29,10 +29,10 @@
                     <td>{{ ue.specialite.nom }}</td>
                     <td>{{ ue.formation.cursus.nom }}</td>
                     <td>{{ ue.formation.nom }}</td>
-{#                    <td>#}
-{#                        <a class="btn btn-primary" href="{{ path('ue_add') }}" role="button"><i class="fa-solid fa-pen-to-square"></i></a>#}
-{#                        <a class="btn btn-primary ms-2" href="{{ path('ue_add') }}" role="button"><i class="fa-solid fa-trash"></i></a>#}
-{#                    </td>#}
+                    <td>
+                        <a class="btn btn-primary" href="{{ path('ue_edit', {'id':ue.id}) }}" role="button"><i class="fa-solid fa-pen-to-square"></i></a>
+                        <a class="btn btn-primary ms-2" href="{{ path('ue_delete', {'id':ue.id}) }}" role="button"><i class="fa-solid fa-trash"></i></a>
+                    </td>
                 </tr>
             {% endfor %}
         </table>

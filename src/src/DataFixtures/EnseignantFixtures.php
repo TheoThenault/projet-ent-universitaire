@@ -11,17 +11,42 @@ class EnseignantFixtures
 {
     public array $list_enseignants = array();
 
-    public function charger(ObjectManager $manager, array $list_personnes, array $list_statuts_enseignant): void
+    public function charger(ObjectManager $manager, array $list_personnes, array $list_statuts_enseignant, array $sections, int $nbEnseignants, array $list_formation): void
     {
-        $nb_enseignant = 6;
 
+        // Création d'un enseignant spécifique qui est une personne avec le role ROLE_ENSEIGNANT_RES
+        $enseignantResUser = new Enseignant();
+        $enseignantResUser->setPersonne(
+            $manager->getRepository(Personne::class)->findOneBy(['email' => 'enseignant.res' . "@univ-poitiers.fr"])
+        );
+        $enseignantResUser->setStatutEnseignant($list_statuts_enseignant[array_rand($list_statuts_enseignant)])->setSection($sections[array_rand($sections)]);
+        $enseignantResUser->setResponsableFormation($list_formation[array_rand($list_formation)]);
+        $this->list_enseignants[] = $enseignantResUser;
+        $manager->persist($enseignantResUser);
+
+        $manager->flush();
+
+        $formationsDejaPrise = [];
         // ========== CREATION DES ENSEIGNANTS ==========
-        for ($i=0; $i<$nb_enseignant; $i++){
+        for ($i=0; $i<$nbEnseignants && $i < count($list_personnes); $i++){
             $this->list_enseignants[$i] = new Enseignant();
 
+            $formation = $list_formation[array_rand($list_formation)];
+            $formationClear = array_key_exists($formation->getId(), $formationsDejaPrise);
+
+            //var_dump($formation->getId());
+            $list_personnes[$i]->setRoles(['ROLE_ENSEIGNANT']);
             $this->list_enseignants[$i]
                 ->setPersonne($list_personnes[$i])
-                ->setStatutEnseignant($list_statuts_enseignant[array_rand($list_statuts_enseignant)]);
+                ->setStatutEnseignant($list_statuts_enseignant[array_rand($list_statuts_enseignant)])
+                ->setSection($sections[array_rand($sections)]);
+            //dump($formationClear);
+            if($formationClear){
+//                dump($formation->getEnseignant());
+                $list_personnes[$i]->setRoles(['ROLE_ENSEIGNANT_RES']);
+                $this->list_enseignants[$i]->setResponsableFormation($formation);
+                $formationsDejaPrise[$formation['id']] = 0;
+            }
 
             $manager->persist($this->list_enseignants[$i]);
         }
@@ -31,19 +56,13 @@ class EnseignantFixtures
         // em = entity manager
         $enseignantUser = new Enseignant();
         $enseignantUser->setPersonne(
-            $manager->getRepository(Personne::class)->findOneBy(['email' => 'enseignant@univ-poitiers.fr'])
+            $manager->getRepository(Personne::class)->findOneBy(['email' => 'enseignant'. "@univ-poitiers.fr"])
         );
-        $enseignantUser->setStatutEnseignant($list_statuts_enseignant[array_rand($list_statuts_enseignant)]);
+        $enseignantUser->setStatutEnseignant($list_statuts_enseignant[array_rand($list_statuts_enseignant)])->setSection($sections[array_rand($sections)]);
+        $this->list_enseignants[] = $enseignantUser;
         $manager->persist($enseignantUser);
-
-        // Création d'un enseignant spécifique qui est une personne avec le role ROLE_ENSEIGNANT_RES
-        $enseignantResUser = new Enseignant();
-        $enseignantResUser->setPersonne(
-            $manager->getRepository(Personne::class)->findOneBy(['email' => 'enseignant.res@univ-poitiers.fr'])
-        );
-        $enseignantResUser->setStatutEnseignant($list_statuts_enseignant[array_rand($list_statuts_enseignant)]);
-        $manager->persist($enseignantResUser);
-
         $manager->flush();
+
+
     }
 }

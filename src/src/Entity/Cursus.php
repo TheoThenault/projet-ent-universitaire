@@ -6,19 +6,31 @@ use App\Repository\CursusRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CursusRepository::class)]
 class Cursus
 {
+    const NIVEAUX = ['Master', 'Licence'];
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Le nom d'un Cursus est obligatoire")]
+    #[Assert\Length(
+        min: 2,
+        max: 128,
+        minMessage: "Le nom d'un Cursus doit comporter au moins {{ limit }} caractères.",
+        maxMessage: "Le nom d'un Cursus ne peut pas comporter plus de {{ limite }} caractères.",
+    )]
     private ?string $nom = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Le niveau d'un Cursus est obligatoire")]
+    #[Assert\Choice(choices: Cursus::NIVEAUX, message: 'Choisissez un niveau valid.')]
     private ?string $niveau = null;
 
     #[ORM\OneToMany(mappedBy: 'cursus', targetEntity: Formation::class, orphanRemoval: true)]

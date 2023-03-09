@@ -15,7 +15,7 @@ class UEFixtures
         for($i = 0; $i < count($formations); $i++) {
             $ue = new UE();
             $ue->setNom("POO");
-            $ue->setVolumeHoraire(75);
+            $ue->setVolumeHoraire(76);
             $ue->setSpecialite($specialites[26]);
             $ue->setFormation($formations[$i]);
             $manager->persist($ue);
@@ -23,7 +23,7 @@ class UEFixtures
 
             $ue = new UE();
             $ue->setNom("Algorithmes");
-            $ue->setVolumeHoraire(75);
+            $ue->setVolumeHoraire(76);
             $ue->setSpecialite($specialites[26]);
             $ue->setFormation($formations[$i]);
             $manager->persist($ue);
@@ -39,7 +39,7 @@ class UEFixtures
 
             $ue = new UE();
             $ue->setNom("Droits");
-            $ue->setVolumeHoraire(25);
+            $ue->setVolumeHoraire(24);
             $ue->setSpecialite($specialites[1]);
             $ue->setFormation($formations[$i]);
             $manager->persist($ue);
@@ -47,7 +47,7 @@ class UEFixtures
 
             $ue = new UE();
             $ue->setNom("Web");
-            $ue->setVolumeHoraire(75);
+            $ue->setVolumeHoraire(76);
             $ue->setSpecialite($specialites[26]);
             $ue->setFormation($formations[$i]);
             $manager->persist($ue);
@@ -55,7 +55,7 @@ class UEFixtures
 
             $ue = new UE();
             $ue->setNom("Web avancé");
-            $ue->setVolumeHoraire(75);
+            $ue->setVolumeHoraire(76);
             $ue->setSpecialite($specialites[26]);
             $ue->setFormation($formations[$i]);
             $manager->persist($ue);

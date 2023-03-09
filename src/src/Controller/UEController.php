@@ -6,6 +6,7 @@ use App\Entity\Cursus;
 use App\Entity\Formation;
 use App\Entity\UE;
 use App\Form\ue\UEAddType;
+use App\Form\ue\UEEditType;
 use App\Form\ue\UEFilterType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -46,7 +47,7 @@ class UEController extends AbstractController
             //$liste_ues = $entityManagerInterface->getRepository(UE::class)->findAllOrdered();
         }
 
-        dump($liste_ues);
+//        dump($liste_ues);
 
         return $this->render('ue/index.html.twig', [
             'liste_ues' => $liste_ues,
@@ -67,11 +68,51 @@ class UEController extends AbstractController
             $entityManager->persist($ue);
             $entityManager->flush();
 
+            $this->addFlash('crud', "L'UE : {$form->get('nom')->getData()}, a été créée avec succès.");
             return $this->redirectToRoute('ue_index');
         }
 
         return $this->render('ue/add.html.twig', [
             'addUeForm' => $form->createView(),
         ]);
+    }
+
+    #[Route('/edit/{id}', name: 'edit')]
+    public function editAction($id, EntityManagerInterface $entityManager, Request $request): Response
+    {
+        $ue = $entityManager->getRepository(UE::class)->find($id);
+        if($ue == null){
+            $this->addFlash('crud', "L'UE n'existe pas.");
+            return $this->redirectToRoute('ue_index');
+        }
+        $form = $this->createForm(UEEditType::class, $ue);
+        $form->add('send',SubmitType::class,['label'=>'Modifier']);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+
+            $entityManager->persist($ue);
+            $entityManager->flush();
+
+            $this->addFlash('crud', "L'UE : {$ue->getNom()} a été modifiée avec succès.");
+            return $this->redirectToRoute('ue_index');
+        }
+        return $this->render('ue/edit.html.twig',
+            ['editUeForm'=>$form->createView(), 'id'=>$id]);
+    }
+
+    #[Route('/delete/{id}', name: 'delete')]
+    public function deleteAction($id, EntityManagerInterface $entityManager, Request $request): Response
+    {
+        $ue = $entityManager->getRepository(UE::class)->find($id);
+        if($ue == null){
+            $this->addFlash('crud', "L'UE n'existe pas.");
+            return $this->redirectToRoute('ue_index');
+        }
+        $entityManager->remove($ue);
+        $entityManager->flush();
+
+        $this->addFlash('crud', "L'UE : {$ue->getNom()} a été supprimée avec succès.");
+        return $this->redirectToRoute('ue_index');
     }
 }

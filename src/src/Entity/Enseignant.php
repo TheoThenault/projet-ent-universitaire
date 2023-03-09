@@ -6,6 +6,7 @@ use App\Repository\EnseignantRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: EnseignantRepository::class)]
 class Enseignant
@@ -23,6 +24,12 @@ class Enseignant
 
     #[ORM\OneToMany(mappedBy: 'enseignant', targetEntity: Cour::class)]
     private Collection $cours;
+
+    #[ORM\ManyToOne(inversedBy: 'enseignants')]
+    private ?Specialite $section = null;
+
+    #[ORM\OneToOne(inversedBy: 'enseignant', cascade: ['persist', 'remove'])]
+    private ?Formation $ResponsableFormation = null;
 
     public function __construct()
     {
@@ -94,6 +101,31 @@ class Enseignant
                 $cour->setEnseignant(null);
             }
         }
+
+        return $this;
+    }
+
+
+    public function getSection(): ?Specialite
+    {
+        return $this->section;
+    }
+
+    public function setSection(?Specialite $section): self
+    {
+        $this->section = $section;
+        return $this;
+    }
+
+    public function getResponsableFormation(): ?Formation
+    {
+        return $this->ResponsableFormation;
+    }
+
+    public function setResponsableFormation(?Formation $ResponsableFormation): self
+    {
+        $this->ResponsableFormation = $ResponsableFormation;
+
 
         return $this;
     }

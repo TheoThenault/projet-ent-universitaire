@@ -6,16 +6,21 @@ use App\Repository\GroupeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: GroupeRepository::class)]
 class Groupe
 {
+    const CHOIX = ['TD', 'TP', 'CM'];
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
     #[ORM\Column(length: 2)]
+    #[Assert\NotBlank(message: "Le type d'un goupe est obligatoire")]
+    #[Assert\Choice(choices: Groupe::CHOIX, message: 'Choisissez un type valide.')]
     private ?string $type = null;
 
     #[ORM\ManyToMany(targetEntity: Etudiant::class, inversedBy: 'groupes')]

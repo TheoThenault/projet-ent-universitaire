@@ -6,6 +6,7 @@ use App\Repository\UERepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UERepository::class)]
 class UE
@@ -16,9 +17,22 @@ class UE
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Le nom d'une UE est obligatoire")]
+    #[Assert\Length(
+        min: 2,
+        max: 255,
+        minMessage: "Le nom d'une UE doit comporter au moins {{ limit }} caractères.",
+        maxMessage: "Le nom d'une UE ne peut pas comporter plus de {{ limite }} caractères.",
+    )]
     private ?string $nom = null;
 
     #[ORM\Column(nullable: true)]
+    #[Assert\NotBlank(message: "Le volume horaire d'une UE est obligatoire")]
+    #[Assert\Range(
+        notInRangeMessage: "Le volume horaire d'une UE doit être entre {{ min }} et {{ max }}",
+        min: 0,
+        max: 9999,
+    )]
     private ?int $volumeHoraire = null;
 
     #[ORM\ManyToOne(inversedBy: 'ue')]

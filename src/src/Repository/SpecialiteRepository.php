@@ -39,6 +39,24 @@ class SpecialiteRepository extends ServiceEntityRepository
         }
     }
 
+    public function getAllForm(): mixed
+    {
+        $queryBuilder = $this->createQueryBuilder('s');
+        $queryBuilder->select('s');
+        $queryBuilder->orderBy('s.nom', 'ASC');
+        $queryResult = $queryBuilder->getQuery()->getArrayResult();
+
+        // enregistrer le tableau, en mettant les valeurs dans les cléfs
+        // pour etre utiliser par symfony
+        $result = array();
+        for($i = 0; $i < count($queryResult); $i++) {
+            $niv = $queryResult[$i]['nom'];
+            $result[$niv] = $queryResult[$i]['id'];
+        }
+
+        return $result;
+    }
+
 //    /**
 //     * @return Specialite[] Returns an array of Specialite objects
 //     */

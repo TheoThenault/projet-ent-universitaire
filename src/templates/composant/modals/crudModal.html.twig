@@ -1,0 +1,45 @@
+{% for message in app.flashes('crud') %}
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body p-0">
+                    <h5 class="p-3">{{ message }}</h5>
+                    <div class="progress" style="height: 7px;">
+                        <div id="pb" class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const myModal = new bootstrap.Modal(document.getElementById('exampleModal'))
+        // Durée de la modale en secondes
+        var duration = 2600;
+
+        // Afficher la modale
+        myModal.show()
+
+        // Référence à la barre de progression
+        var progressBar = document.querySelector("#pb");
+
+        // Compteur de temps en millisecondes
+        var time = 1;
+
+        // Intervalle de mise à jour de la barre de progression
+        var interval = setInterval(function() {
+            progressBar.setAttribute("aria-valuenow", "" + (100-(time * 100 / duration)));
+            progressBar.style.width = (100-(time * 100 / duration))+ '%';
+            time += 100;
+            if (time > duration) {
+                clearInterval(interval);
+                // Fermer la modale
+                setTimeout(function(){
+                    myModal.hide();
+                },300);
+            }
+        }, 100);
+
+    </script>
+{% endfor %}

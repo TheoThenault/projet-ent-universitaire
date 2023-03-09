@@ -76,11 +76,13 @@ class CourRepository extends ServiceEntityRepository
             return [];
         }
 
-        $datediff = $date->diff($debut_annee);
-        if($datediff->days < 0)
+        if($date < $debut_annee)
         {
             return [];
         }
+
+
+        $datediff = $date->diff($debut_annee);
         $numeroSemaine = floor($datediff->days / 7);
         $creneauMin = 20 * $numeroSemaine + 1;  // 20 creneaux par semaines
         $creneauMax = $creneauMin + 19;
@@ -135,10 +137,199 @@ class CourRepository extends ServiceEntityRepository
         return $result;
     }
 
+    public function findAllByProf($profPersID): array
+    {
+        $queryBuilder = $this->createQueryBuilder('cour');
+        $queryBuilder->addSelect('cour');
+        $queryBuilder->leftJoin('cour.enseignant', 'ens');
+        $queryBuilder->addSelect('ens');
+        $queryBuilder->leftJoin('ens.personne', 'pers');
+        $queryBuilder->addSelect('pers');
+        $queryBuilder->leftJoin('cour.ue', 'ue');
+        $queryBuilder->addSelect('ue');
+        $queryBuilder->leftJoin('cour.groupe', 'grp');
+        $queryBuilder->addSelect('grp');
+        $queryBuilder->leftJoin('ue.formation', 'f');
+        $queryBuilder->addSelect('f');
+        $queryBuilder->leftJoin('f.cursus', 'c');
+        $queryBuilder->addSelect('c');
+
+        $queryBuilder->andWhere('pers.id = :id');
+        $queryBuilder->setParameter('id', $profPersID);
+
+        return $queryBuilder->getQuery()->getArrayResult();
+    }
+
+    public function findAllByChoicesCreneau($cursus, $formation, $date): array
+    {
+        try {
+            $debut_annee = $this->getDebutAnnee();
+        } catch (Exception $e) {
+            return [];
+        }
+
+        $datediff = $date->diff($debut_annee);
+        if($datediff->days < 0)
+        {
+            return [];
+        }
+        $numeroSemaine = floor($datediff->days / 7);
+        $creneauMin = 20 * $numeroSemaine + 1;  // 20 creneaux par semaines
+        $creneauMax = $creneauMin + 19;
+        //dump($creneauMin);
+        //dump($creneauMax);
+
+
+        $queryBuilder = $this->createQueryBuilder('cour');
+        $queryBuilder->addSelect('cour');
+
+        $queryBuilder->leftJoin('cour.salle', 's');
+        $queryBuilder->addSelect('s');
+        $queryBuilder->leftJoin('cour.enseignant', 'ens');
+        $queryBuilder->addSelect('ens');
+        $queryBuilder->leftJoin('ens.personne', 'pers');
+        $queryBuilder->addSelect('pers');
+        $queryBuilder->leftJoin('cour.ue', 'ue');
+        $queryBuilder->addSelect('ue');
+        $queryBuilder->leftJoin('ue.formation', 'f');
+        $queryBuilder->addSelect('f');
+        $queryBuilder->leftJoin('f.cursus', 'c');
+        $queryBuilder->addSelect('c');
+
+        //$queryBuilder->addSelect('cour.creneau');
+
+        $queryBuilder->andWhere('cour.creneau BETWEEN :cmin AND :cmax');
+        $queryBuilder->setParameter('cmin', $creneauMin);
+        $queryBuilder->setParameter('cmax', $creneauMax);
+
+        if($cursus != 'Tous')
+        {
+            $queryBuilder->andWhere('c.nom = :cur');
+            $queryBuilder->setParameter('cur', $cursus);
+        }
+        if($formation != 'Tous') {
+            $queryBuilder->andWhere('f.nom = :for');
+            $queryBuilder->setParameter('for', $formation);
+        }
+
+        $queryBuilder->orderBy('cour.creneau');
+        $result = $queryBuilder->getQuery()->getArrayResult();
+
+        return $result;
+    }
+
+    public function findAllByChoicesCreneauByProf($date, $prof): array{
+
+        try {
+            $debut_annee = $this->getDebutAnnee();
+        } catch (Exception $e) {
+            return [];
+        }
+
+        if($date < $debut_annee)
+        {
+            return [];
+        }
+
+
+        $datediff = $date->diff($debut_annee);
+        $numeroSemaine = floor($datediff->days / 7);
+        $creneauMin = 20 * $numeroSemaine + 1;  // 20 creneaux par semaines
+        $creneauMax = $creneauMin + 19;
+
+        $queryBuilder = $this->createQueryBuilder('cour');
+        $queryBuilder->addSelect('cour');
+        $queryBuilder->leftJoin('cour.salle', 's');
+        $queryBuilder->addSelect('s');
+        $queryBuilder->leftJoin('cour.enseignant', 'ens');
+
+        $queryBuilder->where('cour.enseignant = :prof');
+        $queryBuilder->setParameter('prof', $prof);
+
+        $queryBuilder->addSelect('ens');
+        $queryBuilder->leftJoin('ens.personne', 'pers');
+        $queryBuilder->addSelect('pers');
+        $queryBuilder->leftJoin('cour.ue', 'ue');
+        $queryBuilder->addSelect('ue');
+        $queryBuilder->leftJoin('ue.formation', 'f');
+        $queryBuilder->addSelect('f');
+        $queryBuilder->leftJoin('f.cursus', 'c');
+        $queryBuilder->addSelect('c');
+
+        $queryBuilder->andWhere('cour.creneau BETWEEN :cmin AND :cmax');
+        $queryBuilder->setParameter('cmin', $creneauMin);
+        $queryBuilder->setParameter('cmax', $creneauMax);
+
+        $queryBuilder->orderBy('cour.creneau');
+        $result = $queryBuilder->getQuery()->getArrayResult();
+
+        return $result;
+    }
+
+
+    public function findAllByChoicesCreneauProfResp($ue, $prof, $formation, $date): array
+    {
+        try {
+            $debut_annee = $this->getDebutAnnee();
+        } catch (Exception $e) {
+            return [];
+        }
+
+        $datediff = $date->diff($debut_annee);
+        if($datediff->days < 0)
+        {
+            return [];
+        }
+        $numeroSemaine = floor($datediff->days / 7);
+        $creneauMin = 20 * $numeroSemaine + 1;  // 20 creneaux par semaines
+        $creneauMax = $creneauMin + 19;
+        //dump($creneauMin);
+        //dump($creneauMax);
+
+
+        $queryBuilder = $this->createQueryBuilder('cour');
+        $queryBuilder->addSelect('cour');
+
+        $queryBuilder->leftJoin('cour.salle', 's');
+        $queryBuilder->addSelect('s');
+        $queryBuilder->leftJoin('cour.enseignant', 'ens');
+        $queryBuilder->addSelect('ens');
+        $queryBuilder->leftJoin('ens.personne', 'pers');
+        $queryBuilder->addSelect('pers');
+        $queryBuilder->leftJoin('cour.ue', 'ue');
+        $queryBuilder->addSelect('ue');
+        $queryBuilder->leftJoin('ue.formation', 'f');
+        $queryBuilder->addSelect('f');
+
+
+        $queryBuilder->andWhere('cour.creneau BETWEEN :cmin AND :cmax');
+        $queryBuilder->setParameter('cmin', $creneauMin);
+        $queryBuilder->setParameter('cmax', $creneauMax);
+
+        if($formation != 'Tous') {
+            $queryBuilder->andWhere('f.nom = :for');
+            $queryBuilder->setParameter('for', $formation);
+        }
+        if($prof != 'Tous'){
+            $queryBuilder->andWhere('pers.nom = :nom');
+            $queryBuilder->setParameter('nom', $prof);
+        }
+        if($ue != 'Tous'){
+            $queryBuilder->andWhere('ue.nom = :ue');
+            $queryBuilder->setParameter('ue', $ue);
+        }
+        //var_dump($ue);
+        $queryBuilder->orderBy('cour.creneau');
+        $result = $queryBuilder->getQuery()->getArrayResult();
+
+        return $result;
+    }
+
+
     /**
      * @throws Exception
      */
-    private function getDebutAnnee() : DateTime
+    public function getDebutAnnee() : DateTime
     {
         return new DateTime($this->date_debut_annee, null);
     }
