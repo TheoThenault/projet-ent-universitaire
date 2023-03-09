@@ -847,7 +847,7 @@ BEGIN
                 SET errorMessage := 'Test ue_nom_length_check';
             END;
         INSERT INTO ue (specialite_id, formation_id, nom, volume_horaire)
-			VALUES(1, 1, _nom, 10);g
+			VALUES(1, 1, _nom, 10);
     END;
 
     -- Vérifier que le nom d'une Ue est compris entre 2 et 255 caractères
