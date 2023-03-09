@@ -329,7 +329,7 @@ class CourRepository extends ServiceEntityRepository
     /**
      * @throws Exception
      */
-    private function getDebutAnnee() : DateTime
+    public function getDebutAnnee() : DateTime
     {
         return new DateTime($this->date_debut_annee, null);
     }

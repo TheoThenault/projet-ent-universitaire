@@ -52,8 +52,11 @@ class GroupeRepository extends ServiceEntityRepository
         $queryBuilder->where('f.id = :id');
         $queryBuilder->setParameter('id', $formation);
 
-        $queryBuilder->andWhere('g.type = :type');
-        $queryBuilder->setParameter('type', $type);
+        if($type != 'Tous')
+        {
+            $queryBuilder->andWhere('g.type = :type');
+            $queryBuilder->setParameter('type', $type);
+        }
 
         $result = $queryBuilder->getQuery()->getResult();
         return $result;
