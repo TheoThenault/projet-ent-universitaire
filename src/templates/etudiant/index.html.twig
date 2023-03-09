@@ -11,7 +11,7 @@
     {{ form_row(formationFormulaire.Cursus) }}
     {{ form_row(formationFormulaire.Formation) }}
     {{ form_row(formationFormulaire.Entry) }}
-    {{ form_row(formationFormulaire.Filtrer) }}
+    {{ form_row(formationFormulaire.Filtrer, {'attr': {'formaction': path('etudiant_index', {'nPage': 1})}}) }}
 
     {# on n'affiche cette parite que si la liste est défini est pas vide #}
     {% if liste_etudiants is defined and liste_etudiants is not empty %}
