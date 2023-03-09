@@ -19,16 +19,24 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 #[Route('/etudiant', name: 'etudiant_')]
 class EtudiantController extends AbstractController
 {
-	#[Route('/{nPage}', name: 'index',
-		requirements: ['nPage' => '\d+'],
-		defaults:     ['nPage' => 1]
+	#[Route('/{nPage}/{etu_id}', name: 'index',
+		requirements: ['nPage' => '\d+', 'etu_id' => '\d+'],
+		defaults:     ['nPage' => 1, 'etu_id' => '']
 	)]
-    public function index($nPage, Request $request, EntityManagerInterface $entityManagerInterface): Response
+    public function index($nPage, $etu_id, Request $request, EntityManagerInterface $entityManagerInterface): Response
     {
         if($nPage <= 0)
 	{
 		throw new NotFoundHttpException('La Page n\'existe pas');
 	}
+
+        dump(is_numeric($etu_id));
+        $etudiant_juste_creer = null;
+        if(is_numeric($etu_id))
+        {
+            $etuRepo = $entityManagerInterface->getRepository(Etudiant::class);
+            $etudiant_juste_creer = $etuRepo->findOneBy(['id'=>$etu_id]);
+        }
 
         // récupère la liste des cursus et les niveaux
         $liste_cursus = $entityManagerInterface->getRepository(Etudiant::class)->findAllCursus();
@@ -72,7 +80,8 @@ class EtudiantController extends AbstractController
             'formationFormulaire' => $form->createView(),
             'liste_etudiants' => $liste_etudiants,
             'currPage' => $nPage,
-            'pageMax' => $pageMax
+            'pageMax' => $pageMax,
+            'etudiant_juste_creer' => $etudiant_juste_creer
         ]);
     }
 
@@ -104,7 +113,7 @@ class EtudiantController extends AbstractController
 
                 $entityManager->flush();
                 $this->addFlash('crud', "L'étudiant : {$form->get('prenom')->getData()} {$form->get('nom')->getData()}, a été créé avec succès.");
-                return $this->redirectToRoute('etudiant_index');
+                return $this->redirectToRoute('etudiant_index', ['etu_id' => $etudiant->getId()]);
             } else {
                 // Error
                 $errorsString = (string) $errors;

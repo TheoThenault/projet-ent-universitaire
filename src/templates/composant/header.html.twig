@@ -18,6 +18,14 @@
                         </a>
                     </li>
                 {% endif %}
+                {% if is_granted('ROLE_ENSEIGNANT_RES') %}
+                    <li>
+                        <a href="{{ path('cour_add') }}"
+                                {% if route_name == "cour_add" %} class="nav-link active px-2" {% else %} class="nav-link px-2" {% endif %}>
+                            Ajouter un Cour
+                        </a>
+                    </li>
+                {% endif %}
                 {% if is_granted('ROLE_ENSEIGNANT') %}
                     <li>
                         <a href="{{ path('heuresProf_index') }}"
